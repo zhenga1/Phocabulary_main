@@ -19,4 +19,4 @@ The endpoint expects to receive a `Registrar` object
 | email | string | the email address associated with the registrar |
 | username | string | the username of the registrar |
 | password | string | salted hash of the password |
-
+| salt | string | the salt for hashing previously |
