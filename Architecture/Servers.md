@@ -10,7 +10,7 @@ The Account API endpoints are utilities for performing certain actions with acco
 
 The Register Endpoint allows a user to register an account.
 
-The endpoint expects to receive a `Registrar` object
+The endpoint expects to receive a `Registrar` object.
 
 ##### The `Registrar` object
 
@@ -20,3 +20,16 @@ The endpoint expects to receive a `Registrar` object
 | username | string | the username of the registrar |
 | password | string | salted hash of the password |
 | salt | string | the salt for hashing previously |
+
+#### Login Endpoint: `POST /accounts/login`
+
+The Login Endpoint allows a user to login.
+
+The endpoint expects to receieve a `Credentials` object.
+
+##### The `Credentials` object
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| username | string | the username of the user |
+| password | string | the password of the user |
