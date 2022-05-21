@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "402010491411",
+    "project_id": "learning-app-cc969",
+    "storage_bucket": "learning-app-cc969.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:402010491411:android:5d8d8794847e456dfc8de6",
+        "android_client_info": {
+          "package_name": "com.projectmonterey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "402010491411-614d7ctqskdiumo6rkvcjli7t2sl59kh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE9uExibqXQLonyjKH6bNogfKbU7uLAGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "402010491411-614d7ctqskdiumo6rkvcjli7t2sl59kh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
