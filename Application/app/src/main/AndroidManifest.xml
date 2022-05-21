@@ -10,8 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectMonterey">
         <activity
+<<<<<<< Updated upstream
             android:name=".loginpage"
             android:exported="false" />
+=======
+                android:name=".CameraView"
+                android:exported="false" />
+        <activity
+                android:name=".Settings"
+                android:exported="false" />
+>>>>>>> Stashed changes
         <activity
             android:name=".LoginScreen"
             android:exported="false" />
