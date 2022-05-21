@@ -6,4 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".loginpage">
 
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="20dp"
+        tools:layout_editor_absoluteX="181dp"
+        tools:layout_editor_absoluteY="1dp" />
+
+    <LinearLayout
+        android:layout_width="409dp"
+        android:layout_height="701dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="29dp">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="User Name" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Password" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
