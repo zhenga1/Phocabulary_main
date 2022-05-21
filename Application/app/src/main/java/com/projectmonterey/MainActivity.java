@@ -18,13 +18,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void startLearning(View view) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Intent intent;
+
         if (user != null) {
-            Intent intent = new Intent(this, UiMainActivity.class);
-            startActivity(intent);
-            return;
+            intent = new Intent(this, UiMainActivity.class);
+        }
+        else {
+            intent = new Intent(this, loginpage.class);
         }
 
-        // go to log in activity
+        startActivity(intent);
     }
 
     public void setting(View view){
