@@ -24,14 +24,14 @@ public class MainActivity extends AppCompatActivity {
             intent = new Intent(this, UiMainActivity.class);
         }
         else {
-            intent = new Intent(this, loginpage.class);
+            intent = new Intent(this, LoginActivity.class);
         }
 
         startActivity(intent);
     }
 
     public void setting(View view){
-        Intent intent = new Intent(this, Settings.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 }
