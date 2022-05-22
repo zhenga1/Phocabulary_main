@@ -39,6 +39,7 @@
             android:layout_height="107dp"
             app:srcCompat="@mipmap/settings_foreground"
             android:id="@+id/imageButton"
+            android:onClick="setting"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
