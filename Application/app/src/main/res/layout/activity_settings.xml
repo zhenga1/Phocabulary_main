@@ -41,7 +41,7 @@
                     android:layout_gravity="start"
                     android:textAlignment="viewStart"
                     android:textColor="@color/black"
-                    android:background="@color/white"
+                    android:background="@android:color/transparent"
                     android:layout_height="wrap_content"
                     android:id="@+id/general"
                     />
@@ -84,10 +84,12 @@
                     app:srcCompat="@mipmap/lock_icon" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/reset"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Reset Button"
                     android:textAlignment="viewStart" />
@@ -105,9 +107,11 @@
                     app:srcCompat="@mipmap/accountsettings" />
 
                 <Button
-                    android:id="@+id/button6"
+                    android:id="@+id/accountsettings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/black"
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Account settings"
@@ -127,9 +131,11 @@
                     app:srcCompat="@mipmap/logout" />
 
                 <Button
-                    android:id="@+id/button7"
+                    android:id="@+id/logout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/black"
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Logout"
@@ -147,21 +153,21 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Switch
-                android:id="@+id/switchnew"
+                android:id="@+id/dailyactivityreminder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="Daily Activity Reminder" />
 
             <Switch
-                android:id="@+id/switch3"
+                android:id="@+id/leaderboardreminder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="Leaderboard Remider" />
 
             <Switch
-                android:id="@+id/switch4"
+                android:id="@+id/eventreminder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
@@ -180,31 +186,51 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:weightSum="6"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:layout_weight="3"
+                    android:textSize="20dp"
+                    android:layout_gravity="center"
+                    android:text="Time" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:weightSum="7"
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/button8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:layout_weight="1"
-                        android:text="Button" />
+                        android:id="@+id/timeswitch"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:textColor="@color/black"
+                        android:layout_weight="3"
+                        android:text="12:00" />
 
                     <Button
-                        android:id="@+id/button9"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/am_switch"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Button" />
+                        android:background="@android:color/transparent"
+                        android:textColor="@color/black"
+                        android:layout_weight="2"
+                        android:text="AM" />
+
+                    <Button
+                        android:id="@+id/pm_switch"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:textColor="@color/black"
+                        android:layout_weight="2"
+                        android:text="PM" />
                 </LinearLayout>
             </LinearLayout>
 
