@@ -1,5 +1,6 @@
 package com.projectmonterey;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +17,7 @@ import java.security.Permissions;
 public class CameraActivity extends AppCompatActivity {
     protected CameraView cameraView;
     protected Camera camera;
+    private final int CAMERA_CODE=1000;
     protected FrameLayout frameLayout;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -23,15 +25,18 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_view);
         if(checkCameraHardware(getApplicationContext()) && !checkCameraPermission()){
-            requestPermissions(new String[]{Manifest.permission.CAMERA},1000);
+            requestPermissions(new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
         }
         frameLayout = findViewById(R.id.frameLayout);
         if(checkCameraPermission()) {
-            camera = Camera.open();
-            cameraView = new CameraView(this, camera);
-            frameLayout.addView(cameraView);
+            initCamera();
         }
 
+    }
+    private void initCamera(){
+        camera = Camera.open();
+        cameraView = new CameraView(this, camera);
+        frameLayout.addView(cameraView);
     }
     public boolean checkCameraPermission()
     {
@@ -39,6 +44,16 @@ public class CameraActivity extends AppCompatActivity {
         int res = this.getApplicationContext().checkCallingOrSelfPermission(permission);
         return (res == PackageManager.PERMISSION_GRANTED);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==CAMERA_CODE)
+        {
+            initCamera();
+        }
+    }
+
     public boolean checkCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
             // this device has a camera
