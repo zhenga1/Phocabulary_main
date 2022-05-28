@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import java.security.Permissions;
@@ -48,6 +49,10 @@ public class CameraActivity extends AppCompatActivity {
             return false;
         }
     }
+    public void take(View view){
+
+    }
+
 
     
 }
