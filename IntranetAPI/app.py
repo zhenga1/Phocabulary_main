@@ -12,20 +12,6 @@ dotenv.load_dotenv()
 api = Flask(__name__)
 
 
-@api.route('/test')
-async def hello_world():
-    conn = await asyncpg.connect(user=os.getenv("PGSQL_USERNAME"), password=os.getenv("PGSQL_PASSWORD"),
-                                 database="postgres", host="127.0.0.1")
-
-    async with conn.transaction():
-        cur = await conn.cursor('SELECT * FROM users')
-        result = await cur.fetchrow()
-
-        return {
-            'username': result['username']
-        }
-
-
 @api.route('/api/v1/auth/register', methods=['POST'])
 async def api_v1_auth_register():
     if request.headers.get("Content-Type") != "application/json":
