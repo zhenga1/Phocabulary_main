@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.projectmonterey">
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <uses-feature android:name="android.hardware.camera" />
     <application
         android:name=".ProjectMonterey"
         android:allowBackup="true"
@@ -11,16 +15,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectMonterey">
         <activity
-            android:name=".ResetActivity"
+            android:name=".settings.set_General"
             android:exported="false" />
         <activity
-            android:name=".set_General"
+            android:name=".settings.AccountSettings"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CameraActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
