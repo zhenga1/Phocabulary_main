@@ -11,4 +11,5 @@
     <color name="red">#DA421D</color>
     <color name="paleyellow"> #EEED93</color>
     <color name="bluee"> #97DEE7</color>
+    <color name="trans"> #80000000 </color>
 </resources>
