@@ -47,7 +47,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.125"
         android:onClick="setting"
-        android:backfround="@color/trans"
+        android:background="@android:color/transparent"
         app:srcCompat="@drawable/settings_foreground" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
