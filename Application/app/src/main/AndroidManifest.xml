@@ -20,6 +20,9 @@
             android:name=".CaptureActivity"
             android:exported="false" />
         <activity
+            android:name=".MenuPage"
+            android:exported="false"/>
+        <activity
             android:name=".settings.set_General"
             android:exported="false" />
         <activity

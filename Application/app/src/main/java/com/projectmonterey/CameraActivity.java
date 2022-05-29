@@ -61,7 +61,7 @@ public class CameraActivity extends AppCompatActivity {
         {
             int [] position = new int[2];
             cameraView.getLocationOnScreen(position);
-            Log.e("Error","Camera View position is incorrect" + Integer.toString(position[0]))
+            Log.e("Error","Camera View position is incorrect" + Integer.toString(position[0]));
             captureimg = getScreenshot(position[0],position[1],view.getWidth(),view.getHeight());
             Intent intent = new Intent(CameraActivity.this,CaptureActivity.class);
             startActivity(intent);
@@ -95,6 +95,7 @@ public class CameraActivity extends AppCompatActivity {
             return false;
         }
     }
-
+    public void take(View view){
+    }
 
 }
