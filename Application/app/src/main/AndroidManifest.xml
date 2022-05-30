@@ -17,35 +17,44 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectMonterey">
         <activity
+            android:theme="@style/NoActionBar"
             android:name=".CaptureActivity"
             android:exported="false" />
         <activity
             android:name=".MenuPage"
+            android:theme="@style/NoActionBar"
             android:exported="false"/>
         <activity
             android:name=".settings.set_General"
+            android:theme="@style/NoActionBar"
             android:exported="false" />
         <activity
             android:name=".settings.AccountSettings"
+            android:theme="@style/NoActionBar"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
+            android:theme="@style/NoActionBar"
             android:exported="true">
         </activity>
         <activity
             android:name=".SettingsActivity"
+            android:theme="@style/NoActionBar"
             android:exported="false" />
         <activity
             android:name=".CameraActivity"
+            android:theme="@style/NoActionBar"
             android:exported="true" >
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"/>
     </application>
 
 </manifest>
