@@ -2,6 +2,7 @@ package com.projectmonterey;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.view.Surface;
@@ -39,15 +40,15 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         Camera.Parameters parameters = camera.getParameters();
-        if(this.getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT){
-            parameters.set("orientation","portrait");
-            camera.setDisplayOrientation(0);
-            parameters.setRotation(0);
-        }
-        else{
+        if(this.getResources().getConfiguration().orientation!= Configuration.ORIENTATION_LANDSCAPE){
             parameters.set("orientation","landscape");
             camera.setDisplayOrientation(90);
             parameters.setRotation(90);
+        }
+        else{
+            parameters.set("orientation","portrait");
+            camera.setDisplayOrientation(0);
+            parameters.setRotation(0);
 
         }
         camera.setParameters(parameters);
@@ -59,6 +60,24 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
     }
+    /*public void setCameraPhotoQuality(Camera camera) {
+        final Camera.Parameters parameters = camera.getParameters();
+
+        parameters.setPictureFormat(PixelFormat.JPEG);
+
+        if (configurationProvider.getMediaQuality() == Configuration.MEDIA_QUALITY_LOW) {
+            parameters.setJpegQuality(50);
+        } else if (configurationProvider.getMediaQuality() == Configuration.MEDIA_QUALITY_MEDIUM) {
+            parameters.setJpegQuality(75);
+        } else if (configurationProvider.getMediaQuality() == Configuration.MEDIA_QUALITY_HIGH) {
+            parameters.setJpegQuality(100);
+        } else if (configurationProvider.getMediaQuality() == Configuration.MEDIA_QUALITY_HIGHEST) {
+            parameters.setJpegQuality(100);
+        }
+        parameters.setPictureSize(photoSize.getWidth(), photoSize.getHeight());
+
+        camera.setParameters(parameters);
+    }*/
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
