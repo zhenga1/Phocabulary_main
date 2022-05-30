@@ -36,10 +36,10 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
     public CameraView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         Camera.Parameters parameters = camera.getParameters();
+
         if(this.getResources().getConfiguration().orientation!= Configuration.ORIENTATION_LANDSCAPE){
             parameters.set("orientation","landscape");
             camera.setDisplayOrientation(90);
