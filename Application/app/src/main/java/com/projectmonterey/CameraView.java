@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
+
 import android.util.AttributeSet;
 import android.view.Surface;
 import android.view.SurfaceHolder;

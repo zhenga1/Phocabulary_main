@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.hardware.Camera;
@@ -32,11 +33,13 @@ public class CameraActivity extends AppCompatActivity {
     protected CameraView cameraView;
     public static Bitmap captureimg;
     protected Camera camera;
-    public float focusAreaSize = 100;
+    public float focusAreaSize = 300;
     public final int CAMERA_CODE=1000,CAPTURE_CODE=2000,STORAGE_CODE=3000;
     private boolean setupCamera=false;
     private View.OnTouchListener onTouchListener;
     protected FrameLayout frameLayout;
+    private Matrix matrix = new Matrix();
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +65,32 @@ public class CameraActivity extends AppCompatActivity {
     private void initCamera(){
         camera = Camera.open();
         cameraView = new CameraView(this, camera);
-        //cameraView.setOnTouchListener(onTouchListener);
+        cameraView.setOnTouchListener(onTouchListener);
         cameraView.setId(R.id.mycameraView);
         frameLayout.addView(cameraView);
         setupCamera=true;
+        checkPreviewMatrix();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(setupCamera){
+            checkPreviewMatrix();
+            setupCamera=false;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(setupCamera) {
+            checkPreviewMatrix();
+        }
+
+    }
+
+    int handlerTime = 0;
     private void focusCamera(MotionEvent event){
         if (camera != null) {
 
@@ -75,7 +99,6 @@ public class CameraActivity extends AppCompatActivity {
             Rect meteringRect = calculateTapArea(event.getX(), event.getY(), 1.5f);
 
             Camera.Parameters parameters = camera.getParameters();
-            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
             if(parameters.getMaxNumFocusAreas()>0) {
                 List<Camera.Area> myAreaList = new ArrayList<Camera.Area>();
                 myAreaList.add(new Camera.Area(focusRect, 800));
@@ -94,18 +117,31 @@ public class CameraActivity extends AppCompatActivity {
                 meteringArea.add(new Camera.Area(meteringRect, 800));
                 parameters.setMeteringAreas(meteringArea);*/
             }
-
-            camera.setParameters(parameters);
+            final String curFocusMode = parameters.getFocusMode();
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+            try {
+                camera.setParameters(parameters);
+            }catch(RuntimeException e){
+                e.printStackTrace();
+            }
             camera.autoFocus(new Camera.AutoFocusCallback() {
                 @Override
                 public void onAutoFocus(boolean success, Camera camera) {
-                    if(!success) {
-                        camera.cancelAutoFocus();
+                    if(success || handlerTime>10){
+                        Camera.Parameters params = camera.getParameters();
+                        if (!params.getFocusMode().equals(curFocusMode)) {
+                            params.setFocusMode(curFocusMode);
+                            try{
+                                camera.setParameters(params);
+                            }catch (RuntimeException e)
+                            {
+                                e.printStackTrace();
+                            }
+                            handlerTime=0;
+                        }
                     }
-                    Camera.Parameters params = camera.getParameters();
-                    if (!params.getFocusMode().equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
-                        params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-                        camera.setParameters(params);
+                    else{
+                        handlerTime++;
                     }
                 }
             });
@@ -120,10 +156,26 @@ public class CameraActivity extends AppCompatActivity {
         int top = clamp((int) y - areaSize / 2, 0, cameraView.getHeight() - areaSize);
 
         RectF rectF = new RectF(left, top, left + areaSize, top + areaSize);
-        //matrix.mapRect(rectF);
+        matrix.mapRect(rectF);
 
         return new Rect(Math.round(rectF.left), Math.round(rectF.top), Math.round(rectF.right), Math.round(rectF.bottom));
     }
+
+    /*private Rect calculateTapArea(float oldx, float oldy, float coefficient){
+        float x = oldy;
+        float y = cameraView.getHeight() - oldx;
+
+        int areaSize = Float.valueOf(focusAreaSize * coefficient).intValue();
+        int centerX = (int) (x / cameraView.getWidth() * 2000 - 1000);
+        int centerY = (int) (y / cameraView.getHeight() * 2000 - 1000);
+
+        int left = clamp(centerX - areaSize / 2, -1000, 1000);
+        int right = clamp(left + areaSize, -1000, 1000);
+        int top = clamp(centerY - areaSize / 2, -1000, 1000);
+        int bottom = clamp(top + areaSize, -1000, 1000);
+
+        return new Rect(left, top, right, bottom);
+    }*/
     private int clamp(int x, int min, int max) {
         if (x > max) {
             return max;
@@ -154,6 +206,31 @@ public class CameraActivity extends AppCompatActivity {
             }
         };
         return onTouchListener;
+    }
+    public static int getDisplayOrientation(int degrees, int cameraId) {
+        // See android.hardware.Camera.setDisplayOrientation for
+        // documentation.
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        Camera.getCameraInfo(cameraId, info);
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360; // compensate the mirror
+        } else { // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        return result;
+    }
+    public void checkPreviewMatrix() {
+        Matrix matrix = new Matrix();
+        if (camera != null) {
+            matrix.postRotate(getDisplayOrientation(0,0));
+        }
+        float viewWidth = frameLayout.getWidth();
+        float viewHeight = frameLayout.getHeight();
+        matrix.postScale(viewWidth / 2000f, viewHeight / 2000f);
+        matrix.postTranslate(viewWidth / 2f, viewHeight / 2f);
+        matrix.invert(this.matrix);
     }
     private Bitmap getScreenshot(int x,int y,int width,int height){
         View view = this.getWindow().getDecorView();
