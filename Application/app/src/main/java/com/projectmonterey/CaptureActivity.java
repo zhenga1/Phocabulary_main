@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,10 +26,13 @@ import com.google.mlkit.vision.face.FaceDetector;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
 import com.google.mlkit.vision.face.FaceLandmark;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CaptureActivity extends AppCompatActivity {
     private FaceDetectorOptions highAccuracyOpts,realTimeOpts;
+    private List<Rect> boundingboxes;
+    private float rotY,rotZ,smileProb,rightEyeOpenProb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +61,22 @@ public class CaptureActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(List<Face> faces) {
                                         getFaceInfo(faces);
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Paint paint = new Paint();
+                                                paint.setColor(Color.BLACK);
+                                                paint.setStrokeWidth(5.0f);
+                                                Bitmap canvasBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+                                                Canvas canvas = new Canvas(canvasBitmap);
+                                                for(Rect rect : boundingboxes) {
+                                                    canvas.drawRect(rect.left, rect.top, rect.right, rect.bottom, paint);
+                                                }
+                                                view.draw(canvas);
+                                                view.invalidate();
+                                            }
+                                        });
+
                                         // Task completed successfully
                                         // ...
                                     }
@@ -75,10 +97,12 @@ public class CaptureActivity extends AppCompatActivity {
 
     }
     public void getFaceInfo(List<Face> faces){
+        boundingboxes = new ArrayList<>();
         for (Face face : faces) {
             Rect bounds = face.getBoundingBox();
-            float rotY = face.getHeadEulerAngleY();  // Head is rotated to the right rotY degrees
-            float rotZ = face.getHeadEulerAngleZ();  // Head is tilted sideways rotZ degrees
+            boundingboxes.add(bounds);
+            rotY = face.getHeadEulerAngleY();  // Head is rotated to the right rotY degrees
+            rotZ = face.getHeadEulerAngleZ();  // Head is tilted sideways rotZ degrees
 
             // If landmark detection was enabled (mouth, ears, eyes, cheeks, and
             // nose available):
@@ -88,17 +112,17 @@ public class CaptureActivity extends AppCompatActivity {
             }
 
             // If contour detection was enabled:
-            List<PointF> leftEyeContour =
-                    face.getContour(FaceContour.LEFT_EYE).getPoints();
-            List<PointF> upperLipBottomContour =
-                    face.getContour(FaceContour.UPPER_LIP_BOTTOM).getPoints();
+            //List<PointF> leftEyeContour =
+                    //face.getContour(FaceContour.LEFT_EYE).getPoints();
+            //List<PointF> upperLipBottomContour =
+                    //face.getContour(FaceContour.UPPER_LIP_BOTTOM).getPoints();
 
             // If classification was enabled:
             if (face.getSmilingProbability() != null) {
-                float smileProb = face.getSmilingProbability();
+                smileProb = face.getSmilingProbability();
             }
             if (face.getRightEyeOpenProbability() != null) {
-                float rightEyeOpenProb = face.getRightEyeOpenProbability();
+                rightEyeOpenProb = face.getRightEyeOpenProbability();
             }
 
             // If face tracking was enabled:
