@@ -63,7 +63,8 @@
             <SeekBar
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/seekBar" />
+                    android:id="@+id/seekBar"
+                />
 
             <TextView
                 android:id="@+id/textView5"
