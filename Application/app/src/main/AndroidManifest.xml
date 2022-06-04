@@ -15,45 +15,48 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/camera_cute_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.ProjectMonterey">
         <activity
-            android:theme="@style/NoActionBar"
-            android:name=".CaptureActivity"
+            android:name=".ans_choosing"
             android:exported="false" />
+        <activity
+            android:name=".CaptureActivity"
+            android:exported="false"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".MenuPage"
-            android:theme="@style/NoActionBar"
-            android:exported="false"/>
+            android:exported="false"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".settings.set_General"
-            android:theme="@style/NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".settings.AccountSettings"
-            android:theme="@style/NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/NoActionBar"
-            android:exported="true">
-        </activity>
+            android:exported="true"
+            android:theme="@style/NoActionBar"></activity>
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".CameraActivity"
-            android:theme="@style/NoActionBar"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true"
+            android:theme="@style/NoActionBar"></activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/NoActionBar"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
