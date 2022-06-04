@@ -14,12 +14,12 @@ api = Flask(__name__)
 
 @api.route('/api/v1/auth/register', methods=['POST'])
 async def api_v1_auth_register():
-    if request.headers.get("Content-Type") != "application/json":
+    if request.headers.get("Content-Type") != "application/json; charset=utf-8":
         return {
             'code': 400,
             'status': 'Bad Request',
             'message': 'expected JSON body'
-        }
+        }, 400
 
     conn = await asyncpg.connect(user=os.getenv("PGSQL_USERNAME"), password=os.getenv("PGSQL_PASSWORD"),
                                  database="postgres", host="127.0.0.1")
@@ -34,17 +34,17 @@ async def api_v1_auth_register():
             hashed_pwd = hashlib.sha256(bytes(body['password'] + salt, 'utf-8')).hexdigest()
 
             await conn.execute(
-                f"INSERT TO users (username, pwd_salted_hash, user_id, salt) VALUES ('{body['username']}', '{hashed_pwd}', '{now}', '{salt}') "
+                f"INSERT INTO users (username, pwd_saltedhash, user_id, salt) VALUES ('{body['username']}', '{hashed_pwd}', '{now}', '{salt}') "
             )
     except KeyError:
         return {
             'code': 422,
             'status': 'Un-processable Entity',
             'message': 'invalid request body'
-        }
+        }, 422
 
     return {
         'code': 200,
         'status': 'OK',
         'message': 'the action completed successfully'
-    }
+    }, 200
