@@ -43,14 +43,14 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
      * Sets the faces for the overlay view, so it can be updated
      * and the face overlays will be drawn again.
      */
-    private FaceDetectionListener faceDetectionListener = new FaceDetectionListener() {
+    /*private FaceDetectionListener faceDetectionListener = new FaceDetectionListener() {
         @Override
         public void onFaceDetection(Camera.Face[] faces, Camera camera) {
             Log.d("onFaceDetection", "Number of Faces:" + faces.length);
             // Update the view now!
             mFaceView.setFaces(faces);
         }
-    };
+    };*/
     public CameraView(Context context) {
         super(context);
     }

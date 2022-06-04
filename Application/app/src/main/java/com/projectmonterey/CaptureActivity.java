@@ -2,6 +2,7 @@ package com.projectmonterey;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,6 +17,7 @@ import android.hardware.Camera.FaceDetectionListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,21 +37,18 @@ import java.util.List;
 public class CaptureActivity extends AppCompatActivity {
     private FaceDetectorOptions highAccuracyOpts,realTimeOpts;
     private List<Rect> boundingboxes;
+    private FaceOverlayView faceOverlayView;
+    private ConstraintLayout parent;
+    private List<Face> thefaces;
 
     private float rotY,rotZ,smileProb,rightEyeOpenProb;
-    private FaceDetectionListener faceDetectionListener = new FaceDetectionListener() {
-        @Override
-        public void onFaceDetection(Camera.Face[] faces, Camera camera) {
-            Log.d("onFaceDetection", "Number of Faces:" + faces.length);
-            // Update the view now!
-        }
-
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
-        View view = (View) findViewById(R.id.capturecanvasview);
+        parent = findViewById(R.id.parent_constraint_layout);
+        addFaceLayout();
+        CaptureView view = (CaptureView) findViewById(R.id.capturecanvasview);
         Bitmap bitmap = transposeBitmap(CameraActivity.captureimg);
         BitmapDrawable bitmapDrawable = new BitmapDrawable(CaptureActivity.this.getResources(),bitmap);
         view.setBackground(bitmapDrawable);
@@ -73,9 +72,12 @@ public class CaptureActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(List<Face> faces) {
                                         getFaceInfo(faces);
+                                        thefaces = faces;
+
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                faceOverlayView.setFaces(thefaces,boundingboxes);
                                                 Paint paint = new Paint();
                                                 paint.setColor(Color.BLACK);
                                                 paint.setStrokeWidth(5.0f);
@@ -84,7 +86,7 @@ public class CaptureActivity extends AppCompatActivity {
                                                 for(Rect rect : boundingboxes) {
                                                     canvas.drawRect(rect.left, rect.top, rect.right, rect.bottom, paint);
                                                 }
-                                                view.invalidate();
+                                                faceOverlayView.invalidate();
                                             }
                                         });
 
@@ -106,6 +108,11 @@ public class CaptureActivity extends AppCompatActivity {
                                     }
                                 });
 
+    }
+    private void addFaceLayout(){
+        faceOverlayView = new FaceOverlayView(this);
+        faceOverlayView.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.FILL_PARENT, ConstraintLayout.LayoutParams.FILL_PARENT));
+        parent.addView(faceOverlayView);
     }
     public void getFaceInfo(List<Face> faces){
         boundingboxes = new ArrayList<>();

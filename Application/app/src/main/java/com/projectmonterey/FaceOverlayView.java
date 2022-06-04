@@ -6,9 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
-import android.hardware.Camera.Face;
+import com.google.mlkit.vision.face.Face;
 import android.view.View;
+import android.widget.LinearLayout;
+
+import java.util.List;
 
 /**
  * This class is a simple View to display the faces.
@@ -19,7 +23,8 @@ public class FaceOverlayView extends View {
     private Paint mTextPaint;
     private int mDisplayOrientation;
     private int mOrientation;
-    private Face[] mFaces;
+    private List<Rect> mRects;
+    private List<Face> mFaces;
 
     public FaceOverlayView(Context context) {
         super(context);
@@ -43,8 +48,9 @@ public class FaceOverlayView extends View {
         mTextPaint.setStyle(Paint.Style.FILL);
     }
 
-    public void setFaces(Face[] faces) {
+    public void setFaces(List<Face> faces, List<Rect> rects) {
         mFaces = faces;
+        mRects = rects;
         invalidate();
     }
 
@@ -60,18 +66,18 @@ public class FaceOverlayView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mFaces != null && mFaces.length > 0) {
+        if (mRects != null && mRects.size() > 0) {
             Matrix matrix = new Matrix();
             Util.prepareMatrix(matrix, false, mDisplayOrientation, getWidth(), getHeight());
             canvas.save();
             matrix.postRotate(mOrientation);
             canvas.rotate(-mOrientation);
-            RectF rectF = new RectF();
-            for (Face face : mFaces) {
-                rectF.set(face.rect);
-                matrix.mapRect(rectF);
-                canvas.drawRect(rectF, mPaint);
-                canvas.drawText("Score " + face.score, rectF.right, rectF.top, mTextPaint);
+            for (int j=0;j<mFaces.size();j++) {
+                Rect rect = mRects.get(j);
+                RectF fface = new RectF(rect);
+                matrix.mapRect(fface);
+                canvas.drawRect(fface, mPaint);
+                canvas.drawText("Score ", fface.right, fface.top, mTextPaint);
             }
             canvas.restore();
         }
