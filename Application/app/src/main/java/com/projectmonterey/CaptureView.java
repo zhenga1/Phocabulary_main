@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-
+/////OLD CLASS CAN BE REMOVED
 public class CaptureView extends View {
     private Bitmap canvasBitmap;
     private Paint canvasPaint;
