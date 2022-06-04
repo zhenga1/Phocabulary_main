@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.projectmonterey"
-        minSdk 16
+        minSdk 19
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -37,6 +37,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.gms:play-services-mlkit-face-detection:17.0.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     implementation platform('com.google.firebase:firebase-bom:30.0.2')
