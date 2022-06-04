@@ -29,6 +29,16 @@ import java.security.Permissions;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//gallery
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+
 public class CameraActivity extends AppCompatActivity {
     protected CameraView cameraView;
     public static Bitmap captureimg;
@@ -307,6 +317,10 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
     public void take(View view){
+    }
+    //private int TFRequestCodes = 1;
+    public void gall(View view){
+
     }
 
 }
