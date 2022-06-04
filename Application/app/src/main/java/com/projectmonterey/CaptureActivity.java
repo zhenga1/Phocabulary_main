@@ -11,7 +11,10 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.hardware.Camera;
+import android.hardware.Camera.FaceDetectionListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -32,12 +35,21 @@ import java.util.List;
 public class CaptureActivity extends AppCompatActivity {
     private FaceDetectorOptions highAccuracyOpts,realTimeOpts;
     private List<Rect> boundingboxes;
+
     private float rotY,rotZ,smileProb,rightEyeOpenProb;
+    private FaceDetectionListener faceDetectionListener = new FaceDetectionListener() {
+        @Override
+        public void onFaceDetection(Camera.Face[] faces, Camera camera) {
+            Log.d("onFaceDetection", "Number of Faces:" + faces.length);
+            // Update the view now!
+        }
+
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
-        View view = findViewById(R.id.capturecanvasview);
+        View view = (View) findViewById(R.id.capturecanvasview);
         Bitmap bitmap = transposeBitmap(CameraActivity.captureimg);
         BitmapDrawable bitmapDrawable = new BitmapDrawable(CaptureActivity.this.getResources(),bitmap);
         view.setBackground(bitmapDrawable);
@@ -72,7 +84,6 @@ public class CaptureActivity extends AppCompatActivity {
                                                 for(Rect rect : boundingboxes) {
                                                     canvas.drawRect(rect.left, rect.top, rect.right, rect.bottom, paint);
                                                 }
-                                                view.draw(canvas);
                                                 view.invalidate();
                                             }
                                         });

@@ -160,22 +160,6 @@ public class CameraActivity extends AppCompatActivity {
 
         return new Rect(Math.round(rectF.left), Math.round(rectF.top), Math.round(rectF.right), Math.round(rectF.bottom));
     }
-
-    /*private Rect calculateTapArea(float oldx, float oldy, float coefficient){
-        float x = oldy;
-        float y = cameraView.getHeight() - oldx;
-
-        int areaSize = Float.valueOf(focusAreaSize * coefficient).intValue();
-        int centerX = (int) (x / cameraView.getWidth() * 2000 - 1000);
-        int centerY = (int) (y / cameraView.getHeight() * 2000 - 1000);
-
-        int left = clamp(centerX - areaSize / 2, -1000, 1000);
-        int right = clamp(left + areaSize, -1000, 1000);
-        int top = clamp(centerY - areaSize / 2, -1000, 1000);
-        int bottom = clamp(top + areaSize, -1000, 1000);
-
-        return new Rect(left, top, right, bottom);
-    }*/
     private int clamp(int x, int min, int max) {
         if (x > max) {
             return max;
@@ -231,14 +215,6 @@ public class CameraActivity extends AppCompatActivity {
         matrix.postScale(viewWidth / 2000f, viewHeight / 2000f);
         matrix.postTranslate(viewWidth / 2f, viewHeight / 2f);
         matrix.invert(this.matrix);
-    }
-    private Bitmap getScreenshot(int x,int y,int width,int height){
-        View view = this.getWindow().getDecorView();
-        view.setDrawingCacheEnabled(true);
-        view.buildDrawingCache();
-        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
-        view.setDrawingCacheEnabled(false);
-        return Bitmap.createBitmap(bitmap, x, y, width, height);
     }
     public void capture(View view){
         if(!checkCameraPermission()){

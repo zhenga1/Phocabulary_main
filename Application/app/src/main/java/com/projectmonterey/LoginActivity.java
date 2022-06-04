@@ -1,5 +1,6 @@
 package com.projectmonterey;
 
+import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -27,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
         uname=findViewById(R.id.editTextTextPersonName2);
 
     }
-    public void check(View view) {
+    public void check(View view) throws IOException {
         if ((uname.getText().toString().isEmpty()) || (password.getText().toString().isEmpty())) {
             Toast.makeText(getApplicationContext(),"Please fill in both username and password",Toast.LENGTH_SHORT).show();
         }
@@ -40,27 +41,34 @@ public class LoginActivity extends AppCompatActivity {
                 String body = gson.toJson(new Registrar(uname.getText().toString(), password.getText().toString()));
 
                 Request post = new Request.Builder()
-                        .url("http://localhost:8000/api/v1/auth/register")
+                        .url("http://192.168.30.152:5000/api/v1/auth/register")
                         .method("POST", RequestBody.create(JSON, body))
                         .header("Content-Type", "application/json")
                         .build();
 
-                OkHttpClient client = new OkHttpClient();
-                client.newCall(post).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) {
-                    }
-                });
+                new RegisterTask().execute(post);
 
                 Intent intent = new Intent(this, MenuPage.class);
                 startActivity(intent);
             }
         }
+    }
 
+    private static class RegisterTask extends AsyncTask<Request, Void, Void> {
+        @Override
+        protected Void doInBackground(Request... requests) {
+            for (Request request : requests) {
+                OkHttpClient client = new OkHttpClient();
+                try (Response _ = client.newCall(request).execute()) {
+                    System.out.println("nice");
+                }
+                catch (Exception error) {
+                    error.printStackTrace();
+                }
+
+            }
+
+            return null;
+        }
     }
 }
