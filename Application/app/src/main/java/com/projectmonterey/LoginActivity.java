@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
                 String body = gson.toJson(new Registrar(uname.getText().toString(), password.getText().toString()));
 
                 Request post = new Request.Builder()
-                        .url("http://192.168.30.152:5000/api/v1/auth/register")
+                        .url("http://192.168.20.229:5000/api/v1/auth/register")
                         .method("POST", RequestBody.create(JSON, body))
                         .header("Content-Type", "application/json")
                         .build();
