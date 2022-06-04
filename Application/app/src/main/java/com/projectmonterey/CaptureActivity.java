@@ -37,7 +37,7 @@ public class CaptureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
-        View view = findViewById(R.id.capturecanvasview);
+        CaptureView view = (CaptureView) findViewById(R.id.capturecanvasview);
         Bitmap bitmap = transposeBitmap(CameraActivity.captureimg);
         BitmapDrawable bitmapDrawable = new BitmapDrawable(CaptureActivity.this.getResources(),bitmap);
         view.setBackground(bitmapDrawable);
@@ -72,7 +72,8 @@ public class CaptureActivity extends AppCompatActivity {
                                                 for(Rect rect : boundingboxes) {
                                                     canvas.drawRect(rect.left, rect.top, rect.right, rect.bottom, paint);
                                                 }
-                                                view.draw(canvas);
+                                                view.setCanvasBitmap(canvasBitmap);
+                                                view.setCanvasPaint(paint);
                                                 view.invalidate();
                                             }
                                         });
