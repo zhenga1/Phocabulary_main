@@ -11,7 +11,10 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.hardware.Camera;
+import android.hardware.Camera.FaceDetectionListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -32,7 +35,16 @@ import java.util.List;
 public class CaptureActivity extends AppCompatActivity {
     private FaceDetectorOptions highAccuracyOpts,realTimeOpts;
     private List<Rect> boundingboxes;
+
     private float rotY,rotZ,smileProb,rightEyeOpenProb;
+    private FaceDetectionListener faceDetectionListener = new FaceDetectionListener() {
+        @Override
+        public void onFaceDetection(Camera.Face[] faces, Camera camera) {
+            Log.d("onFaceDetection", "Number of Faces:" + faces.length);
+            // Update the view now!
+        }
+
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

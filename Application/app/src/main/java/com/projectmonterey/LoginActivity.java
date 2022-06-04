@@ -46,10 +46,11 @@ public class LoginActivity extends AppCompatActivity {
                         .build();
 
                 OkHttpClient client = new OkHttpClient();
-                try (Response response = client.newCall(post).execute()) {
+                try {
+                    Response response = client.newCall(post).execute();
                     System.out.println("nice");
                 }
-                catch (IOException error) {
+                catch (Exception error) {
                     error.printStackTrace();
                 }
 
