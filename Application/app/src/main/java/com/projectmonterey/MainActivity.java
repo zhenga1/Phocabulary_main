@@ -39,4 +39,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
+    public void test(View view) {
+        Intent intent = new Intent(this, ans_choosing.class);
+        startActivity(intent);
+    }
 }

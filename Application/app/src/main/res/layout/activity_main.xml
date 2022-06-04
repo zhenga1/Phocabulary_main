@@ -51,4 +51,13 @@
         android:background="@android:color/transparent"
         app:srcCompat="@drawable/settings_foreground" />
 
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="6dp"
+        tools:layout_editor_absoluteY="677dp"
+        android:onClick="test"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,6 +28,7 @@
             android:textSize="25dp"
             android:background="@color/paleyellow"
             android:layout_margin="5dp"
+            android:onClick="ans_A"
             android:text="Answer1" />
 
         <Button
@@ -38,6 +39,7 @@
             android:textSize="25dp"
             android:background="@color/paleyellow"
             android:layout_margin="5dp"
+            android:onClick="ans_B"
             android:text="Answer2" />
 
         <Button
@@ -48,6 +50,7 @@
             android:textSize="25dp"
             android:background="@color/paleyellow"
             android:layout_margin="5dp"
+            android:onClick="ans_C"
             android:text="Answer3" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
