@@ -1,5 +1,6 @@
 package com.projectmonterey;
 
+import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -45,19 +46,29 @@ public class LoginActivity extends AppCompatActivity {
                         .header("Content-Type", "application/json")
                         .build();
 
+                new RegisterTask().execute(post);
+
+                Intent intent = new Intent(this, MenuPage.class);
+                startActivity(intent);
+            }
+        }
+    }
+
+    private static class RegisterTask extends AsyncTask<Request, Void, Void> {
+        @Override
+        protected Void doInBackground(Request... requests) {
+            for (Request request : requests) {
                 OkHttpClient client = new OkHttpClient();
-                try {
-                    Response response = client.newCall(post).execute();
+                try (Response _ = client.newCall(request).execute()) {
                     System.out.println("nice");
                 }
                 catch (Exception error) {
                     error.printStackTrace();
                 }
 
-                Intent intent = new Intent(this, MenuPage.class);
-                startActivity(intent);
             }
-        }
 
+            return null;
+        }
     }
 }
