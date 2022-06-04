@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.google.gson.Gson;
+import com.projectmonterey.gsonSerializable.APIResponse;
 import com.projectmonterey.gsonSerializable.Registrar;
 import okhttp3.*;
 
@@ -59,13 +60,15 @@ public class LoginActivity extends AppCompatActivity {
         protected Void doInBackground(Request... requests) {
             for (Request request : requests) {
                 OkHttpClient client = new OkHttpClient();
-                try (Response _ = client.newCall(request).execute()) {
-                    System.out.println("nice");
+                try (Response response = client.newCall(request).execute()) {
+                    assert response.body() != null;
+                    String json = response.body().string();
+                    APIResponse apiResponse = new Gson().fromJson(json, APIResponse.class);
+                    System.out.println(apiResponse.code);
                 }
                 catch (Exception error) {
                     error.printStackTrace();
                 }
-
             }
 
             return null;
