@@ -34,7 +34,7 @@ async def api_v1_auth_register():
             hashed_pwd = hashlib.sha256(bytes(body['password'] + salt, 'utf-8')).hexdigest()
 
             await conn.execute(
-                f"INSERT TO users (username, pwd_saltedhash, user_id, salt) VALUES ('{body['username']}', '{hashed_pwd}', '{now}', '{salt}')"
+                f"INSERT TO users (username, pwd_salted_hash, user_id, salt) VALUES ('{body['username']}', '{hashed_pwd}', '{now}', '{salt}') "
             )
     except KeyError:
         return {
