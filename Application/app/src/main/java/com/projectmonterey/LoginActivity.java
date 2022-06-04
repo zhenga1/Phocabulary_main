@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         uname=findViewById(R.id.editTextTextPersonName2);
 
     }
-    public void check(View view) {
+    public void check(View view) throws IOException {
         if ((uname.getText().toString().isEmpty()) || (password.getText().toString().isEmpty())) {
             Toast.makeText(getApplicationContext(),"Please fill in both username and password",Toast.LENGTH_SHORT).show();
         }
@@ -46,16 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                         .build();
 
                 OkHttpClient client = new OkHttpClient();
-                client.newCall(post).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) {
-                    }
-                });
+                client.newCall(post).execute();
 
                 Intent intent = new Intent(this, MenuPage.class);
                 startActivity(intent);
