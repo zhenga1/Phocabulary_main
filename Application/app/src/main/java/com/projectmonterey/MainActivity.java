@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             // user is not logged in, go to signup page
-            intent = new Intent(this, LoginActivity.class);
+            intent = new Intent(this, RegisterActivity.class);
         }
 
         startActivity(intent);

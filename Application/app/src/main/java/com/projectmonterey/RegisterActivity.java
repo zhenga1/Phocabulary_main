@@ -15,7 +15,7 @@ import okhttp3.*;
 
 import java.io.IOException;
 
-public class LoginActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private EditText password,confpassword,uname;
@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loginpage);
+        setContentView(R.layout.activity_registerpage);
         password = findViewById(R.id.editTextTextPassword2);
         confpassword=findViewById(R.id.editTextTextPassword3);
         uname=findViewById(R.id.editTextTextPersonName2);
