@@ -61,8 +61,22 @@ async def api_v1_auth_register():
 
     conn = await asyncpg.connect(user=os.getenv("PGSQL_USERNAME"), password=os.getenv("PGSQL_PASSWORD"))
 
+    try:
+        body = request.json
+
+        async with conn.transaction():
+            cur = conn.cursor(f'SELECT pwd_saltedhash, salt FROM users WHERE username = {body["username"]}')
+
+            print(await cur.fetchrow())
+    except KeyError:
+        return {
+            'code': 422,
+            'status': 'Un-processable Entity',
+            'message': 'invalid request body'
+        }, 422
+
     return {
-               'code': 200,
-               'status': 'OK',
-               'message': 'the action completed successfully'
-           }, 200
+        'code': 200,
+        'status': 'OK',
+        'message': 'the action completed successfully'
+    }, 200

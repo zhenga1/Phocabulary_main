@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.projectmonterey.gsonSerializable.APIResponse;
-import com.projectmonterey.gsonSerializable.Registrar;
+import com.projectmonterey.gsonSerializable.Credentials;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             else{
                 Gson gson = new Gson();
-                String body = gson.toJson(new Registrar(uname.getText().toString(), password.getText().toString()));
+                String body = gson.toJson(new Credentials(uname.getText().toString(), password.getText().toString()));
 
                 Request post = new Request.Builder()
                         .url("http://192.168.20.229:5000/api/v1/auth/register")
