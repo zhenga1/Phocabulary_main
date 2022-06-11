@@ -51,7 +51,7 @@ async def api_v1_auth_register():
 
 
 @api.route('/api/v1/auth/login', methods=['POST'])
-async def api_v1_auth_register():
+async def api_v1_auth_login():
     if request.headers.get("Content-Type") != "application/json":
         return {
             'code': 400,
