@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
+import android.hardware.Camera.FaceDetectionListener;
 
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -19,6 +22,35 @@ import java.io.IOException;
 public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
     public Camera camera;
     SurfaceHolder surfaceHolder;
+    // We need the phone orientation to correctly draw the overlay:
+    private int mOrientation;
+    private int mOrientationCompensation;
+    private OrientationEventListener mOrientationEventListener;
+
+    // Let's keep track of the display rotation and orientation also:
+    private int mDisplayRotation;
+    private int mDisplayOrientation;
+
+    // Holds the Face Detection result:
+    private Camera.Face[] mFaces;
+
+    // The surface view for the camera data
+    private SurfaceView mView;
+
+    // Draw rectangles and other fancy stuff:
+    private FaceOverlayView mFaceView;
+    /**
+     * Sets the faces for the overlay view, so it can be updated
+     * and the face overlays will be drawn again.
+     */
+    /*private FaceDetectionListener faceDetectionListener = new FaceDetectionListener() {
+        @Override
+        public void onFaceDetection(Camera.Face[] faces, Camera camera) {
+            Log.d("onFaceDetection", "Number of Faces:" + faces.length);
+            // Update the view now!
+            mFaceView.setFaces(faces);
+        }
+    };*/
     public CameraView(Context context) {
         super(context);
     }
