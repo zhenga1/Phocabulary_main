@@ -48,3 +48,21 @@ async def api_v1_auth_register():
         'status': 'OK',
         'message': 'the action completed successfully'
     }, 200
+
+
+@api.route('/api/v1/auth/login', methods=['POST'])
+async def api_v1_auth_register():
+    if request.headers.get("Content-Type") != "application/json":
+        return {
+            'code': 400,
+            'status': 'Bad Request',
+            'message': 'expected JSON body'
+        }, 400
+
+    conn = await asyncpg.connect(user=os.getenv("PGSQL_USERNAME"), password=os.getenv("PGSQL_PASSWORD"))
+
+    return {
+               'code': 200,
+               'status': 'OK',
+               'message': 'the action completed successfully'
+           }, 200
