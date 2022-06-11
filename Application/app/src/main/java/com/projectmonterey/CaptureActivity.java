@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,8 +34,14 @@ import com.google.mlkit.vision.face.FaceDetectorOptions;
 import com.google.mlkit.vision.face.FaceLandmark;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
@@ -230,6 +238,17 @@ public class CaptureActivity extends AppCompatActivity {
         }
     }
 
+    private MappedByteBuffer loadModelFile() throws IOException
+    {
+        AssetFileDescriptor assetFileDescriptor = this.getAssets().openFd("mnist.tflite");
+        FileInputStream fileInputStream = new FileInputStream(assetFileDescriptor.getFileDescriptor());
+        FileChannel fileChannel = fileInputStream.getChannel();
+
+        long startOffset = assetFileDescriptor.getStartOffset();
+        long len = assetFileDescriptor.getDeclaredLength();
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY,startOffset,len);
+
+    }
     public Bitmap transposeBitmap(Bitmap b){
         //Rotate bitmap via empty matrix
         Matrix matrix = new Matrix();

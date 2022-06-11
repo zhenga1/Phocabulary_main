@@ -37,6 +37,20 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintVertical_bias="0.501" />
 
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/paleyellow"
+        android:onClick="startLearning"
+        android:text="Start Learning"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.501" />
+
     <ImageButton
         android:id="@+id/imageButton2"
         android:layout_width="76dp"
@@ -51,13 +65,5 @@
         android:background="@android:color/transparent"
         app:srcCompat="@drawable/settings_foreground" />
 
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="6dp"
-        tools:layout_editor_absoluteY="677dp"
-        android:onClick="test"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
