@@ -1,10 +1,10 @@
 package com.projectmonterey.gsonSerializable;
 
-public class Registrar {
+public class Credentials {
     private final String username;
     private final String password;
 
-    public Registrar(String username, String password) {
+    public Credentials(String username, String password) {
         this.username = username;
         this.password = password;
     }
