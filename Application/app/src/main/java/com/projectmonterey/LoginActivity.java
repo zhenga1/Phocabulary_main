@@ -35,8 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         uname = findViewById(R.id.editTextUsername);
         password = findViewById(R.id.editTextPassword);
         registerButton = findViewById(R.id.registerbutton);
-
     }
+
     public void check(View view) throws IOException {
         if ((uname.getText().toString().isEmpty()) || (password.getText().toString().isEmpty())) {
             Toast.makeText(getApplicationContext(),"Please fill in both username and password",Toast.LENGTH_SHORT).show();
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                 String body = gson.toJson(new Credentials(uname.getText().toString(), password.getText().toString()));
 
                 Request post = new Request.Builder()
-                        .url("http://192.168.20.229:5000/api/v1/auth/register")
+                        .url("http://192.168.20.229:5000/api/v1/auth/login")
                         .method("POST", RequestBody.create(JSON, body))
                         .header("Content-Type", "application/json")
                         .build();
@@ -57,6 +57,12 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
         }
     }
+
+    public void registerUser(View view){
+        Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+        startActivity(intent);
+    }
+
     private static class RegisterTask extends AsyncTask<Request, Void, Void> {
         @Override
         protected Void doInBackground(Request... requests) {
@@ -67,8 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                     String json = response.body().string();
                     APIResponse apiResponse = new Gson().fromJson(json, APIResponse.class);
                     System.out.println(apiResponse.code);
-                }
-                catch (Exception error) {
+                } catch (Exception error) {
                     error.printStackTrace();
                 }
             }
@@ -76,9 +81,4 @@ public class LoginActivity extends AppCompatActivity {
             return null;
         }
     }
-    public void registerUser(View view){
-        Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-        startActivity(intent);
-    }
-
 }
