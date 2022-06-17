@@ -21,9 +21,9 @@ public class Welcome_SCreen extends AppCompatActivity {
             @Override
             public void run() {
                 Intent i = new Intent(Welcome_SCreen.this, MainActivity.class);
-                startActivity(i);
+                Welcome_SCreen.this.startActivity(i);
                 // close this activity
-                finish();
+                Welcome_SCreen.this.finish();
             }
         }, 3000);
     }
