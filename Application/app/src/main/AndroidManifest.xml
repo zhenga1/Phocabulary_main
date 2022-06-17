@@ -19,10 +19,12 @@
         android:theme="@style/Theme.ProjectMonterey"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ShopActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false"
-            android:theme="@style/NoActionBar"
-            />
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".ans_choosing"
             android:exported="false"
@@ -65,7 +67,7 @@
         <activity
             android:name=".CameraActivity"
             android:exported="true"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
