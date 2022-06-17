@@ -20,15 +20,9 @@ public class Welcome_SCreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                 Intent i = new Intent(Welcome_SCreen.this, MainActivity.class);
                 Welcome_SCreen.this.startActivity(i);
-=======
-=======
->>>>>>> Stashed changes
                 startActivity(i);
->>>>>>> Stashed changes
                 // close this activity
                 Welcome_SCreen.this.finish();
             }
