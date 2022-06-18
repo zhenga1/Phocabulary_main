@@ -270,7 +270,8 @@ public class CaptureActivity extends AppCompatActivity {
         }else{
             Matrix matrix = new Matrix();
             matrix.postRotate(270);
-
+            //Horizontal flip
+            matrix.preScale(1.0f, -1.0f);
             Bitmap newbitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
             return newbitmap;
         }
