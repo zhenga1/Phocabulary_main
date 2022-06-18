@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -97,7 +98,7 @@ public class CaptureActivity extends AppCompatActivity {
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                faceOverlayView.setFaces(thefaces,boundingboxes);
+                                                faceOverlayView.setFaces(thefaces, boundingboxes);
                                                 Paint paint = new Paint();
                                                 paint.setColor(Color.BLACK);
                                                 paint.setStrokeWidth(5.0f);
@@ -107,6 +108,7 @@ public class CaptureActivity extends AppCompatActivity {
                                                     canvas.drawRect(rect.left, rect.top, rect.right, rect.bottom, paint);
                                                 }
                                                 faceOverlayView.invalidate();
+                                                faceOverlayView.setVisibility(View.VISIBLE);
                                             }
                                         });
 
@@ -190,7 +192,14 @@ public class CaptureActivity extends AppCompatActivity {
     }
     private void addFaceLayout(){
         faceOverlayView = new FaceOverlayView(this);
-        faceOverlayView.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.FILL_PARENT, ConstraintLayout.LayoutParams.FILL_PARENT));
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) findViewById(R.id.capturecanvasview).getLayoutParams();
+        ConstraintLayout.LayoutParams newparams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.FILL_PARENT, ConstraintLayout.LayoutParams.FILL_PARENT);
+        newparams.leftToLeft=params.leftToLeft;
+        newparams.rightToRight=params.rightToRight;
+        newparams.topToBottom=params.topToBottom;
+        newparams.bottomToTop=params.bottomToTop;
+        faceOverlayView.setLayoutParams(newparams);
+        faceOverlayView.setVisibility(View.GONE);
         parent.addView(faceOverlayView);
     }
     public void getFaceInfo(List<Face> faces){
