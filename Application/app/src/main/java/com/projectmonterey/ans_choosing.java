@@ -35,6 +35,7 @@ public class ans_choosing extends AppCompatActivity {
         //save data
         Intent intent = new Intent(this, ans_choosing.class);
         startActivity(intent);
+        ans_choosing.this.finish();
     }
     public void ans_A(View view){
         if (rn[0]!=0){

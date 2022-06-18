@@ -62,6 +62,10 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
         startActivity(intent);
     }
+    public void teemp(View view){
+        Intent intent = new Intent(this, ans_choosing.class);
+        startActivity(intent);
+    }
 
     private static class RegisterTask extends AsyncTask<Request, Void, Void> {
         @Override
@@ -81,4 +85,5 @@ public class LoginActivity extends AppCompatActivity {
             return null;
         }
     }
+
 }
