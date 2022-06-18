@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-public class CustomShopActivityView extends FrameLayout {
+public class CustomShopActivityView extends FrameLayout implements View.OnClickListener{
     Context context;
     View child;
     public CustomShopActivityView(Context context) {
@@ -34,6 +34,7 @@ public class CustomShopActivityView extends FrameLayout {
     public void initView(){
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         child = inflater.inflate(R.layout.shop_item_view,this);
+        child.setOnClickListener(this);
     }
     public void editTitle(String title){
         if(child!=null){
@@ -46,5 +47,10 @@ public class CustomShopActivityView extends FrameLayout {
             TextView text = child.findViewById(R.id.price);
             text.setText(cost);
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

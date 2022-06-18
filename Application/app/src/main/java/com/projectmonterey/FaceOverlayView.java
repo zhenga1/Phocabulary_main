@@ -90,7 +90,7 @@ public class FaceOverlayView extends View {
                 Rect rect = mFaces.get(j).getBoundingBox();
                 RectF fface = new RectF(rect);
                 matrix.mapRect(fface);
-                canvas.drawRect(rect, mPaint);
+                canvas.drawRect(rect.left, rect.top, rect.right, rect.bottom, mPaint);
                 canvas.drawText("Score ", fface.left, fface.top, mTextPaint);
             }
             canvas.restore();
@@ -106,7 +106,7 @@ public class FaceOverlayView extends View {
                 Rect face = mRects.get(j);
                 RectF fface = new RectF(face);
                 matrix.mapRect(fface);
-                canvas.drawRect(fface,mPaint);
+                canvas.drawRect(face.left, face.top, face.right, face.bottom,mPaint);
                 canvas.drawText("Score ", fface.left, fface.top, mTextPaint);
             }
         }
