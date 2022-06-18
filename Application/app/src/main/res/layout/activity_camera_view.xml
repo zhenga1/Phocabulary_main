@@ -48,7 +48,7 @@
         android:onClick="flipCamera"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/switch_camera" />
+        app:srcCompat="@mipmap/flipcamera" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
