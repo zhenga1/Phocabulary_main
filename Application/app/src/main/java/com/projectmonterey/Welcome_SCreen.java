@@ -26,6 +26,6 @@ public class Welcome_SCreen extends AppCompatActivity {
                 // close this activity
                 Welcome_SCreen.this.finish();
             }
-        }, 3000);
+        }, 1500);
     }
 }
