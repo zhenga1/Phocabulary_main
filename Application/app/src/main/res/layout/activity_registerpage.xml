@@ -86,7 +86,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="check"
-            android:text="Register" />
+            android:background="@color/paleyellow"
+            android:layout_margin="10dp"
+            android:text="Register and Login" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,11 +8,12 @@
 
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="418dp"
+        android:layout_height="86dp"
+        android:background="@color/blue"
         android:text="Login Page:"
-        android:background="@color/teal_700"
-
+        android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,6 +48,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
+            android:minHeight="48dp"
             android:text=""
             android:textColor="@color/black" />
 
@@ -64,6 +66,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword"
+            android:minHeight="48dp"
             android:textColor="@color/black" />
 
 
@@ -72,20 +75,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="check"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:background="@color/paleyellow"
             android:text="Login" />
 
         <TextView
             android:id="@+id/textView9"
             android:layout_width="match_parent"
-            android:textColor="@color/black"
             android:layout_height="wrap_content"
-            android:text="Don't have an account?" />
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:text="Do not have an account?" />
 
         <Button
             android:id="@+id/registerbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="registerUser"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:background="@color/paleyellow"
             android:text="Register For a New Account" />
 
     </LinearLayout>
