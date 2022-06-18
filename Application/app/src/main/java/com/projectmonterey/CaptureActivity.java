@@ -80,11 +80,13 @@ public class CaptureActivity extends AppCompatActivity {
                         .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
                         .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
                         .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+                        .setMinFaceSize((float) 0.03)
                         .build();
 
 // Real-time contour detection
         realTimeOpts = new FaceDetectorOptions.Builder()
                         .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
+                        .setMinFaceSize((float) 0.09)
                         .build();
         InputImage image = InputImage.fromBitmap(bitmap, 0);
         FaceDetector detector = FaceDetection.getClient(highAccuracyOpts);
@@ -94,6 +96,10 @@ public class CaptureActivity extends AppCompatActivity {
                                 new OnSuccessListener<List<Face>>() {
                                     @Override
                                     public void onSuccess(List<Face> faces) {
+                                        if(faces.isEmpty())
+                                        {
+                                            Toast.makeText(getApplicationContext(),"no faces were detected in this image",Toast.LENGTH_SHORT);
+                                        }
                                         getFaceInfo(faces);
                                         thefaces = faces;
 
