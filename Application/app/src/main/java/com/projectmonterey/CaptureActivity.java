@@ -51,7 +51,6 @@ public class CaptureActivity extends AppCompatActivity {
     private FaceDetectorOptions highAccuracyOpts,realTimeOpts;
     private List<Rect> boundingboxes;
     private int scrnnumb = 0;
-    private FaceOverlayView faceOverlayView;
     private Bitmap bitmap;
     private ConstraintLayout parent;
     private List<Face> thefaces;
@@ -191,16 +190,12 @@ public class CaptureActivity extends AppCompatActivity {
         }
     }
     private void addFaceLayout(){
-        faceOverlayView = new FaceOverlayView(this);
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) findViewById(R.id.capturecanvasview).getLayoutParams();
         ConstraintLayout.LayoutParams newparams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.FILL_PARENT, ConstraintLayout.LayoutParams.FILL_PARENT);
         newparams.leftToLeft=params.leftToLeft;
         newparams.rightToRight=params.rightToRight;
         newparams.topToBottom=params.topToBottom;
         newparams.bottomToTop=params.bottomToTop;
-        faceOverlayView.setLayoutParams(newparams);
-        faceOverlayView.setVisibility(View.GONE);
-        parent.addView(faceOverlayView);
     }
     public void getFaceInfo(List<Face> faces){
         boundingboxes = new ArrayList<>();

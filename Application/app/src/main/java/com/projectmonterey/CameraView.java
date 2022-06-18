@@ -38,7 +38,6 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceView mView;
 
     // Draw rectangles and other fancy stuff:
-    private FaceOverlayView mFaceView;
     /**
      * Sets the faces for the overlay view, so it can be updated
      * and the face overlays will be drawn again.
