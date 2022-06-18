@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:onClick="gall"
             app:srcCompat="@android:drawable/ic_menu_gallery" />
+
     </FrameLayout>
 
     <ImageButton
@@ -35,6 +36,19 @@
         app:layout_constraintStart_toStartOf="parent"
         android:onClick="capture"
         app:srcCompat="@mipmap/camera_cute" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageButton2"
+        app:layout_constraintVertical_bias="1"
+        android:onClick="flipCamera"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/switch_camera" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

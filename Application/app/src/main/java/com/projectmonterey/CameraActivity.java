@@ -42,6 +42,8 @@ import android.widget.ImageView;
 public class CameraActivity extends AppCompatActivity {
     protected CameraView cameraView;
     public static Bitmap captureimg;
+    public final int FRONT_FACING=0,BACK_FACING=1;
+    public int CAMERA_ORIENTATION=BACK_FACING;
     protected Camera camera;
     public float focusAreaSize = 300;
     public final int CAMERA_CODE=1000,CAPTURE_CODE=2000,STORAGE_CODE=3000;
@@ -68,20 +70,44 @@ public class CameraActivity extends AppCompatActivity {
         //frameLayout.setOnTouchListener(onTouchListener);
 
         if(checkCameraPermission()) {
-            initCamera();
+            initCamera(BACK_FACING);
         }
 
     }
-    private void initCamera(){
-        camera = Camera.open();
-        cameraView = new CameraView(this, camera);
-        cameraView.setOnTouchListener(onTouchListener);
-        cameraView.setId(R.id.mycameraView);
-        frameLayout.addView(cameraView);
-        setupCamera=true;
-        checkPreviewMatrix();
+    private void initCamera(int orientation){
+        if(orientation==BACK_FACING){
+            camera = Camera.open();
+            cameraView = new CameraView(this, camera);
+            cameraView.setOnTouchListener(onTouchListener);
+            cameraView.setId(R.id.mycameraView);
+            frameLayout.addView(cameraView);
+            setupCamera=true;
+            checkPreviewMatrix();
+        }else if(orientation == FRONT_FACING){
+            if(getFrontCameraId()!=-1) {
+                camera = Camera.open(getFrontCameraId());
+                cameraView = new CameraView(this, camera);
+                cameraView.setOnTouchListener(onTouchListener);
+                cameraView.setId(R.id.mycameraView);
+                frameLayout.addView(cameraView);
+                setupCamera=true;
+                checkPreviewMatrix();
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"NO BACK CAMERA", Toast.LENGTH_SHORT);
+                return; //NO BACK CAMERA
+            }
+        }
+        CAMERA_ORIENTATION=orientation;
     }
-
+    public int getFrontCameraId() {
+        Camera.CameraInfo ci = new Camera.CameraInfo();
+        for (int i = 0 ; i < Camera.getNumberOfCameras(); i++) {
+            Camera.getCameraInfo(i, ci);
+            if (ci.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) return i;
+        }
+        return -1; // No front-facing camera found
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -226,6 +252,11 @@ public class CameraActivity extends AppCompatActivity {
         matrix.postTranslate(viewWidth / 2f, viewHeight / 2f);
         matrix.invert(this.matrix);
     }
+    public void flipCamera(View view){
+        if(CAMERA_ORIENTATION==BACK_FACING) CAMERA_ORIENTATION = FRONT_FACING;
+        else CAMERA_ORIENTATION = BACK_FACING;
+        initCamera(CAMERA_ORIENTATION);
+    }
     public void capture(View view){
         if(!checkCameraPermission()){
             Toast.makeText(getApplicationContext(),"The Camera permissions are not granted!",Toast.LENGTH_LONG).show();
@@ -303,7 +334,7 @@ public class CameraActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode==CAMERA_CODE)
         {
-            initCamera();
+            initCamera(CAMERA_ORIENTATION);
         }
     }
 
