@@ -277,7 +277,7 @@ public class CameraActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    camera.setDisplayOrientation(90);
+                    //camera.setDisplayOrientation(90);
                     camera.takePicture(null, null, new Camera.PictureCallback() {
                         @Override
                         public void onPictureTaken(byte[] bytes, Camera camera) {
@@ -296,6 +296,7 @@ public class CameraActivity extends AppCompatActivity {
 
                             captureimg = BitmapFactory.decodeByteArray(bytes , 0, bytes.length);
                             Intent intent = new Intent(CameraActivity.this,CaptureActivity.class);
+                            intent.putExtra("Orientation",CAMERA_ORIENTATION);
                             startActivity(intent);
                         }
                     });

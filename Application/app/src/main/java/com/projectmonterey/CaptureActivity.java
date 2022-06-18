@@ -66,7 +66,9 @@ public class CaptureActivity extends AppCompatActivity {
         parent = findViewById(R.id.parent_constraint_layout);
         addFaceLayout();
         CaptureView view = (CaptureView) findViewById(R.id.capturecanvasview);
-        bitmap = transposeBitmap(CameraActivity.captureimg);
+        int flipped = getIntent().getIntExtra("Orientation",1);
+        bitmap = transposeBitmap(CameraActivity.captureimg,flipped);
+
         BitmapDrawable bitmapDrawable = new BitmapDrawable(CaptureActivity.this.getResources(),bitmap);
         view.setBackground(bitmapDrawable);
         if(savePermissions()) {
@@ -258,11 +260,19 @@ public class CaptureActivity extends AppCompatActivity {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY,startOffset,len);
 
     }
-    public Bitmap transposeBitmap(Bitmap b){
+    public Bitmap transposeBitmap(Bitmap b,int flipped){
         //Rotate bitmap via empty matrix
-        Matrix matrix = new Matrix();
-        matrix.postRotate(90);
-        Bitmap newbitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
-        return newbitmap;
+        if(flipped==1) {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap newbitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
+            return newbitmap;
+        }else{
+            Matrix matrix = new Matrix();
+            matrix.postRotate(270);
+
+            Bitmap newbitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
+            return newbitmap;
+        }
     }
 }
