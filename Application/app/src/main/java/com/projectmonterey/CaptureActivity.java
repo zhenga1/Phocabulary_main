@@ -106,17 +106,9 @@ public class CaptureActivity extends AppCompatActivity {
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                faceOverlayView.setFaces(thefaces, boundingboxes);
-                                                Paint paint = new Paint();
-                                                paint.setColor(Color.BLACK);
-                                                paint.setStrokeWidth(5.0f);
-                                                Bitmap canvasBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-                                                Canvas canvas = new Canvas(canvasBitmap);
-                                                for(Rect rect : boundingboxes) {
-                                                    canvas.drawRect(rect.left, rect.top, rect.right, rect.bottom, paint);
-                                                }
-                                                faceOverlayView.invalidate();
-                                                faceOverlayView.setVisibility(View.VISIBLE);
+                                                int NO_facesDetected = faces.size();
+                                                Bitmap getBitmap = drawDetectionResult(boundingboxes);
+                                                view.setBackground(new BitmapDrawable(CaptureActivity.this.getResources(),getBitmap));
                                             }
                                         });
 
@@ -281,5 +273,54 @@ public class CaptureActivity extends AppCompatActivity {
             Bitmap newbitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
             return newbitmap;
         }
+    }
+    protected Bitmap drawDetectionResult(
+            List<Rect> detectionResults
+    ) {
+        Bitmap outputBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas canvas = new Canvas(outputBitmap);
+        Paint mPaint = new Paint();
+        Paint mTextPaint = new Paint();
+        mPaint.setTextAlign(Paint.Align.LEFT);
+
+        for (Rect box : detectionResults) {
+            // draw bounding box
+            mPaint.setAntiAlias(true);
+            mPaint.setDither(true);
+            mPaint.setAlpha(128);
+            mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            mPaint.setColor(Color.RED);
+            mPaint.setStrokeWidth(8F);
+            mPaint.setStyle(Paint.Style.STROKE);
+            canvas.drawRect(box, mPaint);
+
+            Rect tagSize = new Rect(0, 0, 0, 0);
+
+            mTextPaint.setAntiAlias(true);
+            mTextPaint.setDither(true);
+            mTextPaint.setTextSize(20);
+            mTextPaint.setColor(Color.GREEN);
+            // calculate the right font size
+            mTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            mTextPaint.setColor(Color.YELLOW);
+            mTextPaint.setStrokeWidth(2F);
+            String text = "Face";
+            mTextPaint.setTextSize(96F);
+            mTextPaint.getTextBounds(text, 0, text.length(), tagSize);
+            float fontSize = mTextPaint.getTextSize() * box.width() / tagSize.width();
+
+            // adjust the font size so texts are inside the bounding box
+            if (fontSize < mTextPaint.getTextSize()) {
+                mTextPaint.setTextSize(fontSize);
+            }
+
+            float margin = (box.width() - tagSize.width()) / 2.0F;
+            if (margin < 0F) margin = 0F;
+            canvas.drawText(
+                    text, box.left + margin,
+                    box.top + tagSize.height(), mTextPaint
+            );
+        }
+        return outputBitmap;
     }
 }
