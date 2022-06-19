@@ -6,7 +6,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,26 +17,19 @@ import android.graphics.RectF;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import java.security.Permissions;
 import java.util.ArrayList;
 import java.util.List;
 
 
 //gallery
-import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+
+import com.projectmonterey.facedetection.CaptureActivityFaceDetection;
 
 public class CameraActivity extends AppCompatActivity {
     protected CameraView cameraView;
@@ -295,7 +287,7 @@ public class CameraActivity extends AppCompatActivity {
                             }*/
 
                             captureimg = BitmapFactory.decodeByteArray(bytes , 0, bytes.length);
-                            Intent intent = new Intent(CameraActivity.this,CaptureActivity.class);
+                            Intent intent = new Intent(CameraActivity.this, CaptureActivityFaceDetection.class);
                             intent.putExtra("Orientation",CAMERA_ORIENTATION);
                             startActivity(intent);
                         }

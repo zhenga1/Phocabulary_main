@@ -1,4 +1,4 @@
-package com.projectmonterey;
+package com.projectmonterey.facedetection;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,8 +20,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,21 +31,20 @@ import com.google.mlkit.vision.face.FaceDetection;
 import com.google.mlkit.vision.face.FaceDetector;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
 import com.google.mlkit.vision.face.FaceLandmark;
+import com.projectmonterey.CameraActivity;
+import com.projectmonterey.R;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CaptureActivity extends AppCompatActivity {
+public class CaptureActivityFaceDetection extends AppCompatActivity {
     private FaceDetectorOptions highAccuracyOpts,realTimeOpts;
     private List<Rect> boundingboxes;
     private int scrnnumb = 0;
@@ -68,7 +65,7 @@ public class CaptureActivity extends AppCompatActivity {
         int flipped = getIntent().getIntExtra("Orientation",1);
         bitmap = transposeBitmap(CameraActivity.captureimg,flipped);
 
-        BitmapDrawable bitmapDrawable = new BitmapDrawable(CaptureActivity.this.getResources(),bitmap);
+        BitmapDrawable bitmapDrawable = new BitmapDrawable(CaptureActivityFaceDetection.this.getResources(),bitmap);
         view.setBackground(bitmapDrawable);
         if(savePermissions()) {
             saveCaptureToFile();
@@ -107,7 +104,7 @@ public class CaptureActivity extends AppCompatActivity {
                                             public void run() {
                                                 int NO_facesDetected = faces.size();
                                                 Bitmap getBitmap = drawDetectionResult(boundingboxes);
-                                                view.setBackground(new BitmapDrawable(CaptureActivity.this.getResources(),getBitmap));
+                                                view.setBackground(new BitmapDrawable(CaptureActivityFaceDetection.this.getResources(),getBitmap));
                                             }
                                         });
 
@@ -142,7 +139,7 @@ public class CaptureActivity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(),"The application needs the permission of write storage in order to save the drawn image",Toast.LENGTH_LONG).show();
                 }
-                ActivityCompat.requestPermissions(CaptureActivity.this,
+                ActivityCompat.requestPermissions(CaptureActivityFaceDetection.this,
                         new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
                         WRITE_REQUEST_CODE);
             }
@@ -154,7 +151,7 @@ public class CaptureActivity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(),"The application needs the permission of write storage in order to save the drawn image",Toast.LENGTH_LONG).show();
                 }
-                ActivityCompat.requestPermissions(CaptureActivity.this,
+                ActivityCompat.requestPermissions(CaptureActivityFaceDetection.this,
                         new String[] { Manifest.permission.READ_EXTERNAL_STORAGE },
                         READ_REQUEST_CODE);
             }
