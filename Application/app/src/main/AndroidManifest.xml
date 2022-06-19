@@ -18,13 +18,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectMonterey"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".CaptureActivityYolo"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="face" />
+
         <activity
             android:name=".ShopActivity"
             android:exported="false"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:exported="false"
@@ -60,7 +65,7 @@
         <activity
             android:name=".Welcome_SCreen"
             android:exported="true"
-            android:theme="@style/NoActionBar" >
+            android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -70,16 +75,11 @@
         <activity
             android:name=".CameraActivity"
             android:exported="true"
-            android:theme="@style/NoActionBar" >
-
-        </activity>
-
+            android:theme="@style/NoActionBar"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/NoActionBar">
-
-        </activity>
+            android:theme="@style/NoActionBar"></activity>
     </application>
 
 </manifest>
