@@ -5,115 +5,55 @@ import android.graphics.RectF;
 
 import java.util.List;
 
-/**
- * Generic interface for interacting with different recognition engines.
- */
+//This project's custom object detection classifier
 public interface Classifier {
-    List<Recognition> recognizeImage(Bitmap bitmap);
-
-    void enableStatLogging(final boolean debug);
-
-    String getStatString();
-
-    void close();
-
-    void setNumThreads(int num_threads);
-
-    void setUseNNAPI(boolean isChecked);
-
-    abstract float getObjThresh();
-
-    /**
-     * An immutable result returned by a Classifier describing what was recognized.
-     */
-    public class Recognition {
-        /**
-         * A unique identifier for what has been recognized. Specific to the class, not the instance of
-         * the object.
-         */
+    List<Recognitions> recogniseImage(Bitmap bitmap);
+    void setNumThreads(int numThreads);
+    public class Recognitions{
+        //essentially the class of the object that has been recognised
         private final String id;
 
-        /**
-         * Display name for the recognition.
-         */
+        //the display name of recognised class;
         private final String title;
 
-        /**
-         * A sortable score for how good the recognition is relative to others. Higher should be better.
-         */
+        //confidence of detection result, relative to other detections of objects;
         private final Float confidence;
 
-        /**
-         * Optional location within the source image for the location of the recognized object.
-         */
+        /*Optimal location within source image for the appearance of the object*/
+
         private RectF location;
 
-        private int detectedClass;
-
-        public Recognition(
-                final String id, final String title, final Float confidence, final RectF location) {
-            this.id = id;
+        public Recognitions(final String title, final String id, final Float confidence, final RectF location) {
             this.title = title;
+            this.id = id;
             this.confidence = confidence;
             this.location = location;
         }
+        public String getId(){ return id;}
+        public String getTitle(){ return title;}
+        public Float getConfidence(){return confidence;}
+        public RectF getLocation(){return location;}
 
-        public Recognition(final String id, final String title, final Float confidence, final RectF location, int detectedClass) {
-            this.id = id;
-            this.title = title;
-            this.confidence = confidence;
+        public void setLocation(RectF location){
             this.location = location;
-            this.detectedClass = detectedClass;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public Float getConfidence() {
-            return confidence;
-        }
-
-        public RectF getLocation() {
-            return new RectF(location);
-        }
-
-        public void setLocation(RectF location) {
-            this.location = location;
-        }
-
-        public int getDetectedClass() {
-            return detectedClass;
-        }
-
-        public void setDetectedClass(int detectedClass) {
-            this.detectedClass = detectedClass;
         }
 
         @Override
-        public String toString() {
-            String resultString = "";
-            if (id != null) {
-                resultString += "[" + id + "] ";
+        public String toString(){
+            String string = "";
+            if(id!=null){
+                string = string+="["+id+"]" + "    ";
             }
-
-            if (title != null) {
-                resultString += title + " ";
+            if(title!=null){
+                string = string+="["+title+']' + "    ";
             }
-
-            if (confidence != null) {
-                resultString += String.format("(%.1f%%) ", confidence * 100.0f);
+            if(confidence!= null){
+                string = string+="Confidence Level: "+confidence;
             }
-
-            if (location != null) {
-                resultString += location + " ";
+            if(location != null){
+                string = string += "location: " + location;
             }
-
-            return resultString.trim();
+            return string;
         }
     }
 }

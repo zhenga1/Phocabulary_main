@@ -50,6 +50,17 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_view);
 
+        requestCameraPermissions();
+        frameLayout = findViewById(R.id.frameLayout);
+        onTouchListener = getOnTouchListener();
+        //frameLayout.setOnTouchListener(onTouchListener);
+
+        if(checkCameraPermission()) {
+            initCamera(BACK_FACING);
+        }
+
+    }
+    public void requestCameraPermissions(){
         if(checkCameraHardware(getApplicationContext()) && !checkCameraPermission()){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
@@ -67,14 +78,6 @@ public class CameraActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(CameraActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
             }
         }
-        frameLayout = findViewById(R.id.frameLayout);
-        onTouchListener = getOnTouchListener();
-        //frameLayout.setOnTouchListener(onTouchListener);
-
-        if(checkCameraPermission()) {
-            initCamera(BACK_FACING);
-        }
-
     }
     private void initCamera(int orientation){
         if(orientation==BACK_FACING){
@@ -323,7 +326,7 @@ public class CameraActivity extends AppCompatActivity {
     public boolean checkCameraPermission()
     {
         String permission = Manifest.permission.CAMERA;
-        int res = this.getApplicationContext().checkCallingOrSelfPermission(permission);
+        int res = CameraActivity.this.getApplicationContext().checkCallingOrSelfPermission(permission);
         return (res == PackageManager.PERMISSION_GRANTED);
     }
     public boolean checkWriteFilePermission()

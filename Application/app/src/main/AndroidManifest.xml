@@ -19,7 +19,7 @@
         android:theme="@style/Theme.ProjectMonterey"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".livedetect.yolo.CaptureActivityYolo"
+            android:name=".livedetect.object_detection.CameraActivityYolo"
             android:exported="false" />
 
         <meta-data
