@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
@@ -44,18 +45,27 @@ public class CameraActivity extends AppCompatActivity {
     protected FrameLayout frameLayout;
     private Matrix matrix = new Matrix();
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_view);
 
         if(checkCameraHardware(getApplicationContext()) && !checkCameraPermission()){
-            requestPermissions(new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
+            }
+            else{
+                ActivityCompat.requestPermissions(CameraActivity.this,new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
+            }
         }
         if(!checkWriteFilePermission())
         {
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
+            }
+            else{
+                ActivityCompat.requestPermissions(CameraActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
+            }
         }
         frameLayout = findViewById(R.id.frameLayout);
         onTouchListener = getOnTouchListener();
