@@ -1,8 +1,7 @@
-package com.projectmonterey;
+package com.projectmonterey.capturedetect;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -30,7 +29,8 @@ import java.util.List;
 
 //gallery
 
-import com.projectmonterey.facedetection.CaptureActivityFaceDetection;
+import com.projectmonterey.R;
+import com.projectmonterey.capturedetect.facedetection.CaptureActivityFaceDetection;
 
 public class CameraActivity extends AppCompatActivity {
     protected CameraView cameraView;

@@ -1,8 +1,8 @@
-package com.projectmonterey.yolo;
+package com.projectmonterey.livedetect.yolo;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.projectmonterey.R;
-import com.projectmonterey.facedetection.CaptureView;
+import com.projectmonterey.capturedetect.facedetection.CaptureView;
 
 import android.os.Bundle;
 

@@ -10,7 +10,7 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <application
-        android:name=".ProjectMonterey"
+        android:name=".backend.ProjectMonterey"
         android:allowBackup="true"
         android:icon="@mipmap/camera_cute"
         android:label="@string/app_name"
@@ -19,7 +19,7 @@
         android:theme="@style/Theme.ProjectMonterey"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".CaptureActivityYolo"
+            android:name=".livedetect.yolo.CaptureActivityYolo"
             android:exported="false" />
 
         <meta-data
@@ -27,23 +27,23 @@
             android:value="face" />
 
         <activity
-            android:name=".ShopActivity"
+            android:name=".ui_main.ShopActivity"
             android:exported="false"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".backend.LoginActivity"
             android:exported="false"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".ans_choosing"
+            android:name=".ui_main.ans_choosing"
             android:exported="false"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".facedetection.CaptureActivityFaceDetection"
+            android:name=".capturedetect.facedetection.CaptureActivityFaceDetection"
             android:exported="false"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".MenuPage"
+            android:name=".ui_main.MenuPage"
             android:exported="false"
             android:theme="@style/NoActionBar" />
         <activity
@@ -55,15 +55,15 @@
             android:exported="false"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".backend.RegisterActivity"
             android:exported="true"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui_main.SettingsActivity"
             android:exported="false"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".Welcome_SCreen"
+            android:name=".ui_main.Welcome_SCreen"
             android:exported="true"
             android:theme="@style/NoActionBar">
             <intent-filter>
@@ -73,7 +73,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CameraActivity"
+            android:name=".capturedetect.CameraActivity"
             android:exported="true"
             android:theme="@style/NoActionBar"></activity>
         <activity

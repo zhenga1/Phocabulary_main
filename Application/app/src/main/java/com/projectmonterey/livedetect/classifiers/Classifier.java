@@ -1,4 +1,4 @@
-package com.projectmonterey.classifiers;
+package com.projectmonterey.livedetect.classifiers;
 
 import android.graphics.Bitmap;
 import android.graphics.RectF;

@@ -1,14 +1,15 @@
-package com.projectmonterey;
+package com.projectmonterey.ui_main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
+
+import com.projectmonterey.R;
 
 import java.util.List;
 

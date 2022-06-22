@@ -1,4 +1,4 @@
-package com.projectmonterey;
+package com.projectmonterey.ui_main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.*;
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
+import com.projectmonterey.R;
 
 public class ans_choosing extends AppCompatActivity {
     public Integer[] rn={0,1,2};

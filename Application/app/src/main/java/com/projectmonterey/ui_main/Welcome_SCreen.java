@@ -1,4 +1,4 @@
-package com.projectmonterey;
+package com.projectmonterey.ui_main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 
 
-import java.util.concurrent.TimeUnit;
+import com.projectmonterey.MainActivity;
+import com.projectmonterey.R;
 
 public class Welcome_SCreen extends AppCompatActivity {
 

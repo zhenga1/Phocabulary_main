@@ -1,4 +1,4 @@
-package com.projectmonterey;
+package com.projectmonterey.ui_main;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+
+import com.projectmonterey.R;
 
 public class CustomShopActivityView extends FrameLayout implements View.OnClickListener{
     Context context;

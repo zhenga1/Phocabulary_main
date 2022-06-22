@@ -1,10 +1,13 @@
-package com.projectmonterey;
+package com.projectmonterey.ui_main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.projectmonterey.R;
+import com.projectmonterey.ui_main.CustomShopActivityView;
 
 public class ShopActivity extends AppCompatActivity {
     public LinearLayout linearLayout;

@@ -1,10 +1,13 @@
-package com.projectmonterey;
+package com.projectmonterey.ui_main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.projectmonterey.R;
+import com.projectmonterey.capturedetect.CameraActivity;
 
 public class MenuPage extends AppCompatActivity {
 

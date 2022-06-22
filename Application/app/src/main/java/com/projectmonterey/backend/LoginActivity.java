@@ -1,4 +1,4 @@
-package com.projectmonterey;
+package com.projectmonterey.backend;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,8 +11,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.projectmonterey.gsonSerializable.APIResponse;
-import com.projectmonterey.gsonSerializable.Credentials;
+import com.projectmonterey.ui_main.MenuPage;
+import com.projectmonterey.R;
+import com.projectmonterey.ui_main.ans_choosing;
+import com.projectmonterey.backend.gsonSerializable.APIResponse;
+import com.projectmonterey.backend.gsonSerializable.Credentials;
 
 import java.io.IOException;
 

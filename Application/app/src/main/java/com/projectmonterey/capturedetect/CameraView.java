@@ -1,4 +1,4 @@
-package com.projectmonterey;
+package com.projectmonterey.capturedetect;
 
 import android.content.Context;
 import android.content.res.Configuration;

@@ -1,4 +1,4 @@
-package com.projectmonterey.facedetection;
+package com.projectmonterey.capturedetect.facedetection;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +31,7 @@ import com.google.mlkit.vision.face.FaceDetection;
 import com.google.mlkit.vision.face.FaceDetector;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
 import com.google.mlkit.vision.face.FaceLandmark;
-import com.projectmonterey.CameraActivity;
+import com.projectmonterey.capturedetect.CameraActivity;
 import com.projectmonterey.R;
 
 import java.io.File;

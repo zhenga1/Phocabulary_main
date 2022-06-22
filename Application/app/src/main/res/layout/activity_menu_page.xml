@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/bluee"
-    tools:context=".MenuPage">
+    tools:context=".ui_main.MenuPage">
 
     <TextView
         android:id="@+id/textView4"

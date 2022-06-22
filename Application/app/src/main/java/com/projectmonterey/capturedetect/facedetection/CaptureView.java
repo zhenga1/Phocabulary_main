@@ -1,4 +1,4 @@
-package com.projectmonterey.facedetection;
+package com.projectmonterey.capturedetect.facedetection;
 
 import android.content.Context;
 import android.graphics.Bitmap;
