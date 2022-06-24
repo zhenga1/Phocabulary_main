@@ -260,8 +260,12 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     public void flipCamera(View view){
+        camera.stopPreview();
+        camera.release();
+        camera = null;
         CAMERA_ORIENTATION=CAMERA_ORIENTATION^1;
         initCamera(CAMERA_ORIENTATION);
+
     }
 
     public void capture(View view){
