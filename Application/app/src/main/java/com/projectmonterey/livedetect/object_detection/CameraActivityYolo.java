@@ -431,6 +431,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         frameToCropTransform.invert(cropToFrameTransform);
         //IMPORTANT LINE
         trackingOverlay = findViewById(R.id.viewOverlay);
+        trackingOverlay.setVisibility(View.VISIBLE);
         trackingOverlay.addCallback(
                 canvas -> {
                     trackingOverlay.drawRects(canvas);
@@ -440,7 +441,6 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                 });
 
         trackingOverlay.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
-        trackingOverlay.invalidate();
     }
     @Override
     public synchronized void onResume(){
