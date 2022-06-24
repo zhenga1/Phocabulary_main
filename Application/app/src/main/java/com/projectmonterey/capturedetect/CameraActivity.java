@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -257,11 +258,12 @@ public class CameraActivity extends AppCompatActivity {
         matrix.postTranslate(viewWidth / 2f, viewHeight / 2f);
         matrix.invert(this.matrix);
     }
+
     public void flipCamera(View view){
-        if(CAMERA_ORIENTATION==BACK_FACING) CAMERA_ORIENTATION = FRONT_FACING;
-        else CAMERA_ORIENTATION = BACK_FACING;
+        CAMERA_ORIENTATION=CAMERA_ORIENTATION^1;
         initCamera(CAMERA_ORIENTATION);
     }
+
     public void capture(View view){
         if(!checkCameraPermission()){
             Toast.makeText(getApplicationContext(),"The Camera permissions are not granted!",Toast.LENGTH_LONG).show();
