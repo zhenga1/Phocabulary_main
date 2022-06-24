@@ -2,6 +2,7 @@ package com.projectmonterey.livedetect.object_detection;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -9,43 +10,77 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.SystemClock;
+import android.util.DisplayMetrics;
+import android.util.Size;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.text.BreakIterator;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-
-
-//gallery
-
 import com.projectmonterey.R;
 import com.projectmonterey.capturedetect.CameraView;
+import com.projectmonterey.capturedetect.Utils.ImageUtils;
+import com.projectmonterey.livedetect.classifiers.Classifier;
+import com.projectmonterey.livedetect.classifiers.ObjectDetectionClassifier;
+import com.projectmonterey.livedetect.env.Logger;
 
-public class CameraActivityYolo extends AppCompatActivity {
+import org.w3c.dom.Text;
+
+public class CameraActivityYolo extends AppCompatActivity implements Camera.PreviewCallback {
     protected CameraView cameraView;
     public final int FRONT_FACING=0,BACK_FACING=1;
+    private Logger logger = new Logger(CameraActivityYolo.class);
     public int CAMERA_ORIENTATION=BACK_FACING;
+    private static final String MODEL_FILE = "objectdetect.tflite";
+    private static final String LABELS_FILE = "file:///android_asset/objectlabelmap.txt";
+    //300 by 300 image essentially
+    private static final int MODEL_INPUT_SIZE = 300;
+    public int previewHeight,previewWidth;
     protected Camera camera;
+    private Runnable imageConverter, postInferenceCallback;
     public float focusAreaSize = 300;
     public final int CAMERA_CODE=1000,STORAGE_CODE=3000;
+    private ViewOverlay trackingOverlay;
+    public long timestamp = 0;
+    private Bitmap rgbFrameBitmap, croppedBitmap;
     private boolean setupCamera=false;
     private View.OnTouchListener onTouchListener;
+    private boolean isProcessingFrame = false;
+    private static final boolean MAINTAIN_ASPECT = false;
     protected FrameLayout frameLayout;
     private Matrix matrix = new Matrix();
+    private int[] rgbBytes;
+    private boolean computingImage = false;
+    private Classifier detector;
+    private Matrix cropToFrameTransform,frameToCropTransform;
+    private HandlerThread handlerThread;
+    private Handler handler;
+    public final float MINIMUM_CONFIDENCE = 0.49f;
+    private TextView tv_debug;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected synchronized void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_yolo);
-
+        tv_debug = findViewById(R.id.tv_debug);
         requestCameraPermissions();
         frameLayout = findViewById(R.id.camerayolo);
         onTouchListener = getOnTouchListener();
@@ -78,7 +113,7 @@ public class CameraActivityYolo extends AppCompatActivity {
     private void initCamera(int orientation){
         if(orientation==BACK_FACING){
             camera = Camera.open();
-            cameraView = new CameraView(this, camera);
+            cameraView = new CameraView(this, camera,this);
             cameraView.setOnTouchListener(onTouchListener);
             cameraView.setId(R.id.mycameraView);
             frameLayout.addView(cameraView);
@@ -110,7 +145,7 @@ public class CameraActivityYolo extends AppCompatActivity {
         return -1; // No front-facing camera found
     }
     @Override
-    protected void onDestroy() {
+    protected synchronized void onDestroy() {
         super.onDestroy();
         if(setupCamera){
             checkPreviewMatrix();
@@ -119,7 +154,7 @@ public class CameraActivityYolo extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    protected synchronized void onStart() {
         super.onStart();
         if(setupCamera) {
             checkPreviewMatrix();
@@ -298,6 +333,223 @@ public class CameraActivityYolo extends AppCompatActivity {
             return false;
         }
     }
+
+    @Override
+    public void onPreviewFrame(byte[] bytes, Camera camera) {
+        if(isProcessingFrame){
+            logger.w("Frame is still droppping!");
+            return;
+        }
+
+        try {
+            // Initialize the storage bitmaps once when the resolution is known.
+            if (rgbBytes == null) {
+                Camera.Size previewSize = camera.getParameters().getPreviewSize();
+                previewHeight = previewSize.height;
+                previewWidth = previewSize.width;
+                rgbBytes = new int[previewWidth * previewHeight];
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    onPreviewSizeChosen(new Size(previewSize.width, previewSize.height), getScreenRotation());
+                }
+            }
+
+        } catch (final Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        isProcessingFrame = true;
+
+        imageConverter = new Runnable() {
+            @Override
+            public void run() {
+                ImageUtils.convertYUV420SPToARGB8888(bytes,previewWidth,previewHeight,rgbBytes);
+            }
+        };
+        postInferenceCallback = new Runnable() {
+            @Override
+            public void run() {
+                camera.addCallbackBuffer(bytes);
+                isProcessingFrame = false;
+            }
+        };
+        imgProcessing();
+
+    }
+    protected int getScreenRotation() {
+        switch (getWindowManager().getDefaultDisplay().getRotation()) {
+            case Surface.ROTATION_270:
+                return 270;
+            case Surface.ROTATION_180:
+                return 180;
+            case Surface.ROTATION_90:
+                return 90;
+            default:
+                return 0;
+        }
+    }
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
+    //Choose Preview size, code ran whenever camera is initialised and preview callback is run
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    protected void onPreviewSizeChosen(final Size size, final int rotation){
+        try {
+            detector =
+                    ObjectDetectionClassifier.create(
+                            getAssets(),
+                            MODEL_FILE,
+                            LABELS_FILE,
+                            MODEL_INPUT_SIZE,
+                            true
+                    );
+        } catch (final IOException e) {
+            logger.e("Module could not be initialized");
+            finish();
+        }
+
+        previewWidth = size.getWidth();
+        previewHeight = size.getHeight();
+
+        int sensorOrientation = rotation - getScreenRotation();
+
+        logger.i(String.format("Current camera orientation is", sensorOrientation));
+
+        logger.i(String.format("Camera Preview width: %d, %d", previewWidth, previewHeight));
+        rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Bitmap.Config.ARGB_8888);
+        croppedBitmap = Bitmap.createBitmap(MODEL_INPUT_SIZE, MODEL_INPUT_SIZE, Bitmap.Config.ARGB_8888);
+
+        frameToCropTransform =
+                ImageUtils.getTransformationMatrix(
+                        previewWidth, previewHeight,
+                        MODEL_INPUT_SIZE, MODEL_INPUT_SIZE,
+                        sensorOrientation,
+                        MAINTAIN_ASPECT
+                );
+        cropToFrameTransform = new Matrix();
+        //inverse the matrix (idk what for actually haha)
+        frameToCropTransform.invert(cropToFrameTransform);
+        //IMPORTANT LINE
+        trackingOverlay = findViewById(R.id.viewOverlay);
+        trackingOverlay.addCallback(
+                canvas -> {
+                    trackingOverlay.drawRects(canvas);
+//                    if (BuildConfig.DEBUG) {
+//                        tracker.drawDebug(canvas);
+//                    }
+                });
+
+        trackingOverlay.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
+        trackingOverlay.invalidate();
+    }
+    @Override
+    public synchronized void onResume(){
+        super.onResume();
+        handlerThread = new HandlerThread("inference");
+        handlerThread.start();
+        handler = new Handler(handlerThread.getLooper());
+    }
+    @Override
+    public synchronized void onPause(){
+        handlerThread.quitSafely();
+        try {
+            handlerThread.join();
+            handlerThread = null;
+            handler = null;
+        } catch (final InterruptedException e) {
+            logger.e(e.toString());
+        }
+        super.onPause();
+    }
+    private void readyForNextImg(){
+        if(postInferenceCallback!=null){
+            postInferenceCallback.run();
+        }
+    }
+    private void runInBackground(Runnable runnable){
+        if(handler!=null){
+            handler.post(runnable);
+        }
+    }
+    //AI PROCESSING IMAGE METHOD
+    protected void imgProcessing(){
+        ++timestamp;
+        trackingOverlay.postInvalidate();
+
+        if(computingImage){
+            readyForNextImg();
+            return;
+        }
+        computingImage = true;
+
+        logger.i(String.format("Preparing for image:%d, for processing using ai framework",timestamp));
+
+        computingImage = true;
+        logger.i("Preparing image " + timestamp + " for module in bg thread.");
+
+        rgbFrameBitmap.setPixels(getRgbBytes(), 0, previewWidth, 0, 0, previewWidth, previewHeight);
+
+        readyForNextImg();
+
+        final Canvas canvas = new Canvas(croppedBitmap);
+        canvas.drawBitmap(rgbFrameBitmap, frameToCropTransform, null);
+
+        runInBackground(
+                () -> {
+                    final long startTime = SystemClock.uptimeMillis();
+                    // 輸出結果
+                    // importantthing
+                    final List<Classifier.Recognitions> results = detector.recogniseImage(
+                            hasFrontCamera()? croppedBitmap : flip(croppedBitmap));
+                    long lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
+                    logger.i("Running detection on image " + lastProcessingTimeMs);
+
+                    final List<Classifier.Recognitions> mappedRecognitions = new LinkedList<>();
+
+                    for (final Classifier.Recognitions result : results) {
+                        final RectF location = result.getLocation();
+                        if (location != null && result.getConfidence() >= MINIMUM_CONFIDENCE) {
+
+                            cropToFrameTransform.mapRect(location);
+
+                            result.setLocation(location);
+                            mappedRecognitions.add(result);
+                        }
+                    }
+
+                    trackingOverlay.processResults(mappedRecognitions);
+                    trackingOverlay.postInvalidate();
+                    computingImage = false;
+
+                    runOnUiThread(
+                            () -> {
+                                tv_debug.setText(lastProcessingTimeMs +"ms");
+                            });
+                });
+
+
+    }
+    private boolean hasFrontCamera() {
+        Camera.CameraInfo ci = new Camera.CameraInfo();
+        for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
+            Camera.getCameraInfo(i, ci);
+            if (ci.facing == Camera.CameraInfo.CAMERA_FACING_BACK) return true;
+        }
+
+        return false;
+    }
+    private Bitmap flip(Bitmap d) {
+        Matrix m = new Matrix();
+        m.preScale(-1, 1);
+        Bitmap dst = Bitmap.createBitmap(d, 0, 0, d.getWidth(), d.getHeight(), m, false);
+        dst.setDensity(DisplayMetrics.DENSITY_DEFAULT);
+        return dst;
+    }
+    protected int[] getRgbBytes() {
+        imageConverter.run();
+        return rgbBytes;
+    }
+
     //private int TFRequestCodes = 1;
 
 }

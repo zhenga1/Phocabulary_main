@@ -60,13 +60,13 @@ public class ObjectDetectionClassifier implements Classifier {
 
 
     public static Classifier create(
-            AssetManager assetManager, String labelname,
-            String modelname, final int inputSize,
+            AssetManager assetManager, String modelname,String labelname
+            , final int inputSize,
             final boolean isQuantised) throws IOException{
         //Creating new instance of classifier(an object of this class)
         final ObjectDetectionClassifier model  = new ObjectDetectionClassifier();
         InputStream labelsInput;
-        String actualfile = labelname.split("file:///android_asset")[1];
+        String actualfile = labelname.split("file:///android_asset/")[1];
         labelsInput = assetManager.open(actualfile);
         //New reader of the file
         BufferedReader br = new BufferedReader(new InputStreamReader(labelsInput));
@@ -79,7 +79,7 @@ public class ObjectDetectionClassifier implements Classifier {
         model.inputSize=inputSize;
 
         try {
-            model.tflite = new Interpreter(loadModelFile(assetManager, actualfile));
+            model.tflite = new Interpreter(loadModelFile(assetManager, modelname));
         }catch(Exception e){
             throw new RuntimeException(e);
             //e.printStackTrace();
@@ -115,6 +115,7 @@ public class ObjectDetectionClassifier implements Classifier {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY,startOffset,len);
 
     }
+    //THIS IS THE HARDCORE AI PART OF THE CODE, USING TFLITE FOR DETECTIONS
     @Override
     public List<Recognitions> recogniseImage(Bitmap bitmap) {
         bitmap.getPixels(intvalues, 0,bitmap.getWidth(),0,0,bitmap.getWidth(),bitmap.getHeight());

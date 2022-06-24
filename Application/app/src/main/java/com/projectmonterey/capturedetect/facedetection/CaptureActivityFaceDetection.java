@@ -239,17 +239,6 @@ public class CaptureActivityFaceDetection extends AppCompatActivity {
         }
     }
 
-    private MappedByteBuffer loadModelFile() throws IOException
-    {
-        AssetFileDescriptor assetFileDescriptor = this.getAssets().openFd("mnist.tflite");
-        FileInputStream fileInputStream = new FileInputStream(assetFileDescriptor.getFileDescriptor());
-        FileChannel fileChannel = fileInputStream.getChannel();
-
-        long startOffset = assetFileDescriptor.getStartOffset();
-        long len = assetFileDescriptor.getDeclaredLength();
-        return fileChannel.map(FileChannel.MapMode.READ_ONLY,startOffset,len);
-
-    }
     public Bitmap transposeBitmap(Bitmap b,int flipped){
         //Rotate bitmap via empty matrix
         if(flipped==1) {

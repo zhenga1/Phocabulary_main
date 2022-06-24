@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ProjectMonterey</string>
+    <string name="flip_button_string">Flip Camera</string>
 </resources>

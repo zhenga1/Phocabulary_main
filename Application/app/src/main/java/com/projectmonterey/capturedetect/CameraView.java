@@ -13,15 +13,19 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.projectmonterey.capturedetect.Utils.ImageUtils;
 
 import java.io.IOException;
 
 public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
     public Camera camera;
     SurfaceHolder surfaceHolder;
+    public Camera.PreviewCallback imageCallback;
     // We need the phone orientation to correctly draw the overlay:
     private int mOrientation;
     private int mOrientationCompensation;
@@ -65,11 +69,19 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         surfaceHolder.addCallback(this);
     }
 
+    public CameraView(Context context, Camera camera, Camera.PreviewCallback imageCallback){
+        super(context);
+        this.camera = camera;
+        surfaceHolder=getHolder();
+        surfaceHolder.addCallback(this);
+        this.imageCallback = imageCallback;
+    }
+
     public CameraView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
     @Override
-    public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+    public synchronized void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         Camera.Parameters parameters = camera.getParameters();
 
         if(this.getResources().getConfiguration().orientation!= Configuration.ORIENTATION_LANDSCAPE){
@@ -89,6 +101,12 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
             camera.startPreview();
         }catch(IOException e){
             e.printStackTrace();
+        }
+        if(imageCallback!=null){
+            camera.setPreviewCallbackWithBuffer(imageCallback);
+            Camera.Size camerasize = camera.getParameters().getPreviewSize();
+            //Buffer is added to run callback only when the previous callback is nulled.
+            camera.addCallbackBuffer(new byte[ImageUtils.getYUVByteSize(camerasize.width, camerasize.height)]);
         }
 
     }
