@@ -340,7 +340,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
             logger.w("Frame is still droppping!");
             return;
         }
-
+        isProcessingFrame = true;
         try {
             // Initialize the storage bitmaps once when the resolution is known.
             if (rgbBytes == null) {
@@ -357,7 +357,6 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
             e.printStackTrace();
             return;
         }
-        isProcessingFrame = true;
 
         imageConverter = new Runnable() {
             @Override
@@ -447,6 +446,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         super.onResume();
         handlerThread = new HandlerThread("inference");
         handlerThread.start();
+        computingImage = false;
         handler = new Handler(handlerThread.getLooper());
     }
     @Override
@@ -480,7 +480,6 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
             readyForNextImg();
             return;
         }
-        computingImage = true;
 
         logger.i(String.format("Preparing for image:%d, for processing using ai framework",timestamp));
 

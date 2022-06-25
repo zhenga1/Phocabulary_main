@@ -114,7 +114,7 @@ public class ViewOverlay extends View {
         frameHeight = height;
         this.sensorOrientation = sensorOrientation;
     }
-    public void drawRects(Canvas canvas){
+    public synchronized void drawRects(Canvas canvas){
         final boolean rotated = sensorOrientation % 180 == 90;
         final float multiplier =
                 Math.min(
@@ -152,7 +152,7 @@ public class ViewOverlay extends View {
             //canvas.drawText(labelString, trackedPos.left+cornerSize, trackedPos.top,boxPaint);
         }
     }
-    public void processResults(final List<Classifier.Recognitions> results) {
+    public synchronized void processResults(final List<Classifier.Recognitions> results) {
         final List<Pair<Float, Classifier.Recognitions>> rectsToTrack = new LinkedList<>();
 
         final Matrix rgbFrameToScreen = new Matrix(frameToCanvasMatrix);
