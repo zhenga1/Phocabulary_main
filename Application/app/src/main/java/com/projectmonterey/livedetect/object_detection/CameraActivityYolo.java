@@ -496,7 +496,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         if(CAMERA_ORIENTATION==FRONT_FACING)
         {
             Matrix flipMatrix = new Matrix();
-            flipMatrix.preScale(1.0f, -1.0f);
+            flipMatrix.preScale(-1.0f, 1.0f);
             croppedBitmap = Bitmap.createBitmap(croppedBitmap, 0, 0, croppedBitmap.getWidth(), croppedBitmap.getHeight(), flipMatrix, true);
         }
         runInBackground(
