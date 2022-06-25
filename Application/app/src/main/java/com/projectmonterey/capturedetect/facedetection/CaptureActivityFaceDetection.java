@@ -63,7 +63,12 @@ public class CaptureActivityFaceDetection extends AppCompatActivity {
         addFaceLayout();
         CaptureView view = (CaptureView) findViewById(R.id.capturecanvasview);
         int flipped = getIntent().getIntExtra("Orientation",1);
-        bitmap = transposeBitmap(CameraActivity.captureimg,flipped);
+        int rotation = getIntent().getIntExtra("Rotation",0);
+        if(rotation!=0) {
+            bitmap = transposeBitmap(CameraActivity.captureimg, flipped,rotation);
+        }else{
+            bitmap = transposeBitmap(CameraActivity.captureimg,flipped);
+        }
 
         BitmapDrawable bitmapDrawable = new BitmapDrawable(CaptureActivityFaceDetection.this.getResources(),bitmap);
         view.setBackground(bitmapDrawable);
@@ -254,6 +259,13 @@ public class CaptureActivityFaceDetection extends AppCompatActivity {
             Bitmap newbitmap = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, true);
             return newbitmap;
         }
+    }
+    public Bitmap transposeBitmap(Bitmap b,int flipped,int rotation){
+        Bitmap bitmap = transposeBitmap(b,flipped);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(270);
+        Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        return newbitmap;
     }
     protected Bitmap drawDetectionResult(
             List<Rect> detectionResults
