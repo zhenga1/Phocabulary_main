@@ -9,12 +9,14 @@ import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import com.projectmonterey.capturedetect.Utils.ImageUtils;
 import com.projectmonterey.livedetect.classifiers.Classifier;
+import com.projectmonterey.livedetect.env.CustomBorderText;
 import com.projectmonterey.livedetect.env.Logger;
 
 import java.util.ArrayList;
@@ -22,8 +24,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ViewOverlay extends View {
+    private final float textSizePx;
+    private static final float DIP_OF_TEXT = 20;
     private List<DrawCallback> callbacks = new ArrayList<>();
     private static final float MIN_SIZE = 16.0f;
+    private CustomBorderText customBorderText;
+    private Paint boxPaint = new Paint();
     public List<Classifier.Recognitions> trackedRecs;
     private static final int[] COLORS = {
             Color.BLUE,
@@ -50,20 +56,52 @@ public class ViewOverlay extends View {
 
     public ViewOverlay(Context context) {
         super(context);
+        boxPaint.setColor(Color.RED);
+        boxPaint.setStyle(Paint.Style.STROKE);
+        boxPaint.setStrokeWidth(10.0f);
+        boxPaint.setStrokeCap(Paint.Cap.ROUND);
+        boxPaint.setStrokeJoin(Paint.Join.ROUND);
+        boxPaint.setStrokeMiter(100);
+        textSizePx =
+                TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, DIP_OF_TEXT, context.getResources().getDisplayMetrics());
+        customBorderText = new CustomBorderText(textSizePx);
+
     }
 
     public ViewOverlay(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        boxPaint.setColor(Color.RED);
+        boxPaint.setStyle(Paint.Style.STROKE);
+        boxPaint.setStrokeWidth(10.0f);
+        boxPaint.setStrokeCap(Paint.Cap.ROUND);
+        boxPaint.setStrokeJoin(Paint.Join.ROUND);
+        boxPaint.setStrokeMiter(100);
+        textSizePx =
+                TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, DIP_OF_TEXT, context.getResources().getDisplayMetrics());
+        customBorderText = new CustomBorderText(textSizePx);
     }
 
     public ViewOverlay(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        boxPaint.setColor(Color.RED);
+        boxPaint.setStyle(Paint.Style.STROKE);
+        boxPaint.setStrokeWidth(10.0f);
+        boxPaint.setStrokeCap(Paint.Cap.ROUND);
+        boxPaint.setStrokeJoin(Paint.Join.ROUND);
+        boxPaint.setStrokeMiter(100);
+        textSizePx =
+                TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, DIP_OF_TEXT, context.getResources().getDisplayMetrics());
+        customBorderText = new CustomBorderText(textSizePx);
     }
     public void addCallback(final DrawCallback callback) {
         callbacks.add(callback);
     }
     @Override
     public synchronized void draw(Canvas canvas) {
+        super.draw(canvas);
         for(DrawCallback callback : callbacks){
             callback.drawCanvas(canvas);
         }
@@ -76,7 +114,7 @@ public class ViewOverlay extends View {
         frameHeight = height;
         this.sensorOrientation = sensorOrientation;
     }
-    public void drawRects(Canvas canvas){
+    public synchronized void drawRects(Canvas canvas){
         final boolean rotated = sensorOrientation % 180 == 90;
         final float multiplier =
                 Math.min(
@@ -90,7 +128,6 @@ public class ViewOverlay extends View {
                         (int) (multiplier * (rotated ? frameWidth : frameHeight)),
                         sensorOrientation,
                         false);
-        Paint boxPaint = new Paint();
         if(trackedObjects.isEmpty()){
 
             logger.e("There are no tracked objects");
@@ -111,10 +148,11 @@ public class ViewOverlay extends View {
                             : String.format("%.2f", (100 * recognition.detectConfidence));
             //            borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.top,
             // labelString);
-            canvas.drawText(labelString, trackedPos.left+cornerSize, trackedPos.top,boxPaint);
+            customBorderText.drawText(canvas, trackedPos.left+cornerSize, trackedPos.top,labelString,boxPaint);
+            //canvas.drawText(labelString, trackedPos.left+cornerSize, trackedPos.top,boxPaint);
         }
     }
-    public void processResults(final List<Classifier.Recognitions> results) {
+    public synchronized void processResults(final List<Classifier.Recognitions> results) {
         final List<Pair<Float, Classifier.Recognitions>> rectsToTrack = new LinkedList<>();
 
         final Matrix rgbFrameToScreen = new Matrix(frameToCanvasMatrix);

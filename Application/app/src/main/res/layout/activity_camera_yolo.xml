@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".livedetect.object_detection.CameraActivityYolo">
 
+    <FrameLayout
+        android:id="@+id/camerayolo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+    </FrameLayout>
+
     <ImageButton
         android:id="@+id/imageButton3"
         android:layout_width="84dp"
@@ -18,18 +30,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/flipcamera_foreground" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/camerayolo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-    </FrameLayout>
 
     <TextView
         android:id="@+id/tv_debug"

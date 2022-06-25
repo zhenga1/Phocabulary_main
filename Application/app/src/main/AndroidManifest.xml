@@ -26,7 +26,8 @@
 >>>>>>> Stashed changes
         <activity
             android:name=".livedetect.object_detection.CameraActivityYolo"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/NoActionBar"/>
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"

@@ -122,7 +122,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         }else if(orientation == FRONT_FACING){
             if(getFrontCameraId()!=-1) {
                 camera = Camera.open(getFrontCameraId());
-                cameraView = new CameraView(this, camera);
+                cameraView = new CameraView(this, camera,this);
                 cameraView.setOnTouchListener(onTouchListener);
                 cameraView.setId(R.id.mycameraView);
                 frameLayout.addView(cameraView);
@@ -340,7 +340,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
             logger.w("Frame is still droppping!");
             return;
         }
-
+        isProcessingFrame = true;
         try {
             // Initialize the storage bitmaps once when the resolution is known.
             if (rgbBytes == null) {
@@ -357,7 +357,6 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
             e.printStackTrace();
             return;
         }
-        isProcessingFrame = true;
 
         imageConverter = new Runnable() {
             @Override
@@ -431,6 +430,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         frameToCropTransform.invert(cropToFrameTransform);
         //IMPORTANT LINE
         trackingOverlay = findViewById(R.id.viewOverlay);
+        trackingOverlay.setVisibility(View.VISIBLE);
         trackingOverlay.addCallback(
                 canvas -> {
                     trackingOverlay.drawRects(canvas);
@@ -440,13 +440,13 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                 });
 
         trackingOverlay.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
-        trackingOverlay.invalidate();
     }
     @Override
     public synchronized void onResume(){
         super.onResume();
         handlerThread = new HandlerThread("inference");
         handlerThread.start();
+        computingImage = false;
         handler = new Handler(handlerThread.getLooper());
     }
     @Override
@@ -480,7 +480,6 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
             readyForNextImg();
             return;
         }
-        computingImage = true;
 
         logger.i(String.format("Preparing for image:%d, for processing using ai framework",timestamp));
 
@@ -494,6 +493,12 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         final Canvas canvas = new Canvas(croppedBitmap);
         canvas.drawBitmap(rgbFrameBitmap, frameToCropTransform, null);
 
+        if(CAMERA_ORIENTATION==FRONT_FACING)
+        {
+            Matrix flipMatrix = new Matrix();
+            flipMatrix.preScale(1.0f, -1.0f);
+            croppedBitmap = Bitmap.createBitmap(croppedBitmap, 0, 0, croppedBitmap.getWidth(), croppedBitmap.getHeight(), flipMatrix, true);
+        }
         runInBackground(
                 () -> {
                     final long startTime = SystemClock.uptimeMillis();

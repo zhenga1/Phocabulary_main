@@ -23,7 +23,7 @@ public interface Classifier {
 
         private RectF location;
 
-        public Recognitions(final String title, final String id, final Float confidence, final RectF location) {
+        public Recognitions(final String id , final String title, final Float confidence, final RectF location) {
             this.title = title;
             this.id = id;
             this.confidence = confidence;
