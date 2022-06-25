@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -268,6 +269,19 @@ public class CameraActivity extends AppCompatActivity {
 
     }
 
+    protected int getScreenRotation() {
+        switch (getWindowManager().getDefaultDisplay().getRotation()) {
+            case Surface.ROTATION_270:
+                return 270;
+            case Surface.ROTATION_180:
+                return 180;
+            case Surface.ROTATION_90:
+                return 90;
+            default:
+                return 0;
+        }
+    }
+
     public void capture(View view){
         if(!checkCameraPermission()){
             Toast.makeText(getApplicationContext(),"The Camera permissions are not granted!",Toast.LENGTH_LONG).show();
@@ -308,6 +322,7 @@ public class CameraActivity extends AppCompatActivity {
                             captureimg = BitmapFactory.decodeByteArray(bytes , 0, bytes.length);
                             Intent intent = new Intent(CameraActivity.this, CaptureActivityFaceDetection.class);
                             intent.putExtra("Orientation",CAMERA_ORIENTATION);
+                            intent.putExtra("Rotation",getScreenRotation());
                             startActivity(intent);
                         }
                     });
