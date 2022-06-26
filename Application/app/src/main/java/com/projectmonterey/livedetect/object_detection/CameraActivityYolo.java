@@ -361,7 +361,11 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         imageConverter = new Runnable() {
             @Override
             public void run() {
-                ImageUtils.convertYUV420SPToARGB8888(bytes,previewWidth,previewHeight,rgbBytes);
+                if(getScreenRotation()!=0) {
+                    ImageUtils.convertYUV420SPToARGB8888(bytes, previewWidth, previewHeight, rgbBytes);
+                }else{
+                    ImageUtils.convertYUV420SPToARGB8888(bytes, previewHeight, previewWidth, rgbBytes);
+                }
             }
         };
         postInferenceCallback = new Runnable() {
@@ -415,16 +419,29 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         logger.i(String.format("Current camera orientation is", sensorOrientation));
 
         logger.i(String.format("Camera Preview width: %d, %d", previewWidth, previewHeight));
-        rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Bitmap.Config.ARGB_8888);
-        croppedBitmap = Bitmap.createBitmap(MODEL_INPUT_SIZE, MODEL_INPUT_SIZE, Bitmap.Config.ARGB_8888);
 
-        frameToCropTransform =
-                ImageUtils.getTransformationMatrix(
-                        previewWidth, previewHeight,
-                        MODEL_INPUT_SIZE, MODEL_INPUT_SIZE,
-                        sensorOrientation,
-                        MAINTAIN_ASPECT
-                );
+
+        if(getScreenRotation()!=0){
+            rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Bitmap.Config.ARGB_8888);
+            croppedBitmap = Bitmap.createBitmap(MODEL_INPUT_SIZE, MODEL_INPUT_SIZE, Bitmap.Config.ARGB_8888);
+            frameToCropTransform =
+                    ImageUtils.getTransformationMatrix(
+                            previewWidth, previewHeight,
+                            MODEL_INPUT_SIZE, MODEL_INPUT_SIZE,
+                            sensorOrientation,
+                            MAINTAIN_ASPECT
+                    );
+        }else{
+            rgbFrameBitmap = Bitmap.createBitmap(previewHeight, previewWidth, Bitmap.Config.ARGB_8888);
+            croppedBitmap = Bitmap.createBitmap(MODEL_INPUT_SIZE, MODEL_INPUT_SIZE, Bitmap.Config.ARGB_8888);
+            frameToCropTransform =
+                    ImageUtils.getTransformationMatrix(
+                            previewHeight, previewWidth,
+                            MODEL_INPUT_SIZE, MODEL_INPUT_SIZE,
+                            sensorOrientation,
+                            MAINTAIN_ASPECT
+                    );
+        }
         cropToFrameTransform = new Matrix();
         //inverse the matrix (idk what for actually haha)
         frameToCropTransform.invert(cropToFrameTransform);
@@ -438,8 +455,11 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
 //                        tracker.drawDebug(canvas);
 //                    }
                 });
-
-        trackingOverlay.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
+        if(getScreenRotation()!=0) {
+            trackingOverlay.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
+        }else{
+            trackingOverlay.setFrameConfiguration(previewHeight, previewWidth, sensorOrientation);
+        }
     }
     @Override
     public synchronized void onResume(){
@@ -485,9 +505,11 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
 
         computingImage = true;
         logger.i("Preparing image " + timestamp + " for module in bg thread.");
-
-        rgbFrameBitmap.setPixels(getRgbBytes(), 0, previewWidth, 0, 0, previewWidth, previewHeight);
-
+        if(getScreenRotation()!=0) {
+            rgbFrameBitmap.setPixels(getRgbBytes(), 0, previewWidth, 0, 0, previewWidth, previewHeight);
+        }else{
+            rgbFrameBitmap.setPixels(getRgbBytes(), 0, previewHeight, 0, 0, previewHeight, previewWidth);
+        }
         readyForNextImg();
 
         final Canvas canvas = new Canvas(croppedBitmap);
@@ -495,9 +517,16 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
 
         if(CAMERA_ORIENTATION==FRONT_FACING)
         {
+            //Flip the matrix across the horizontal axis
             Matrix flipMatrix = new Matrix();
-            flipMatrix.preScale(1.0f, -1.0f);
+            flipMatrix.preScale(-1.0f, 1.0f);
             croppedBitmap = Bitmap.createBitmap(croppedBitmap, 0, 0, croppedBitmap.getWidth(), croppedBitmap.getHeight(), flipMatrix, true);
+        }
+        if(getScreenRotation() == 0)
+        {
+            Matrix rotateMatrix = new Matrix();
+            rotateMatrix.postRotate(90);
+            croppedBitmap = Bitmap.createBitmap(croppedBitmap, 0, 0, croppedBitmap.getWidth(), croppedBitmap.getHeight(), rotateMatrix, true);
         }
         runInBackground(
                 () -> {
