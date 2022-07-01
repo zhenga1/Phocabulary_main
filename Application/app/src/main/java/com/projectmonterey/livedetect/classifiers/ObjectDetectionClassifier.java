@@ -32,7 +32,8 @@ import org.tensorflow.lite.Interpreter;
  * - https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md#running-our-model-on-android
  */
 public class ObjectDetectionClassifier implements Classifier {
-    private Vector<String> labels = new Vector<>();
+    public static Vector<String> labels = new Vector<>();
+    public static Vector<String> labeldefitions = new Vector<>();
     private static final float IMG_STD=128.0f, IMG_MEAN=128.0f;
     private Interpreter tflite;
     private int inputSize;
@@ -60,7 +61,7 @@ public class ObjectDetectionClassifier implements Classifier {
 
 
     public static Classifier create(
-            AssetManager assetManager, String modelname,String labelname
+            AssetManager assetManager, String modelname,String labelname, String definitionname
             , final int inputSize,
             final boolean isQuantised) throws IOException{
         //Creating new instance of classifier(an object of this class)
@@ -73,6 +74,15 @@ public class ObjectDetectionClassifier implements Classifier {
         String line;
         while ((line = br.readLine())!=null){
             model.labels.add(line);
+        }
+        br.close();
+
+        String deffile = definitionname.split("file:///android_asset/")[1];
+        labelsInput = assetManager.open(deffile);
+        //New reader of the file
+        br = new BufferedReader(new InputStreamReader(labelsInput));
+        while ((line = br.readLine())!=null){
+            model.labeldefitions.add(line);
         }
         br.close();
 

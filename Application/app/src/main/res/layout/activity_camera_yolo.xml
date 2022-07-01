@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".livedetect.object_detection.CameraActivityYolo">
 
+    <Button
+        android:id="@+id/button12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Learn"
+        android:textColor="@color/orangey"
+        android:textSize="25dp"
+        android:background="@android:color/primary_text_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/camerayolo"
+        android:onClick="switchCameraonTouch"/>
+
     <FrameLayout
         android:id="@+id/camerayolo"
         android:layout_width="match_parent"
@@ -17,6 +32,12 @@
 
 
     </FrameLayout>
+
+    <com.projectmonterey.livedetect.object_detection.ViewOverlay
+        android:id="@+id/viewOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
 
     <ImageButton
         android:id="@+id/imageButton3"
@@ -46,13 +67,4 @@
         app:layout_constraintVertical_bias="0"
         android:text="Time taken" />
 
-    <com.projectmonterey.livedetect.object_detection.ViewOverlay
-        android:id="@+id/viewOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

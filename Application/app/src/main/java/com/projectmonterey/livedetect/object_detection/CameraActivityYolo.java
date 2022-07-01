@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -47,10 +49,12 @@ import org.w3c.dom.Text;
 public class CameraActivityYolo extends AppCompatActivity implements Camera.PreviewCallback {
     protected CameraView cameraView;
     public final int FRONT_FACING=0,BACK_FACING=1;
+    private boolean switchtouchstatus = true;
     private Logger logger = new Logger(CameraActivityYolo.class);
     public int CAMERA_ORIENTATION=BACK_FACING;
     private static final String MODEL_FILE = "objectdetect.tflite";
     private static final String LABELS_FILE = "file:///android_asset/objectlabelmap.txt";
+    private static final String DEFINITION_FILE = "file:///android_asset/objectdefinitions.txt";
     //300 by 300 image essentially
     private static final int MODEL_INPUT_SIZE = 300;
     public int previewHeight,previewWidth;
@@ -62,7 +66,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
     public long timestamp = 0;
     private Bitmap rgbFrameBitmap, croppedBitmap;
     private boolean setupCamera=false;
-    private View.OnTouchListener onTouchListener;
+    private View.OnTouchListener onTouchListener,nullListener;
     private boolean isProcessingFrame = false;
     private static final boolean MAINTAIN_ASPECT = false;
     protected FrameLayout frameLayout;
@@ -84,6 +88,12 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         requestCameraPermissions();
         frameLayout = findViewById(R.id.camerayolo);
         onTouchListener = getOnTouchListener();
+        nullListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return false;
+            }
+        };
         //frameLayout.setOnTouchListener(onTouchListener);
 
         if(checkCameraPermission()) {
@@ -258,6 +268,42 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                             break;
                     }
                 }
+                if(view.getId()==trackingOverlay.getId()){
+                    switch(motionEvent.getAction()){
+                        case MotionEvent.ACTION_DOWN:
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            ViewOverlay.TrackedRecognitions recognition = ViewOverlay.getRect(onTouchX,onTouchY);
+                            if(recognition!=null){
+                                String definition = ObjectDetectionClassifier.labeldefitions.get(ObjectDetectionClassifier.labels.indexOf(recognition.title));
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            AlertDialog alertDialog = new AlertDialog.Builder(CameraActivityYolo.this).create();
+                                            alertDialog.setTitle(recognition.title);
+                                            alertDialog.setMessage(definition);
+                                            alertDialog.setButton("Got it", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            dialogInterface.dismiss();
+                                                        }
+                                                    });
+                                            alertDialog.setButton2("Need Help", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            dialogInterface.dismiss();
+                                                        }
+                                                    });
+                                            alertDialog.show();
+
+                                        }
+                                    });
+                                }
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            break;
+                    }
+                }
                 return true;
             }
         };
@@ -378,6 +424,16 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         imgProcessing();
 
     }
+    public void switchCameraonTouch(View view){
+        if(switchtouchstatus){
+            cameraView.setOnTouchListener(nullListener);
+            trackingOverlay.setOnTouchListener(onTouchListener);
+        }else{
+            cameraView.setOnTouchListener(onTouchListener);
+            trackingOverlay.setOnTouchListener(nullListener);
+        }
+        switchtouchstatus = ! switchtouchstatus;
+    }
     protected int getScreenRotation() {
         switch (getWindowManager().getDefaultDisplay().getRotation()) {
             case Surface.ROTATION_270:
@@ -403,6 +459,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                             getAssets(),
                             MODEL_FILE,
                             LABELS_FILE,
+                            DEFINITION_FILE,
                             MODEL_INPUT_SIZE,
                             true
                     );

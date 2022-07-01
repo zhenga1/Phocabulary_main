@@ -52,7 +52,7 @@ public class ViewOverlay extends View {
     private int frameWidth,frameHeight;
     private int sensorOrientation;
     private Matrix frameToCanvasMatrix;
-    private List<TrackedRecognitions> trackedObjects = new ArrayList<>();
+    protected static List<TrackedRecognitions> trackedObjects = new ArrayList<>();
 
     public ViewOverlay(Context context) {
         super(context);
@@ -152,6 +152,15 @@ public class ViewOverlay extends View {
             //canvas.drawText(labelString, trackedPos.left+cornerSize, trackedPos.top,boxPaint);
         }
     }
+    public static synchronized TrackedRecognitions getRect(float x, float y){
+        for(ViewOverlay.TrackedRecognitions recognitions: ViewOverlay.trackedObjects) {
+            RectF bounding = recognitions.location;
+            if (bounding.contains(x, y)) {
+                return recognitions;
+            }
+        }
+        return null;
+    }
     public synchronized void processResults(final List<Classifier.Recognitions> results) {
         final List<Pair<Float, Classifier.Recognitions>> rectsToTrack = new LinkedList<>();
 
@@ -196,7 +205,7 @@ public class ViewOverlay extends View {
             }
         }
     }
-    private static class TrackedRecognitions{
+    protected static class TrackedRecognitions{
         RectF location;
         float detectConfidence;
         String title;
