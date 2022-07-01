@@ -19,10 +19,18 @@
         android:theme="@style/Theme.ProjectMonterey"
         android:usesCleartextTraffic="true">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+        <activity
+            android:name=".Welcome_SCreen"
+            android:exported="false" />
+>>>>>>> Stashed changes
         <activity
             android:name=".livedetect.object_detection.CameraActivityYolo"
             android:exported="false"
+<<<<<<< Updated upstream
             android:theme="@style/NoActionBar"
             android:screenOrientation="landscape"/>
 
@@ -30,18 +38,29 @@
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="face" />
 
+=======
+            android:theme="@style/NoActionBar" />
+>>>>>>> Stashed changes
         <activity
             android:name=".ui_main.ShopActivity"
-            android:exported="false"
-            android:theme="@style/NoActionBar" />
-        <activity
-            android:name=".backend.LoginActivity"
             android:exported="false"
             android:theme="@style/NoActionBar" />
 =======
         <activity
             android:name=".Welcome_SCreen"
             android:exported="false" />
+>>>>>>> Stashed changes
+        <activity
+            android:name=".backend.LoginActivity"
+            android:exported="false"
+            android:theme="@style/NoActionBar" />
+<<<<<<< Updated upstream
+=======
+        <activity
+            android:name=".Welcome_SCreen"
+            android:exported="false" />
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         <activity
             android:name=".ui_main.ans_choosing"
