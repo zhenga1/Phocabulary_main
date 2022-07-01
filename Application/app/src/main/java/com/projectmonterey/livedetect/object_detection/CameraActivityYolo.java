@@ -54,6 +54,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
     public int CAMERA_ORIENTATION=BACK_FACING;
     private static final String MODEL_FILE = "objectdetect.tflite";
     private static final String LABELS_FILE = "file:///android_asset/objectlabelmap.txt";
+    private static final String DEFINITION_FILE = "file:///android_asset/objectdefinitions.txt";
     //300 by 300 image essentially
     private static final int MODEL_INPUT_SIZE = 300;
     public int previewHeight,previewWidth;
@@ -274,12 +275,13 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                         case MotionEvent.ACTION_UP:
                             ViewOverlay.TrackedRecognitions recognition = ViewOverlay.getRect(onTouchX,onTouchY);
                             if(recognition!=null){
+                                String definition = ObjectDetectionClassifier.labeldefitions.get(ObjectDetectionClassifier.labels.indexOf(recognition.title));
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
                                             AlertDialog alertDialog = new AlertDialog.Builder(CameraActivityYolo.this).create();
                                             alertDialog.setTitle(recognition.title);
-                                            alertDialog.setMessage("Definition of word");
+                                            alertDialog.setMessage(definition);
                                             alertDialog.setButton("Got it", new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -457,6 +459,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                             getAssets(),
                             MODEL_FILE,
                             LABELS_FILE,
+                            DEFINITION_FILE,
                             MODEL_INPUT_SIZE,
                             true
                     );
