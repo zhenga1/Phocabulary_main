@@ -43,6 +43,7 @@ import com.projectmonterey.capturedetect.Utils.ImageUtils;
 import com.projectmonterey.livedetect.classifiers.Classifier;
 import com.projectmonterey.livedetect.classifiers.ObjectDetectionClassifier;
 import com.projectmonterey.livedetect.env.Logger;
+import com.projectmonterey.ui_main.SettingsActivity;
 
 import org.w3c.dom.Text;
 
@@ -288,10 +289,15 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                                                             dialogInterface.dismiss();
                                                         }
                                                     });
-                                            alertDialog.setButton2("Need Help", new DialogInterface.OnClickListener() {
+                                            alertDialog.setButton2("Learn More", new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialogInterface, int i) {
                                                             dialogInterface.dismiss();
+                                                            Intent intent = new Intent(CameraActivityYolo.this, LearnMore.class);
+                                                            String na=recognition.title;
+                                                            intent.putExtra("Name", na);
+                                                            intent.putExtra("DEF", definition);
+                                                            startActivity(intent);
                                                         }
                                                     });
                                             alertDialog.show();
