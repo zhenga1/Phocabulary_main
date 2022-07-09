@@ -17,14 +17,17 @@
         android:roundIcon="@mipmap/camera_cute_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectMonterey"
+        android:screenOrientation="nosensor"
         android:usesCleartextTraffic="true" >
         <activity
             android:name=".livedetect.object_detection.LearnMore"
             android:exported="false"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".livedetect.object_detection.CameraActivityYolo"
             android:exported="false"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar" />
 
         <meta-data
@@ -34,51 +37,61 @@
         <activity
             android:name=".ui_main.ShopActivity"
             android:exported="false"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
         <activity
             android:name=".backend.LoginActivity"
             android:exported="false"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
         <activity
             android:name=".ui_main.ans_choosing"
             android:exported="false"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
         <activity
             android:name=".capturedetect.facedetection.CaptureActivityFaceDetection"
             android:exported="false"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
         <activity
             android:name=".ui_main.MenuPage"
             android:exported="false"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
         <activity
             android:name=".settings.set_General"
             android:exported="false"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
         <activity
             android:name=".settings.AccountSettings"
             android:exported="false"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
         <activity
             android:name=".backend.RegisterActivity"
             android:exported="true"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
         <activity
             android:name=".ui_main.SettingsActivity"
             android:exported="false"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
         <activity
             android:name=".ui_main.WelcomeScreen"
             android:exported="true"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             >
             <intent-filter>
@@ -90,11 +103,13 @@
         <activity
             android:name=".capturedetect.CameraActivity"
             android:exported="true"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
     </application>
