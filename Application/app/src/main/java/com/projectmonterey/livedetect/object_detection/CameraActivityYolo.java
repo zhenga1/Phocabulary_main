@@ -57,6 +57,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
     private static final String MODEL_FILE = "objectdetect.tflite";
     private static final String LABELS_FILE = "file:///android_asset/objectlabelmap.txt";
     private static final String DEFINITION_FILE = "file:///android_asset/objectdefinitions.txt";
+    private static final String PHOTO_LINK = "file:///android_asset/samplephotolink.txt";
     //300 by 300 image essentially
     private static final int MODEL_INPUT_SIZE = 300;
     public int previewHeight,previewWidth;
@@ -309,7 +310,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                                                             String na=recognition.title;
                                                             intent.putExtra("Name", na);
                                                             intent.putExtra("DEF", definition);
-
+                                                            //intent.putExtra("PHO", "string of the link");
                                                             startActivity(intent);
                                                         }
                                                     });
