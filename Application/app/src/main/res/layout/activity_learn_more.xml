@@ -41,7 +41,7 @@
             android:id="@+id/button13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="back"
+            android:onClick="go_back"
             android:text="Back to Live Vocab Camera"
             android:textAlignment="center" />
     </LinearLayout>

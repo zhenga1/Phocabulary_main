@@ -34,8 +34,7 @@ public class LearnMore extends AppCompatActivity {
 
 
     }
-    private void back(View view){
-        Intent intent = new Intent(LearnMore.this, CameraActivityYolo.class);
-        startActivity(intent);
+    public void go_back(View view){
+        finish();
     }
 }
