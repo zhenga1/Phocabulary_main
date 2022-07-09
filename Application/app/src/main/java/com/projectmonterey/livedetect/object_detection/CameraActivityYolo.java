@@ -297,6 +297,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                                                             String na=recognition.title;
                                                             intent.putExtra("Name", na);
                                                             intent.putExtra("DEF", definition);
+
                                                             startActivity(intent);
                                                         }
                                                     });
