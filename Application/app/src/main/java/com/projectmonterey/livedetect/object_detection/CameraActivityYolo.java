@@ -293,13 +293,14 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                                                             dialogInterface.dismiss();
                                                             customGif.setUrlGif("file:///android_asset/horray.gif");
                                                             customGif.configureView();
+                                                            //Destroy Custom Gif after 0.7 seconds
                                                             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                                                                 @Override
                                                                 public void run() {
                                                                     customGif.setVisibility(View.GONE);
                                                                     customGif.destroyDrawingCache();
                                                                 }
-                                                            },500);
+                                                            },700);
                                                         }
                                                     });
                                             alertDialog.setButton2("Learn More", new DialogInterface.OnClickListener() {
