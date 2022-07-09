@@ -29,6 +29,7 @@ import android.util.Size;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -444,6 +445,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         imgProcessing();
 
     }
+    //Must be called by button
     public void switchCameraonTouch(View view){
         if(switchtouchstatus){
             cameraView.setOnTouchListener(nullListener);
