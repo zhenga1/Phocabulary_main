@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.util.Size;
@@ -59,6 +60,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
     //300 by 300 image essentially
     private static final int MODEL_INPUT_SIZE = 300;
     public int previewHeight,previewWidth;
+    public CustomGif customGif;
     protected Camera camera;
     private Runnable imageConverter, postInferenceCallback;
     public float focusAreaSize = 300;
@@ -88,6 +90,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         tv_debug = findViewById(R.id.tv_debug);
         requestCameraPermissions();
         frameLayout = findViewById(R.id.camerayolo);
+        customGif = findViewById(R.id.backgroundimageview);
         onTouchListener = getOnTouchListener();
         nullListener = new View.OnTouchListener() {
             @Override
@@ -287,6 +290,15 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                                                         @Override
                                                         public void onClick(DialogInterface dialogInterface, int i) {
                                                             dialogInterface.dismiss();
+                                                            customGif.setUrlGif("file:///android_asset/horray.gif");
+                                                            customGif.configureView();
+                                                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    customGif.setVisibility(View.GONE);
+                                                                    customGif.destroyDrawingCache();
+                                                                }
+                                                            },500);
                                                         }
                                                     });
                                             alertDialog.setButton2("Learn More", new DialogInterface.OnClickListener() {
