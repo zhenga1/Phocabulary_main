@@ -21,7 +21,7 @@
         <activity
             android:name=".livedetect.object_detection.LearnMore"
             android:exported="false"
-            />
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".livedetect.object_detection.CameraActivityYolo"
             android:exported="false"
