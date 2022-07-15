@@ -357,8 +357,13 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         matrix.invert(this.matrix);
     }
     public void flipCameraYolo(View view){
-        if(CAMERA_ORIENTATION==BACK_FACING) CAMERA_ORIENTATION = FRONT_FACING;
-        else CAMERA_ORIENTATION = BACK_FACING;
+        //if(CAMERA_ORIENTATION==BACK_FACING) CAMERA_ORIENTATION = FRONT_FACING;
+        //else CAMERA_ORIENTATION = BACK_FACING;
+        //initCamera(CAMERA_ORIENTATION);
+        camera.stopPreview();
+        camera.release();
+        camera = null;
+        CAMERA_ORIENTATION=CAMERA_ORIENTATION^1;
         initCamera(CAMERA_ORIENTATION);
     }
     @Override
