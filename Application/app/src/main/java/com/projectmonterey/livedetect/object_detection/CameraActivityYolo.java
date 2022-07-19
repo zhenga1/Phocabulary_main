@@ -53,6 +53,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
     protected CameraView cameraView;
     public final int FRONT_FACING=0,BACK_FACING=1;
     private boolean switchtouchstatus = true;
+    private TextView status;
     private Logger logger = new Logger(CameraActivityYolo.class);
     public int CAMERA_ORIENTATION=BACK_FACING;
     private static final String MODEL_FILE = "objectdetect.tflite";
@@ -90,6 +91,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_yolo);
         tv_debug = findViewById(R.id.tv_debug);
+        status = findViewById(R.id.statusCamera);
         requestCameraPermissions();
         frameLayout = findViewById(R.id.camerayolo);
         customGif = findViewById(R.id.backgroundimageview);
@@ -449,9 +451,11 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
     //Must be called by button
     public void switchCameraonTouch(View view){
         if(switchtouchstatus){
+            status.setText(getResources().getString(R.string.camera_learn));
             cameraView.setOnTouchListener(nullListener);
             trackingOverlay.setOnTouchListener(onTouchListener);
         }else{
+            status.setText(getResources().getString(R.string.camera_focus));
             cameraView.setOnTouchListener(onTouchListener);
             trackingOverlay.setOnTouchListener(nullListener);
         }
