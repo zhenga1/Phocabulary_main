@@ -1,3 +1,9 @@
+const bcrypt = require('bcrypt');
+const Auth = require('../database/Auth');
+const handleErrors = (err) =>{
+    console.log(err.message,err.code);
+
+}
 const page_main = (req,res)=>{
     res.render('index',{title:"Phocabulary", slogan:"Learn with ease!"})
 }
@@ -15,8 +21,39 @@ const page_register = (req,res)=>{
 const page_share = (req,res)=>{
     res.render('share');
 }
-const login_page_post = (req,res)=>{
-        
+const login_page_post = async function(req,res) {
+    const {uname, pass} = req.body;
+
+    try{
+        //create a new user 
+        const loginUser = await Auth.create({username:uname, password:pass});
+        res.status(201).json(loginUser);
+
+    }catch(err){
+        console.log(err);
+        handleErrors(err);
+        res.redirect('./login')
+    }
+}
+const register_page_post = async function(req,res){
+    const {runame, rpass,confrpass} = req.body;
+
+    if(rpass!== confrpass)
+    {
+        res.status(400).json('password fields does not match');
+    }
+    try{
+        //create a new user 
+        const loginUser = await Auth.create({username:runame, password:rpass});
+        res.status(201).json(loginUser);
+
+    }catch(err){
+        console.log(err);
+        handleErrors(err);
+        res.redirect('./login')
+    }
+    console.log(runame,rpass);
+    ///res.send('user register');
 }
 module.exports={
     page_main,
@@ -24,5 +61,25 @@ module.exports={
     page_login,
     page_register,
     page_share,
-    login_page_post
+    login_page_post,
+    register_page_post
 }
+/*
+const secretSalt = 254;
+    var loginUser = new Auth(req.body);
+    loginUser.findOne({ username: req.body.uname }, function(err, user) {
+        if (err) throw err;
+         
+        // test a matching password
+        user.comparePassword(req.body.pass, function(err, isMatch) {
+            if (err) throw err;
+            console.log('Password Matching ? ::', isMatch); // -&gt; Password123: true
+        });
+         
+        // test a failing password
+        user.comparePassword(req.body.pass, function(err, isMatch) {
+            if (err) throw err;
+            console.log('Password Matching ? ::'+ isMatch); // -&gt; 123Password: false
+        });
+    });
+*/
