@@ -11,7 +11,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#DA421D</color>
-    <color name="paleyellow"> #EEED93</color>
+    <color name="paleyellow">#D6BF6A</color>
     <color name="bluee"> #97DEE7</color>
-    <color name="trans"> #80000000 </color>
+    <color name="trans">#00000000</color>
 </resources>
