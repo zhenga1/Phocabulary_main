@@ -1,0 +1,17 @@
+<html>
+    <%- include('./partials/head.ejs') %> 
+    <body>
+        <%-include('./partials/nav.ejs') %> 
+        <div class="login content">
+            <form action="/register" method="POST">
+                <label for="username">Username</label>
+                <input type="text" id="runame" name="runame" required>
+                <label for="password">Password</label>
+                <input type="password" id="rpass" name="rpass" required>
+                <label for="confirm password">Confirm Password</label>
+                <input type="password" id="confrpass" name="confrpass" required>
+                <button>Submit!</button>
+            </form>
+        </div>
+    </body>
+</html>
