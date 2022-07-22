@@ -19,7 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectMonterey"
         android:usesCleartextTraffic="true">
-<<<<<<< Updated upstream
         <activity
             android:name=".ui_main.recyclerrevise.WordsRevise"
             android:exported="false"
@@ -40,15 +39,8 @@
             android:exported="false"
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar" />
-=======
 
 
-        <activity
-            android:name=".livedetect.object_detection.CameraActivityYolo"
-            android:exported="false"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="landscape"/>
->>>>>>> Stashed changes
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"

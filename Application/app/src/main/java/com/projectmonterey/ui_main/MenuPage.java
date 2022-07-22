@@ -30,12 +30,7 @@ public class MenuPage extends AppCompatActivity {
         startActivity(intent);
     }
     public void revision(View view) {
-<<<<<<< HEAD
-        Intent intent = new Intent(this, ans_choosing.class);
-=======
-        //still not ok
         Intent intent = new Intent(this, RevisionLibrary.class);
->>>>>>> a348078993bafca9cfed4861297f45a9bfa85fc8
         startActivity(intent);
     }
 }

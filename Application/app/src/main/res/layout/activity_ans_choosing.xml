@@ -13,7 +13,14 @@
     <WebView
         android:id="@+id/PIC"
         android:layout_width="330dp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+        <ImageButton
+            android:id="@+id/imageButton10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/back" />
+    </WebView>
 
     <LinearLayout
         android:layout_width="match_parent"
