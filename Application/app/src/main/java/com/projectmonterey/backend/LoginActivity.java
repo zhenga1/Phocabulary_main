@@ -40,23 +40,23 @@ public class LoginActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.registerbutton);
     }
 
-    public void check(View view) throws IOException {
+    public void check(View view) {
         if ((uname.getText().toString().isEmpty()) || (password.getText().toString().isEmpty())) {
             Toast.makeText(getApplicationContext(),"Please fill in both username and password",Toast.LENGTH_SHORT).show();
         }
         else {
-                Gson gson = new Gson();
-                String body = gson.toJson(new Credentials(uname.getText().toString(), password.getText().toString()));
+//                Gson gson = new Gson();
+//                String body = gson.toJson(new Credentials(uname.getText().toString(), password.getText().toString()));
+//
+//                Request post = new Request.Builder()
+//                        .url("http://192.168.20.229:5000/api/v1/auth/login")
+//                        .method("POST", RequestBody.create(JSON, body))
+//                        .header("Content-Type", "application/json")
+//                        .build();
+//
+//                new RegisterTask().execute(post);
 
-                Request post = new Request.Builder()
-                        .url("http://192.168.20.229:5000/api/v1/auth/login")
-                        .method("POST", RequestBody.create(JSON, body))
-                        .header("Content-Type", "application/json")
-                        .build();
-
-                new RegisterTask().execute(post);
-
-                Intent intent = new Intent(this, MenuPage.class);
+                Intent intent = new Intent(LoginActivity.this, MenuPage.class);
                 startActivity(intent);
         }
     }

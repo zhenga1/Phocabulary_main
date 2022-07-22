@@ -42,7 +42,7 @@
             />
         <activity
             android:name=".backend.LoginActivity"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
@@ -60,7 +60,7 @@
             />
         <activity
             android:name=".ui_main.MenuPage"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
@@ -112,6 +112,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"
             />
+
     </application>
 
 </manifest>

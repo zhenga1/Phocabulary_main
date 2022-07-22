@@ -38,33 +38,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:weightSum="3"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/imageButton5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_margin="5dp"
             android:onClick="learn"
-            app:srcCompat="@drawable/bk_pic" />
+            android:background="@mipmap/books" />
 
         <ImageButton
             android:id="@+id/imageButton7"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="game"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/ic_game_pic" />
+            android:background="@mipmap/gaming" />
 
         <ImageButton
             android:id="@+id/imageButton6"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/ic_lib_pic_1" />
+            android:background="@mipmap/studying" />
     </LinearLayout>
 
     <LinearLayout
