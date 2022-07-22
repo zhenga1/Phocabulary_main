@@ -13,6 +13,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <ImageButton
+            android:id="@+id/backbutton"
+            android:layout_width="38dp"
+            android:layout_height="77dp"
+            android:layout_weight="1"
+            android:onClick="finishactiv"
+            app:srcCompat="@drawable/back_foreground" />
+
         <TextView
             android:id="@+id/textView17"
             android:layout_width="700dp"
