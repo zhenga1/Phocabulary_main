@@ -45,16 +45,16 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Please fill in both username and password",Toast.LENGTH_SHORT).show();
         }
         else {
-//                Gson gson = new Gson();
-//                String body = gson.toJson(new Credentials(uname.getText().toString(), password.getText().toString()));
-//
-//                Request post = new Request.Builder()
-//                        .url("http://192.168.20.229:5000/api/v1/auth/login")
-//                        .method("POST", RequestBody.create(JSON, body))
-//                        .header("Content-Type", "application/json")
-//                        .build();
-//
-//                new RegisterTask().execute(post);
+                Gson gson = new Gson();
+                String body = gson.toJson(new Credentials(uname.getText().toString(), password.getText().toString()));
+
+                Request post = new Request.Builder()
+                        .url("http://192.168.20.229:5000/api/v1/auth/login")
+                        .method("POST", RequestBody.create(JSON, body))
+                        .header("Content-Type", "application/json")
+                        .build();
+
+                new RegisterTask().execute(post);
 
                 Intent intent = new Intent(LoginActivity.this, MenuPage.class);
                 startActivity(intent);

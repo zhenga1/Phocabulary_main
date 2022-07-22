@@ -90,6 +90,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
     protected synchronized void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_yolo);
+        trackingOverlay = findViewById(R.id.viewOverlay);
         tv_debug = findViewById(R.id.tv_debug);
         status = findViewById(R.id.statusCamera);
         requestCameraPermissions();

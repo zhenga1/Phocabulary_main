@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.projectmonterey" >
+    package="com.projectmonterey">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -13,12 +13,23 @@
         android:name=".backend.ProjectMonterey"
         android:allowBackup="true"
         android:icon="@mipmap/camera_cute"
-        android:label="Photocabulary"
+        android:label="Phocabulary"
         android:roundIcon="@mipmap/camera_cute_round"
+        android:screenOrientation="nosensor"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectMonterey"
-        android:screenOrientation="nosensor"
-        android:usesCleartextTraffic="true" >
+        android:usesCleartextTraffic="true">
+<<<<<<< Updated upstream
+        <activity
+            android:name=".ui_main.recyclerrevise.WordsRevise"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:theme="@style/NoActionBar"/>
+        <activity
+            android:name=".ui_main.RevisionLibrary"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:theme="@style/NoActionBar"/>
         <activity
             android:name=".livedetect.object_detection.LearnMore"
             android:exported="false"
@@ -29,6 +40,15 @@
             android:exported="false"
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar" />
+=======
+
+
+        <activity
+            android:name=".livedetect.object_detection.CameraActivityYolo"
+            android:exported="false"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="landscape"/>
+>>>>>>> Stashed changes
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
@@ -38,62 +58,52 @@
             android:name=".ui_main.ShopActivity"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            />
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".backend.LoginActivity"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            />
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".ui_main.ans_choosing"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            />
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".capturedetect.facedetection.CaptureActivityFaceDetection"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            />
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".ui_main.MenuPage"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            />
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".settings.set_General"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            />
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".settings.AccountSettings"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            />
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".backend.RegisterActivity"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            />
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".ui_main.SettingsActivity"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            />
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".ui_main.WelcomeScreen"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            >
+            android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -104,15 +114,12 @@
             android:name=".capturedetect.CameraActivity"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            />
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            />
-
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>

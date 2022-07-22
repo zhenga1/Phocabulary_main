@@ -3,4 +3,5 @@
     <string name="flip_button_string">Flip Camera</string>
     <string name="camera_focus">This camera is in focus mode.</string>
     <string name="camera_learn">This camera is in learn mode.</string>
+    <string name="back">back.</string>
 </resources>
