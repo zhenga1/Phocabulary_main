@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.projectmonterey.R;
 import com.projectmonterey.livedetect.classifiers.ObjectDetectionClassifier;
 
+import java.util.Collections;
+
 public class ReviseAdapter extends RecyclerView.Adapter<ReviseAdapter.ReviseViewHolder> {
     public int indexOfWord = 0;
     public View parent, child;

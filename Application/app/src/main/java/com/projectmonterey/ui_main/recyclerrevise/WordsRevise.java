@@ -28,20 +28,28 @@ public class WordsRevise extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_words_revise);
 
-
+        labels = new Vector<>();
+        labeldefitions = new Vector<>();
         try {
             String actualfile = "objectlabelmap.txt";
             InputStream labelsInput = getAssets().open(actualfile);
             BufferedReader br = new BufferedReader(new InputStreamReader(labelsInput));
-            String line;
-            while ((line=br.readLine())!=null){
-                WordsRevise.labels.add(line);
+            String line=br.readLine();
+            while ((line)!=null){
+                if(!line.equals("???")) {
+                    WordsRevise.labels.add(line);
+                }
+                line=br.readLine();
             }
             String deffile = "objectdefinitions.txt";
             InputStream definitionInput = getAssets().open(deffile);
             BufferedReader nbr = new BufferedReader(new InputStreamReader(definitionInput));
-            while ((line=nbr.readLine())!=null){
-                WordsRevise.labeldefitions.add(line);
+            line=nbr.readLine();
+            while ((line)!=null){
+                if(!line.equals("???")) {
+                    WordsRevise.labeldefitions.add(line);
+                }
+                line= nbr.readLine();
             }
             br.close();
             nbr.close();
