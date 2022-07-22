@@ -30,7 +30,12 @@ public class MenuPage extends AppCompatActivity {
         startActivity(intent);
     }
     public void revision(View view) {
+<<<<<<< HEAD
+=======
+        //still not ok
+>>>>>>> refs/remotes/origin/main
         Intent intent = new Intent(this, RevisionLibrary.class);
         startActivity(intent);
     }
+    public void finishactiv(View view){finish();}
 }
