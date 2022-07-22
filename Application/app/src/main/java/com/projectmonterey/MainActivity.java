@@ -68,8 +68,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
     }
-    public void debugprupse(View view){
-        Intent intent = new Intent(this, WordsRevise.class);
-        startActivity(intent);
-    }
 }
