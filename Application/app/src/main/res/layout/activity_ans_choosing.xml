@@ -5,96 +5,121 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/orange"
+    android:orientation="vertical"
     tools:context=".ui_main.ans_choosing"
     tools:layout_editor_absoluteX="1dp"
     tools:layout_editor_absoluteY="1dp">
 
 
-    <WebView
-        android:id="@+id/PIC"
-        android:layout_width="330dp"
-        android:layout_height="match_parent" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/imageButton10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="go_back"
             app:srcCompat="@mipmap/back" />
-    </WebView>
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:textSize="30dp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:text="Please choose the correct word"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/ansa"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@color/paleyellow"
-            android:onClick="ans_A"
-            android:text="Answer1"
-            android:textColor="@color/black"
-            android:textSize="25dp" />
+        <WebView
+            android:id="@+id/PIC"
+            android:layout_width="330dp"
+            android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/ansb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@color/paleyellow"
-            android:onClick="ans_B"
-            android:text="Answer2"
-            android:textColor="@color/black"
-            android:textSize="25dp" />
-
-        <Button
-            android:id="@+id/ansc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@color/paleyellow"
-            android:onClick="ans_C"
-            android:text="Answer3"
-            android:textColor="@color/black"
-            android:textSize="25dp" />
-
-        <TextView
-            android:id="@+id/Ans"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="@color/black"
-            android:textSize="25dp" />
+        </WebView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <Button
-                android:id="@+id/SHOWANS"
-                android:layout_width="wrap_content"
+                android:id="@+id/ansa"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_weight="1"
                 android:background="@color/paleyellow"
-                android:onClick="show"
-                android:text="Show Answer"
+                android:onClick="ans_A"
+                android:text="Answer1"
+                android:textColor="@color/black"
                 android:textSize="25dp" />
 
             <Button
-                android:id="@+id/NEXT"
-                android:layout_width="wrap_content"
+                android:id="@+id/ansb"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_weight="1"
                 android:background="@color/paleyellow"
-                android:onClick="nextt"
-                android:text="Next"
+                android:onClick="ans_B"
+                android:text="Answer2"
+                android:textColor="@color/black"
                 android:textSize="25dp" />
+
+            <Button
+                android:id="@+id/ansc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@color/paleyellow"
+                android:onClick="ans_C"
+                android:text="Answer3"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/Ans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/SHOWANS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/paleyellow"
+                    android:onClick="show"
+                    android:text="Show Answer"
+                    android:textSize="25dp" />
+
+                <Button
+                    android:id="@+id/NEXT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/paleyellow"
+                    android:onClick="nextt"
+                    android:text="Next"
+                    android:textSize="25dp" />
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
