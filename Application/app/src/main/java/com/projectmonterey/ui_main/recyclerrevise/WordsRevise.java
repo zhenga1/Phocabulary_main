@@ -58,7 +58,7 @@ public class WordsRevise extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         SnapHelper mSnapHelper = new PagerSnapHelper();
         mSnapHelper.attachToRecyclerView(recyclerView);
-        ReviseAdapter reviseAdapter = new ReviseAdapter();
+        ReviseAdapter reviseAdapter = new ReviseAdapter(getApplicationContext());
         recyclerView.setAdapter(reviseAdapter);
     }
 
