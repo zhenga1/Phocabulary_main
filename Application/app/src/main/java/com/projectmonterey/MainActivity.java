@@ -16,6 +16,7 @@ import com.projectmonterey.livedetect.object_detection.CameraActivityYolo;
 import com.projectmonterey.ui_main.SettingsActivity;
 import com.projectmonterey.ui_main.ShopActivity;
 import com.projectmonterey.ui_main.ans_choosing;
+import com.projectmonterey.ui_main.recyclerrevise.WordsRevise;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth authInstance;
@@ -65,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
         //Intent intent = new Intent(this, CameraActivity.class);
         //startActivity(intent);
         Intent intent = new Intent(this, CameraActivity.class);
+        startActivity(intent);
+    }
+    public void debugprupse(View view){
+        Intent intent = new Intent(this, WordsRevise.class);
         startActivity(intent);
     }
 }
