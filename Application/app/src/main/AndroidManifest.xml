@@ -19,7 +19,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectMonterey"
         android:usesCleartextTraffic="true">
+<<<<<<< HEAD
 
+=======
+>>>>>>> a6f78b13afcab53284e2e66c977ade8350ef3f2c
         <activity
             android:name=".ui_main.recyclerrevise.WordsRevise"
             android:exported="false"
@@ -40,7 +43,10 @@
             android:exported="false"
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar" />
+<<<<<<< HEAD
 
+=======
+>>>>>>> a6f78b13afcab53284e2e66c977ade8350ef3f2c
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="face" />

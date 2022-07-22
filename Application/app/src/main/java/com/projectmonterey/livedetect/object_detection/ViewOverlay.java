@@ -20,6 +20,7 @@ import com.projectmonterey.livedetect.env.CustomBorderText;
 import com.projectmonterey.livedetect.env.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -153,13 +154,24 @@ public class ViewOverlay extends View {
         }
     }
     public static synchronized TrackedRecognitions getRect(float x, float y){
+        List<ViewOverlay.TrackedRecognitions> recognitionsListNew = new ArrayList<>();
+        //List<RectF> rectBoxes = new ArrayList<>();
+        List<Float> floats = new ArrayList<>();
         for(ViewOverlay.TrackedRecognitions recognitions: ViewOverlay.trackedObjects) {
             RectF bounding = recognitions.location;
             if (bounding.contains(x, y)) {
-                return recognitions;
+                //rectBoxes.add(bounding);
+                recognitionsListNew.add(recognitions);
+                floats.add(bounding.width()*bounding.height());
             }
+
         }
-        return null;
+        if(recognitionsListNew.isEmpty() || floats.isEmpty()){
+            return null;
+        }
+        int index = floats.indexOf(Collections.min(floats));
+        return recognitionsListNew.get(index);
+
     }
     public synchronized void processResults(final List<Classifier.Recognitions> results) {
         final List<Pair<Float, Classifier.Recognitions>> rectsToTrack = new LinkedList<>();

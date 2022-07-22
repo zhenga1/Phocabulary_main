@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ans_choosing.class);
         startActivity(intent);
     }
-
+    public void backfinish(View view){finish();}
     private static class RegisterTask extends AsyncTask<Request, Void, Void> {
         @Override
         protected Void doInBackground(Request... requests) {
