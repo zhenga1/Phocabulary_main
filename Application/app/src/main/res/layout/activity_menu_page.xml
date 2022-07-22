@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Menu Page   "
+            android:layout_gravity="center"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="30dp"
@@ -38,6 +39,7 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@color/trans"
+            android:layout_gravity="center"
             android:onClick="setting"
             app:srcCompat="@drawable/settings_foreground" />
 

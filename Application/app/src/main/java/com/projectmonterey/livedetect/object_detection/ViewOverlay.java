@@ -166,6 +166,9 @@ public class ViewOverlay extends View {
             }
 
         }
+        if(recognitionsListNew.isEmpty() || floats.isEmpty()){
+            return null;
+        }
         int index = floats.indexOf(Collections.min(floats));
         return recognitionsListNew.get(index);
 
