@@ -40,4 +40,14 @@
             android:text="Recent words(revision)!" />
     </LinearLayout>
 
+    <ImageButton
+        android:id="@+id/imageButton8"
+        android:layout_width="92dp"
+        android:layout_height="83dp"
+        android:contentDescription="@string/back"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="finishact"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back_foreground" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,4 +21,5 @@ public class RevisionLibrary extends AppCompatActivity {
         Intent intent = new Intent(RevisionLibrary.this, WordsRevise.class);
         startActivity(intent);
     }
+    public void finishact(View view){finish();}
 }

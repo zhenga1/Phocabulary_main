@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.projectmonterey.R;
 
@@ -61,5 +62,6 @@ public class WordsRevise extends AppCompatActivity {
         ReviseAdapter reviseAdapter = new ReviseAdapter(getApplicationContext());
         recyclerView.setAdapter(reviseAdapter);
     }
+    public void finishacttwo(View view){finish();}
 
 }
