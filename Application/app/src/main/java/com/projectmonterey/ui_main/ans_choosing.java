@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.*;
 
 import android.content.Intent;
+import android.webkit.WebView;
 import android.widget.Button;
 
 import android.os.Bundle;
@@ -15,13 +16,16 @@ import com.projectmonterey.R;
 
 public class ans_choosing extends AppCompatActivity {
     public Integer[] rn={0,1,2};
-    private String[] cho={"A","B","C"};
+    private String[] cho={"Bottle","Computer","Tree"};
     //cho[0]=correct ans
     //cho[1]=wrong_ans1
     //cho[2]=wrong_ans2
     TextView ans;
     Button nxt,shw;
-
+    WebView pic;
+    private static final String LABELS_FILE = "file:///android_asset/objectlabelmap.txt";
+    private static final String DEFINITION_FILE = "file:///android_asset/objectdefinitions.txt";
+    String link = "https://media.istockphoto.com/photos/grey-reusable-bottle-on-grey-background-picture-id1299291084?b=1&k=20&m=1299291084&s=612x612&w=0&h=hGhYT35eg9QMS7PymtPdWN9_y9GCeks5Nr7MUjFj3D0=";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +44,10 @@ public class ans_choosing extends AppCompatActivity {
         ans.setVisibility(View.INVISIBLE);
         nxt=findViewById(R.id.NEXT);
         nxt.setVisibility(View.INVISIBLE);
+
         shw=findViewById(R.id.SHOWANS);
+        pic = findViewById(R.id.PIC);
+        pic.loadUrl(link);
     }
     public void nextt(View view){
         Intent intent = new Intent(this, ans_choosing.class);
@@ -59,7 +66,13 @@ public class ans_choosing extends AppCompatActivity {
     public void next(){
         shw.setVisibility(View.INVISIBLE);
         //save data
-        ans.setText(cho[0]);
+        Button button = findViewById(R.id.ansa);
+        button.setEnabled(false);
+        Button buttonb = findViewById(R.id.ansb);
+        buttonb.setEnabled(false);
+        Button buttonc = findViewById(R.id.ansc);
+        buttonc.setEnabled(false);
+        ans.setText("The answer is: "+cho[0]);
         ans.setVisibility(View.VISIBLE);
         nxt.setVisibility(View.VISIBLE);
 
@@ -72,7 +85,7 @@ public class ans_choosing extends AppCompatActivity {
             button.setBackgroundColor(0xffff0000);
         }
         else {
-            button.setBackgroundColor(0xf000fff0);
+            button.setBackgroundColor(0xff00ff00);
             next();
         }
     }
@@ -84,7 +97,7 @@ public class ans_choosing extends AppCompatActivity {
             button.setBackgroundColor(0xffff0000);
         }
         else {
-            button.setBackgroundColor(0xf000fff0);
+            button.setBackgroundColor(0xff00ff00);
             next();
         }
     }
@@ -96,7 +109,7 @@ public class ans_choosing extends AppCompatActivity {
             button.setBackgroundColor(0xffff0000);
         }
         else {
-            button.setBackgroundColor(0xf000fff0);
+            button.setBackgroundColor(0xff00ff00);
             next();
         }
     }

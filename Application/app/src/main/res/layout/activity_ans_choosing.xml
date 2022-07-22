@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bluee"
+    android:background="@color/orange"
     tools:context=".ui_main.ans_choosing"
     tools:layout_editor_absoluteX="1dp"
     tools:layout_editor_absoluteY="1dp">
 
 
-    <ImageView
-        android:id="@+id/IMG"
-        android:layout_width="430dp"
-        android:layout_height="match_parent"
-        app:srcCompat="@mipmap/camera_cute_round" />
+    <WebView
+        android:id="@+id/PIC"
+        android:layout_width="330dp"
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"

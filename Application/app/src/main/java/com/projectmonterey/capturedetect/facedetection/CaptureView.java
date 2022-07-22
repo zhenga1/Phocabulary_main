@@ -36,7 +36,6 @@ public class CaptureView extends View {
             canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         }
     }
-
     public void setCanvasBitmap(Bitmap canvasBitmap) {
         this.canvasBitmap = canvasBitmap;
     }

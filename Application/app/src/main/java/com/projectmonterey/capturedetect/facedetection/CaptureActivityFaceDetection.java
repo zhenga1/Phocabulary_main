@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
@@ -20,6 +21,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,6 +35,7 @@ import com.google.mlkit.vision.face.FaceDetectorOptions;
 import com.google.mlkit.vision.face.FaceLandmark;
 import com.projectmonterey.capturedetect.CameraActivity;
 import com.projectmonterey.R;
+import com.projectmonterey.ui_main.SettingsActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -316,4 +319,6 @@ public class CaptureActivityFaceDetection extends AppCompatActivity {
         }
         return outputBitmap;
     }
+
+    public void GoBack(View view) {finish();}
 }

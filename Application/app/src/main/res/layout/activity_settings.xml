@@ -29,7 +29,7 @@
             app:layout_constraintRight_toRightOf="parent">
         <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="409dp"
+                android:layout_width="match_parent"
                 android:layout_height="729dp"
                 android:id="@+id/settingsLL"
                 app:layout_constraintTop_toTopOf="parent"
