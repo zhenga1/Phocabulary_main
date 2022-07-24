@@ -61,6 +61,7 @@ public class WordsRevise extends AppCompatActivity {
             }
             br.close();
             nbr.close();
+            cr.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
