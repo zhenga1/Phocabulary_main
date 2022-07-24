@@ -57,11 +57,12 @@ public class ReviseAdapter extends RecyclerView.Adapter<ReviseAdapter.ReviseView
     public void onBindViewHolder(@NonNull ReviseViewHolder holder, int position) {
         //int index = holder.getAdapterPosition();
         //TextView object = child.findViewById(R.id.OBJ);
+        String link="";
         TextView object = holder.object;
         TextView definition = holder.definition;
         object.setText(WordsRevise.labels.get(position));
         definition.setText(WordsRevise.labeldefitions.get(position));
-        String link= "https://media.istockphoto.com/photos/grey-reusable-bottle-on-grey-background-picture-id1299291084?b=1&k=20&m=1299291084&s=612x612&w=0&h=hGhYT35eg9QMS7PymtPdWN9_y9GCeks5Nr7MUjFj3D0=";
+        link=WordsRevise.links.get(position);
         WebView webView = holder.image;
         webView.loadUrl(link);
         Log.d(this.toString(),Integer.toString(position));

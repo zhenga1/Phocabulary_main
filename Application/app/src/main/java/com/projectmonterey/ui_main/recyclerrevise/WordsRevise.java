@@ -22,6 +22,7 @@ public class WordsRevise extends AppCompatActivity {
     protected LinearLayoutManager linearLayoutManager;
     public static Vector<String> labels = new Vector<>();
     public static Vector<String> labeldefitions = new Vector<>();
+    public static Vector<String> links = new Vector<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +31,23 @@ public class WordsRevise extends AppCompatActivity {
 
         labels = new Vector<>();
         labeldefitions = new Vector<>();
+        links = new Vector<>();
         try {
             String actualfile = "objectlabelmap.txt";
             InputStream labelsInput = getAssets().open(actualfile);
             BufferedReader br = new BufferedReader(new InputStreamReader(labelsInput));
+            String linkfile = "samplephotolink.txt";
+            InputStream linkinput = getAssets().open(linkfile);
+            BufferedReader cr = new BufferedReader(new InputStreamReader(linkinput));
             String line=br.readLine();
+            String link=cr.readLine();
             while ((line)!=null){
                 if(!line.equals("???")) {
                     WordsRevise.labels.add(line);
+                    WordsRevise.links.add(link);
                 }
                 line=br.readLine();
+                link=cr.readLine();
             }
             String deffile = "objectdefinitions.txt";
             InputStream definitionInput = getAssets().open(deffile);
