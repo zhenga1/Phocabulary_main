@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const Auth = require('../database/Auth');
+const model = Auth.model;
 const handleErrors = (err) =>{
     console.log(err.message,err.code);
 
@@ -25,10 +26,17 @@ const login_page_post = async function(req,res) {
     const {uname, pass} = req.body;
 
     try{
-        //create a new user 
-        const loginUser = await Auth.create({username:uname, password:pass});
-        res.status(201).json(loginUser);
+        const db = model.db();
+        //check for username and password user
+        // const existingUser = db.collections('auths').findOne({username:uname});
+        // if(existingUser && Object.keys(existingUser).length()){
+        //     Auth.hash()
+        // }
+        Auth.find({username:uname}).then((savedUser)=>{
+            
+        })
 
+        res.status(201).json(loginUser);
     }catch(err){
         console.log(err);
         handleErrors(err);
@@ -44,7 +52,7 @@ const register_page_post = async function(req,res){
     }
     try{
         //create a new user 
-        const loginUser = await Auth.create({username:runame, password:rpass});
+        const loginUser = await model.create({username:runame, password:rpass});
         res.status(201).json(loginUser);
 
     }catch(err){

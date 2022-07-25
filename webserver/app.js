@@ -1,4 +1,6 @@
 const express = require('express');
+//like middleware
+const cookieparser = require('cookie-parser');
 const app = express();
 const path = require('path');
 const morgan = require('morgan');
@@ -21,6 +23,7 @@ mongoose.connect(dbURI,{useNewUrlParser:true,useUnifiedTopology:true})
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine','ejs');
 
+app.use(cookieparser());
 app.use(express.static('public'));
 app.use(express.urlencoded({extended:false}));
 app.use(morgan('dev'));
@@ -39,6 +42,23 @@ router.post('/login', async(req,res)=>{
 router.post('/register',async(req,res)=>{
     controller.register_page_post(req,res);
 })
+router.get('/set-cookies',(req,res)=>{
+    //res.setHeader('Set-Cookie','newUser=true');
+    //replace the cookie (with definite value)
+    res.cookie('newUser',false,{secure:true});
+    res.cookie('employee',true, {maxAge:1000*60*60*24,secure:true});
+
+    res.send('you got the cookies!');
+    // the cookie is here for the session, until the browser window closes
+})
+router.get('/read-cookies',(req,res)=>{
+
+    const cookies = req.cookies;
+    console.log(cookies);
+
+    res.json(cookies);
+})
 app.use('/',router);
+
 app.listen(3000);
 

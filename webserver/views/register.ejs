@@ -5,13 +5,13 @@
         <div class="login content">
             <form action="/register" method="POST">
                 <label for="username">Username</label>
-                <input type="text" id="runame" name="runame" required>
+                <input type="text" id="runame" name="runame" required/>
                 <div class="usernameerr"></div>
                 <label for="password">Password</label>
-                <input type="password" id="rpass" name="rpass" required>
+                <input type="password" id="rpass" name="rpass" required/>
                 <div class="passworderr"></div>
                 <label for="confirm password">Confirm Password</label>
-                <input type="password" id="confrpass" name="confrpass" required>
+                <input type="password" id="confrpass" name="confrpass" required/>
                 <div class="passworderr"></div>
                 <button>Submit!</button>
             </form>
@@ -20,6 +20,7 @@
     <script>
         const form = document.querySelector('form');
 
+        //when form is submitted
         form.addEventListener('submit',(e)=>{
 
             //prevent the automatic refresh of the page which usually happenes after post request happenes
@@ -27,9 +28,12 @@
             e.preventDefault();
 
             //get the values
+        
             const username = form.runame.value;
             const password = form.rpass.value;
+            if(username && password ){
             console.log(username,password);
+            }
 
         })
     </script>

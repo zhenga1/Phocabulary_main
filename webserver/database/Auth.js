@@ -17,6 +17,10 @@ const AuthSchema = new Schema({
         minLength:[8,'minimum password length is 8 characters']
     }
 });
+const hashing = async() =>{
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(user.password, salt);
+};
 //next is the next function existing in the middleware
 AuthSchema.pre('save',async function(next){
     var user = this;
@@ -51,4 +55,7 @@ AuthSchema.methods.comparePassword = function(candidatePassword, cb) {
 };
 
 //lowercase is important
-module.exports = mongoose.model('auth', AuthSchema);
+module.exports = {
+    model: mongoose.model('auth', AuthSchema),
+    hash: hashing
+};
