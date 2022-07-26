@@ -75,22 +75,12 @@
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".settings.set_General"
-            android:exported="false"
-            android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar" />
-        <activity
-            android:name=".settings.AccountSettings"
-            android:exported="false"
-            android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar" />
-        <activity
             android:name=".backend.RegisterActivity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".ui_main.SettingsActivity"
+            android:name=".settings.SettingsActivity"
             android:exported="false"
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar" />

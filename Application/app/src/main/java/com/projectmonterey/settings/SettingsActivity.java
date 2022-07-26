@@ -1,17 +1,23 @@
-package com.projectmonterey.ui_main;
+package com.projectmonterey.settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.projectmonterey.R;
+import com.projectmonterey.backend.LoginActivity;
 
 import java.util.List;
+import java.util.Set;
 
 public class SettingsActivity extends AppCompatActivity {
     public List<LinearLayout> linearLayoutList;
@@ -68,4 +74,13 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
     }
+    public void logout(View view){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
+        Toast.makeText(getApplicationContext(),"Successfully signed out", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
+        startActivity(intent);
+        SettingsActivity.this.finish();
+    }
+
 }

@@ -29,13 +29,11 @@ import android.util.Size;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,9 +43,6 @@ import com.projectmonterey.capturedetect.Utils.ImageUtils;
 import com.projectmonterey.livedetect.classifiers.Classifier;
 import com.projectmonterey.livedetect.classifiers.ObjectDetectionClassifier;
 import com.projectmonterey.livedetect.env.Logger;
-import com.projectmonterey.ui_main.SettingsActivity;
-
-import org.w3c.dom.Text;
 
 public class CameraActivityYolo extends AppCompatActivity implements Camera.PreviewCallback {
     protected CameraView cameraView;

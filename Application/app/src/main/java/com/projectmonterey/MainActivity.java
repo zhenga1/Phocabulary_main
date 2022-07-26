@@ -4,23 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.projectmonterey.backend.LoginActivity;
-import com.projectmonterey.backend.UiMainActivity;
 import com.projectmonterey.capturedetect.CameraActivity;
 import com.projectmonterey.livedetect.object_detection.CameraActivityYolo;
 import com.projectmonterey.ui_main.MenuPage;
-import com.projectmonterey.ui_main.RevisionLibrary;
-import com.projectmonterey.ui_main.SettingsActivity;
+import com.projectmonterey.settings.SettingsActivity;
 import com.projectmonterey.ui_main.ShopActivity;
 import com.projectmonterey.ui_main.ans_choosing;
-import com.projectmonterey.ui_main.recyclerrevise.WordsRevise;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth authInstance;
@@ -40,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
             // a user is logged in, go to main page
 //            intent = new Intent(this, UiMainActivity.class);
             intent = new Intent(this, MenuPage.class);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(),"Successful authentication ", Toast.LENGTH_SHORT).show();
+                }
+            });
             startActivity(intent);
         }
         else {
