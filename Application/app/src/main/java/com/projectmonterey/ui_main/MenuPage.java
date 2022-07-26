@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.projectmonterey.MainActivity;
 import com.projectmonterey.R;
 import com.projectmonterey.capturedetect.CameraActivity;
 import com.projectmonterey.livedetect.object_detection.CameraActivityYolo;
@@ -35,5 +37,10 @@ public class MenuPage extends AppCompatActivity {
         Intent intent = new Intent(this, RevisionLibrary.class);
         startActivity(intent);
     }
-    public void finishactiv(View view){finish();}
+    public void finishactiv(View view){
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            startActivity(new Intent(this, MainActivity.class));
+        }
+        MenuPage.this.finish();
+    }
 }
