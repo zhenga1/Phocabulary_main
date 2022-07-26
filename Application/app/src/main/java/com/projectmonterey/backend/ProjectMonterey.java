@@ -6,12 +6,27 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class ProjectMonterey extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+//        FileInputStream refreshToken = null;
+//        try {
+//            refreshToken = new FileInputStream("path/to/refreshToken.json");
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        if(refreshToken!=null) {
+//            FirebaseOptions.Builder builder = new FirebaseOptions.Builder();
+//            FirebaseOptions options = builder.setCredentials(GoogleCredentials.getApplicationDefault())
+//                    .setDatabaseUrl("https://<DATABASE_NAME>.firebaseio.com/")
+//                    .build();
+//        }
         FirebaseApp.initializeApp(this);
         initialiseActivityCallback();
     }

@@ -20,6 +20,8 @@ public class UiMainActivity extends AppCompatActivity {
         // user cannot be null as only logged-in users can reach this page.
         assert user != null;
         TextView username = findViewById(R.id.username);
-        username.setText(user.getDisplayName());
+        String description = "Display Name: " + user.getDisplayName()+'\n';
+        description += ("User Email: " + user.getEmail()+'\n');
+        username.setText(description);
     }
 }

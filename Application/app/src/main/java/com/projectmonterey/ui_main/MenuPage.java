@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.projectmonterey.R;
 import com.projectmonterey.capturedetect.CameraActivity;
@@ -16,6 +17,7 @@ public class MenuPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_page);
+        Toast.makeText(getApplicationContext(),"Successful authentication ", Toast.LENGTH_SHORT).show();
     }
     public void game(View view) {
         Intent intent = new Intent(this, CameraActivity.class);
