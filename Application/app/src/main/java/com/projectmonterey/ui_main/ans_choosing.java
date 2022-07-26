@@ -49,6 +49,7 @@ public class ans_choosing extends AppCompatActivity {
         pic = findViewById(R.id.PIC);
         pic.loadUrl(link);
     }
+    public void go_back(View view){ans_choosing.this.finish();}
     public void nextt(View view){
         Intent intent = new Intent(this, ans_choosing.class);
         startActivity(intent);
