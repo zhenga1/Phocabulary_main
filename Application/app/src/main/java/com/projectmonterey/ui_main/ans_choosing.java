@@ -1,7 +1,13 @@
 package com.projectmonterey.ui_main;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.IntStream;
 
 import android.content.Intent;
 import android.webkit.WebView;
@@ -16,20 +22,26 @@ import com.projectmonterey.R;
 
 public class ans_choosing extends AppCompatActivity {
     public Integer[] rn={0,1,2};
-    private String[] cho={"Bottle","Computer","Tree"};
+    private List<Integer> indexArray;
+    private String[] cho = new String[3];
     //cho[0]=correct ans
     //cho[1]=wrong_ans1
     //cho[2]=wrong_ans2
     TextView ans;
     Button nxt,shw;
     WebView pic;
-    private static final String LABELS_FILE = "file:///android_asset/objectlabelmap.txt";
+    public Vector<String> labels = new Vector<>();
+    public Vector<String> uriImages = new Vector<>();
     private static final String DEFINITION_FILE = "file:///android_asset/objectdefinitions.txt";
-    String link = "https://media.istockphoto.com/photos/grey-reusable-bottle-on-grey-background-picture-id1299291084?b=1&k=20&m=1299291084&s=612x612&w=0&h=hGhYT35eg9QMS7PymtPdWN9_y9GCeks5Nr7MUjFj3D0=";
+    String link = "https://www.supereasy.com/wp-content/uploads/2018/08/img_5b7fd932ba802.png";
+    private boolean first=true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ans_choosing);
+        readLabelFile();
+        initialiseChoice();
         List<Integer> list = Arrays.asList(rn);
         Collections.shuffle(list);
         list.toArray(rn);
@@ -48,6 +60,48 @@ public class ans_choosing extends AppCompatActivity {
         shw=findViewById(R.id.SHOWANS);
         pic = findViewById(R.id.PIC);
         pic.loadUrl(link);
+    }
+
+    private void initialiseChoice() {
+        if(first) {
+            indexArray = new ArrayList<>();
+            for (int i = 0; i < labels.size(); i++) {
+                indexArray.add(i);
+            }
+            first=false;
+        }
+        Collections.shuffle(indexArray);
+        cho[0] = labels.get(indexArray.get(0));
+        cho[1] = labels.get(indexArray.get(1));
+        cho[2] = labels.get(indexArray.get(2));
+        link = uriImages.get(indexArray.get(0));
+    }
+
+    private void readLabelFile(){
+        String labelfile = "objectlabelmap.txt";
+        String linkFile = "samplephotolink.txt";
+        try{
+            InputStream labelsInput = getAssets().open(labelfile);
+            InputStream linkInput = getAssets().open(linkFile);
+            BufferedReader br = new BufferedReader(new InputStreamReader(labelsInput));
+            BufferedReader nbr = new BufferedReader(new InputStreamReader(linkInput));
+            String line,link;
+            line=br.readLine();
+            link=nbr.readLine();
+            while(line!=null){
+                if(!line.equals( "???" )){
+                    labels.add(line);
+                    uriImages.add(link);
+                }
+                line=br.readLine();
+                link=nbr.readLine();
+            }
+            br.close();
+            nbr.close();
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
     public void go_back(View view){ans_choosing.this.finish();}
     public void nextt(View view){
