@@ -79,4 +79,9 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(this, RevisionLibrary.class);
 //        startActivity(intent);
     }
+
+    public void pass(View view) {
+        Intent intent = new Intent(this, MenuPage.class);
+        startActivity(intent);
+    }
 }

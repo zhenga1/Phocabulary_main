@@ -64,7 +64,7 @@ public class LearnMore extends AppCompatActivity {
                     line=br.readLine();
                     tmplink=cr.readLine();
                 }
-                
+
             }
             br.close();
             cr.close();
