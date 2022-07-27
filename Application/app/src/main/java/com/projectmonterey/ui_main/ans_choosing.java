@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.stream.IntStream;
 
-import android.content.Intent;
+import android.graphics.Color;
 import android.webkit.WebView;
 import android.widget.Button;
 
@@ -41,6 +40,10 @@ public class ans_choosing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ans_choosing);
         readLabelFile();
+        init();
+    }
+    private void init(){
+        initButtonViews();
         initialiseChoice();
         List<Integer> list = Arrays.asList(rn);
         Collections.shuffle(list);
@@ -58,8 +61,25 @@ public class ans_choosing extends AppCompatActivity {
         nxt.setVisibility(View.INVISIBLE);
 
         shw=findViewById(R.id.SHOWANS);
+        shw.setVisibility(View.VISIBLE);
         pic = findViewById(R.id.PIC);
         pic.loadUrl(link);
+    }
+
+    private void initButtonViews() {
+        Button buttona = findViewById(R.id.ansa);
+        Button buttonb = findViewById(R.id.ansb);
+        Button buttonc = findViewById(R.id.ansc);
+        //set background color
+        buttona.setBackgroundColor(getResources().getColor(R.color.paleyellow));
+        buttonb.setBackgroundColor(getResources().getColor(R.color.paleyellow));
+        buttonc.setBackgroundColor(getResources().getColor(R.color.paleyellow));
+        //set enabled
+        buttona.setEnabled(true);
+        buttonb.setEnabled(true);
+        buttonc.setEnabled(true);
+        //Set view visible
+
     }
 
     private void initialiseChoice() {
@@ -105,9 +125,10 @@ public class ans_choosing extends AppCompatActivity {
     }
     public void go_back(View view){ans_choosing.this.finish();}
     public void nextt(View view){
-        Intent intent = new Intent(this, ans_choosing.class);
-        startActivity(intent);
-        ans_choosing.this.finish();
+//        Intent intent = new Intent(this, ans_choosing.class);
+//        startActivity(intent);
+//        ans_choosing.this.finish();
+        init();
     }
     public void show(View view){
         Button button = findViewById(R.id.ansa);
