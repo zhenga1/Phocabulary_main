@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.Policy;
 import java.util.*;
 
 import android.graphics.Color;
@@ -30,6 +31,7 @@ public class ans_choosing extends AppCompatActivity {
     Button nxt,shw;
     WebView pic;
     public Vector<String> labels = new Vector<>();
+    public int correct = 0;
     public Vector<String> uriImages = new Vector<>();
     private static final String DEFINITION_FILE = "file:///android_asset/objectdefinitions.txt";
     String link = "https://www.supereasy.com/wp-content/uploads/2018/08/img_5b7fd932ba802.png";
@@ -54,6 +56,9 @@ public class ans_choosing extends AppCompatActivity {
         button1.setText(cho[rn[1]]);
         Button button2 = findViewById(R.id.ansc);
         button2.setText(cho[rn[2]]);
+        int cor = 0;
+        while(cor<3 && rn[cor]!=0){cor++;}
+        correct = cor;
         //set photo
         ans=findViewById(R.id.Ans);
         ans.setVisibility(View.INVISIBLE);
@@ -137,6 +142,19 @@ public class ans_choosing extends AppCompatActivity {
         buttonb.setEnabled(false);
         Button buttonc = findViewById(R.id.ansc);
         buttonc.setEnabled(false);
+        switch(correct){
+            case 0:
+                button.setBackgroundColor(0xff00ff00);
+                break;
+            case 1:
+                buttonb.setBackgroundColor(0xff00ff00);
+                break;
+            case 2:
+                buttonc.setBackgroundColor(0xff00ff00);
+                break;
+            default:
+                break;
+        }
         next();
     }
     public void next(){
