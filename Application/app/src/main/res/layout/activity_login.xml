@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#7698FF"
-        android:text="Login Page:"
+        android:text="Login Page"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="25dp"
