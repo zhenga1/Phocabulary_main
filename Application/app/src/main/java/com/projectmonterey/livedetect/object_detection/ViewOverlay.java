@@ -61,7 +61,7 @@ public class ViewOverlay extends View {
     public final Logger logger = new Logger(ViewOverlay.class);
     private int previewWidth, previewHeight;
     private int sensorOrientation;
-    private Matrix frameToCanvasMatrix;
+    private static Matrix frameToCanvasMatrix;
     protected static List<TrackedRecognitions> trackedObjects = new ArrayList<>();
 
     public ViewOverlay(Context context) {
@@ -168,6 +168,7 @@ public class ViewOverlay extends View {
         List<Float> floats = new ArrayList<>();
         for(ViewOverlay.TrackedRecognitions recognitions: ViewOverlay.trackedObjects) {
             RectF bounding = recognitions.location;
+            frameToCanvasMatrix.mapRect(bounding);
             if (bounding.contains(x, y)) {
                 //rectBoxes.add(bounding);
                 recognitionsListNew.add(recognitions);

@@ -274,6 +274,8 @@ public class CameraActivityLiveYOLO extends AppCompatActivity implements Camera.
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 float onTouchX = motionEvent.getX();
                 float onTouchY = motionEvent.getY();
+                float rawX = motionEvent.getRawX();
+                float rawY = motionEvent.getRawY();
                 if(view.getId()==frameLayout.getId() || view.getId()==cameraView.getId()) {
                     switch (motionEvent.getAction()) {
                         case MotionEvent.ACTION_DOWN:
@@ -290,7 +292,7 @@ public class CameraActivityLiveYOLO extends AppCompatActivity implements Camera.
                         case MotionEvent.ACTION_DOWN:
                             break;
                         case MotionEvent.ACTION_UP:
-                            ViewOverlay.TrackedRecognitions recognition = ViewOverlay.getRect(onTouchX,onTouchY);
+                            ViewOverlay.TrackedRecognitions recognition = ViewOverlay.getRect(rawX,rawY);
                             if(recognition!=null){
                                 String definition = ObjectDetectionClassifierYOLO.labeldefinitions.get(ObjectDetectionClassifierYOLO.labels.indexOf(recognition.title));
                                     runOnUiThread(new Runnable() {
