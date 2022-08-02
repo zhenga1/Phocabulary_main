@@ -1,11 +1,5 @@
 package com.projectmonterey.livedetect.object_detection;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -33,31 +27,39 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.projectmonterey.R;
 import com.projectmonterey.capturedetect.CameraView;
 import com.projectmonterey.capturedetect.Utils.ImageUtils;
 import com.projectmonterey.livedetect.classifiers.Classifier;
 import com.projectmonterey.livedetect.classifiers.ObjectDetectionClassifierSSD;
+import com.projectmonterey.livedetect.classifiers.ObjectDetectionClassifierYOLO;
 import com.projectmonterey.livedetect.env.Logger;
 
-public class CameraActivityLive extends AppCompatActivity implements Camera.PreviewCallback {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+public class CameraActivityLivetwo extends AppCompatActivity implements Camera.PreviewCallback {
     protected CameraView cameraView;
     public final int FRONT_FACING=0,BACK_FACING=1;
     private boolean switchtouchstatus = true;
     private TextView status;
-    private Logger logger = new Logger(CameraActivityLive.class);
+    private Logger logger = new Logger(CameraActivityLivetwo.class);
     public int CAMERA_ORIENTATION=BACK_FACING;
     public final int SSD_TYPE_DETECTION =0, YOLO_TYPE_DETECTION=1;
-    private static final String MODEL_FILE = "objectdetect.tflite";
-    private static final String LABELS_FILE = "file:///android_asset/objectlabelmap.txt";
+    private static final String MODEL_FILE = "yolov5s-fp16.tflite";
+    private static final String LABELS_FILE = "file:///android_asset/coco.txt";
     private static final String DEFINITION_FILE = "file:///android_asset/objectdefinitions.txt";
     private static final String PHOTO_LINK = "file:///android_asset/samplephotolink.txt";
     //300 by 300 image essentially
-    private static final int MODEL_INPUT_SIZE = 300;
+    private static final int MODEL_INPUT_SIZE = 320;
     public int previewHeight,previewWidth;
     public CustomGif customGif;
     protected Camera camera;
@@ -112,7 +114,7 @@ public class CameraActivityLive extends AppCompatActivity implements Camera.Prev
                 requestPermissions(new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
             }
             else{
-                ActivityCompat.requestPermissions(CameraActivityLive.this,new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
+                ActivityCompat.requestPermissions(CameraActivityLivetwo.this,new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
             }
         }
         if(!checkWriteFilePermission())
@@ -121,14 +123,14 @@ public class CameraActivityLive extends AppCompatActivity implements Camera.Prev
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
             }
             else{
-                ActivityCompat.requestPermissions(CameraActivityLive.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
+                ActivityCompat.requestPermissions(CameraActivityLivetwo.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
             }
         }
     }
     private void initCamera(int orientation){
         if(orientation==BACK_FACING){
             camera = Camera.open();
-            cameraView = new CameraView(this, camera,this);
+            cameraView = new CameraView(this, camera,CameraActivityLivetwo.this);
             cameraView.setOnTouchListener(onTouchListener);
             cameraView.setId(R.id.mycameraView);
             frameLayout.addView(cameraView);
@@ -137,7 +139,7 @@ public class CameraActivityLive extends AppCompatActivity implements Camera.Prev
         }else if(orientation == FRONT_FACING){
             if(getFrontCameraId()!=-1) {
                 camera = Camera.open(getFrontCameraId());
-                cameraView = new CameraView(this, camera,this);
+                cameraView = new CameraView(this, camera,CameraActivityLivetwo.this);
                 cameraView.setOnTouchListener(onTouchListener);
                 cameraView.setId(R.id.mycameraView);
                 frameLayout.addView(cameraView);
@@ -284,7 +286,7 @@ public class CameraActivityLive extends AppCompatActivity implements Camera.Prev
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            AlertDialog alertDialog = new AlertDialog.Builder(CameraActivityLive.this).create();
+                                            AlertDialog alertDialog = new AlertDialog.Builder(CameraActivityLivetwo.this).create();
                                             alertDialog.setTitle(recognition.title);
                                             alertDialog.setMessage(definition);
                                             alertDialog.setButton("Got it", new DialogInterface.OnClickListener() {
@@ -307,7 +309,7 @@ public class CameraActivityLive extends AppCompatActivity implements Camera.Prev
                                                         @Override
                                                         public void onClick(DialogInterface dialogInterface, int i) {
                                                             dialogInterface.dismiss();
-                                                            Intent intent = new Intent(CameraActivityLive.this, LearnMore.class);
+                                                            Intent intent = new Intent(CameraActivityLivetwo.this, LearnMore.class);
                                                             String na=recognition.title;
                                                             intent.putExtra("Name", na);
                                                             intent.putExtra("DEF", definition);
@@ -378,7 +380,7 @@ public class CameraActivityLive extends AppCompatActivity implements Camera.Prev
     public boolean checkCameraPermission()
     {
         String permission = Manifest.permission.CAMERA;
-        int res = CameraActivityLive.this.getApplicationContext().checkCallingOrSelfPermission(permission);
+        int res = CameraActivityLivetwo.this.getApplicationContext().checkCallingOrSelfPermission(permission);
         return (res == PackageManager.PERMISSION_GRANTED);
     }
     public boolean checkWriteFilePermission()
@@ -485,13 +487,12 @@ public class CameraActivityLive extends AppCompatActivity implements Camera.Prev
     protected void onPreviewSizeChosen(final Size size, final int rotation){
         try {
             detector =
-                    ObjectDetectionClassifierSSD.create(
+                    ObjectDetectionClassifierYOLO.create(
                             getAssets(),
                             MODEL_FILE,
                             LABELS_FILE,
-                            DEFINITION_FILE,
-                            MODEL_INPUT_SIZE,
-                            true
+                            false,
+                            MODEL_INPUT_SIZE
                     );
         } catch (final IOException e) {
             logger.e("Module could not be initialized");

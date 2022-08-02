@@ -40,6 +40,11 @@
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar" />
         <activity
+            android:name=".livedetect.object_detection.CameraActivityLivetwo"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:theme="@style/NoActionBar" />
+        <activity
             android:name=".backend.UiMainActivity"
             android:theme="@style/NoActionBar"
             android:exported="false"

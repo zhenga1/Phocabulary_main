@@ -26,9 +26,11 @@ import com.projectmonterey.livedetect.classifiers.Classifier;
 
 import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.Tensor;
-import org.tensorflow.lite.examples.detection.MainActivity;
-import org.tensorflow.lite.examples.detection.env.Logger;
-import org.tensorflow.lite.examples.detection.env.Utils;
+import com.projectmonterey.MainActivity;
+import com.projectmonterey.livedetect.env.Logger;
+import com.projectmonterey.livedetect.env.Utils;
+import com.projectmonterey.livedetect.object_detection.CameraActivityLive;
+
 import org.tensorflow.lite.gpu.GpuDelegate;
 import org.tensorflow.lite.nnapi.NnApiDelegate;
 
@@ -59,6 +61,58 @@ import java.util.Vector;
  * - https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md#running-our-model-on-android
  */
 public class ObjectDetectionClassifierYOLO implements Classifier {
+    private static final Logger LOGGER = new Logger(ObjectDetectionClassifierYOLO.class);
+
+    // Float model
+    private final float IMAGE_MEAN = 0;
+
+    private final float IMAGE_STD = 255.0f;
+
+    //config yolo
+    private int INPUT_SIZE = -1;
+
+    //    private int[] OUTPUT_WIDTH;
+//    private int[][] MASKS;
+//    private int[] ANCHORS;
+    private  int output_box;
+
+    private static final float[] XYSCALE = new float[]{1.2f, 1.1f, 1.05f};
+
+    private static final int NUM_BOXES_PER_BLOCK = 3;
+
+    // Number of threads in the java app
+    private static final int NUM_THREADS = 1;
+    private static boolean isNNAPI = false;
+    private static boolean isGPU = false;
+
+    private boolean isModelQuantized;
+
+    /** holds a gpu delegate */
+    GpuDelegate gpuDelegate = null;
+    /** holds an nnapi delegate */
+    NnApiDelegate nnapiDelegate = null;
+
+    /** The loaded TensorFlow Lite model. */
+    private MappedByteBuffer tfliteModel;
+
+    /** Options for configuring the Interpreter. */
+    private final Interpreter.Options tfliteOptions = new Interpreter.Options();
+
+    // Config values.
+
+    // Pre-allocated buffers.
+    private Vector<String> labels = new Vector<String>();
+    private int[] intValues;
+
+    private ByteBuffer imgData;
+    private ByteBuffer outData;
+
+    private Interpreter tfLite;
+    private float inp_scale;
+    private int inp_zero_point;
+    private float oup_scale;
+    private int oup_zero_point;
+    private int numClass;
 
     /**
      * Initializes a native TensorFlow session for classifying images.
@@ -152,8 +206,8 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
         d.outData.order(ByteOrder.nativeOrder());
         return d;
     }
-    private static MappedByteBuffer loadModelFile(AssetManager assetManager, String filename) throws IOException
-    {
+    private static MappedByteBuffer loadModelFile(AssetManager assetManager, String filename)
+            throws IOException {
         AssetFileDescriptor assetFileDescriptor = assetManager.openFd(filename);
         FileInputStream fileInputStream = new FileInputStream(assetFileDescriptor.getFileDescriptor());
         FileChannel fileChannel = fileInputStream.getChannel();
@@ -196,109 +250,6 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
         recreateInterpreter();
     }
 
-    @Override
-    public float getObjThresh() {
-        return ;
-    }
-
-    private static final Logger LOGGER = new Logger();
-
-    // Float model
-    private final float IMAGE_MEAN = 0;
-
-    private final float IMAGE_STD = 255.0f;
-
-    //config yolo
-    private int INPUT_SIZE = -1;
-
-    //    private int[] OUTPUT_WIDTH;
-//    private int[][] MASKS;
-//    private int[] ANCHORS;
-    private  int output_box;
-
-    private static final float[] XYSCALE = new float[]{1.2f, 1.1f, 1.05f};
-
-    private static final int NUM_BOXES_PER_BLOCK = 3;
-
-    // Number of threads in the java app
-    private static final int NUM_THREADS = 1;
-    private static boolean isNNAPI = false;
-    private static boolean isGPU = false;
-
-    private boolean isModelQuantized;
-
-    /** holds a gpu delegate */
-    GpuDelegate gpuDelegate = null;
-    /** holds an nnapi delegate */
-    NnApiDelegate nnapiDelegate = null;
-
-    /** The loaded TensorFlow Lite model. */
-    private MappedByteBuffer tfliteModel;
-
-    /** Options for configuring the Interpreter. */
-    private final Interpreter.Options tfliteOptions = new Interpreter.Options();
-
-    // Config values.
-
-    // Pre-allocated buffers.
-    private Vector<String> labels = new Vector<String>();
-    private int[] intValues;
-
-    private ByteBuffer imgData;
-    private ByteBuffer outData;
-
-    private Interpreter tfLite;
-    private float inp_scale;
-    private int inp_zero_point;
-    private float oup_scale;
-    private int oup_zero_point;
-    private int numClass;
-
-    //non maximum suppression
-    protected ArrayList<Recognitions> nms(ArrayList<Recognitions> list) {
-        ArrayList<Recognitions> nmsList = new ArrayList<Recognitions>();
-
-        for (int k = 0; k < labels.size(); k++) {
-            //1.find max confidence per class
-            PriorityQueue<Recognitions> pq =
-                    new PriorityQueue<Recognitions>(
-                            50,
-                            new Comparator<Recognitions>() {
-                                @Override
-                                public int compare(final Recognitions lhs, final Recognitions rhs) {
-                                    // Intentionally reversed to put high confidence at the head of the queue.
-                                    return Float.compare(rhs.getConfidence(), lhs.getConfidence());
-                                }
-                            });
-
-            for (int i = 0; i < list.size(); ++i) {
-                if (list.get(i).getClass() == k) {
-                    pq.add(list.get(i));
-                }
-            }
-
-            //2.do non maximum suppression
-            while (pq.size() > 0) {
-                //insert detection with max confidence
-                Recognitions[] a = new Recognitions[pq.size()];
-                Recognitions[] detections = pq.toArray(a);
-                Recognitions max = detections[0];
-                nmsList.add(max);
-                pq.clear();
-
-                for (int j = 1; j < detections.length; j++) {
-                    Recognitions detection = detections[j];
-                    RectF b = detection.getLocation();
-                    if (box_iou(max.getLocation(), b) < mNmsThresh) {
-                        pq.add(detection);
-                    }
-                }
-            }
-        }
-        return nmsList;
-    }
-
-    protected float mNmsThresh = 0.6f;
 
     protected float box_iou(RectF a, RectF b) {
         return box_intersection(a, b) / box_union(a, b);
@@ -362,7 +313,7 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
         return imgData;
     }
 
-    public ArrayList<Recognitions> recognizeImage(Bitmap bitmap) {
+    public ArrayList<Recognitions> recogniseImage(Bitmap bitmap) {
         ByteBuffer byteBuffer_ = convertBitmapToByteBuffer(bitmap);
 
         Map<Integer, Object> outputMap = new HashMap<>();
@@ -370,7 +321,7 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
 //        float[][][] outbuf = new float[1][output_box][labels.size() + 5];
         outData.rewind();
         outputMap.put(0, outData);
-        Log.d("YoloV5Classifier", "mObjThresh: " + getObjThresh());
+        Log.d("YoloV5Classifier", "mObjThresh: " + CameraActivityLive.MINIMUM_CONFIDENCE);
 
         Object[] inputArray = {imgData};
         tfLite.runForMultipleInputsOutputs(inputArray, outputMap);
@@ -397,7 +348,6 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
             }
         }
         for (int i = 0; i < output_box; ++i){
-            final int offset = 0;
             final float confidence = out[0][i][4];
             int detectedClass = -1;
             float maxClass = 0;
@@ -415,30 +365,29 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
             }
 
             final float confidenceInClass = maxClass * confidence;
-            if (confidenceInClass > getObjThresh()) {
-                final float xPos = out[0][i][0];
-                final float yPos = out[0][i][1];
+            final float xPos = out[0][i][0];
+            final float yPos = out[0][i][1];
 
-                final float w = out[0][i][2];
-                final float h = out[0][i][3];
-                Log.d("YoloV5Classifier",
-                        Float.toString(xPos) + ',' + yPos + ',' + w + ',' + h);
+            final float w = out[0][i][2];
+            final float h = out[0][i][3];
+            Log.d("YoloV5Classifier",
+                    Float.toString(xPos) + ',' + yPos + ',' + w + ',' + h);
 
-                final RectF rect =
-                        new RectF(
-                                Math.max(0, xPos - w / 2),
-                                Math.max(0, yPos - h / 2),
-                                Math.min(bitmap.getWidth() - 1, xPos + w / 2),
-                                Math.min(bitmap.getHeight() - 1, yPos + h / 2));
-                detections.add(new Recognitions("" + offset, labels.get(detectedClass),
-                        confidenceInClass, rect, detectedClass));
-            }
+            final RectF rect =
+                    new RectF(
+                            Math.max(0, xPos - w / 2),
+                            Math.max(0, yPos - h / 2),
+                            Math.min(bitmap.getWidth() - 1, xPos + w / 2),
+                            Math.min(bitmap.getHeight() - 1, yPos + h / 2));
+            detections.add(new Recognitions("" +detectedClass, labels.get(detectedClass),
+                    confidenceInClass, rect));
+
         }
 
         Log.d("YoloV5Classifier", "detect end");
-        final ArrayList<Recognitions> recognitions = nms(detections);
+        //final ArrayList<Recognitions> recognitions = nms(detections);
 //        final ArrayList<Recognition> recognitions = detections;
-        return recognitions;
+        return detections;
     }
 
     public boolean checkInvalidateBox(float x, float y, float width, float height, float oriW, float oriH, int intputSize) {

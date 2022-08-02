@@ -137,7 +137,7 @@ public class ViewOverlay extends View {
                         (int) (multiplierw * (rotated ? previewHeight : previewWidth)),
                         (int) (multiplierh * (rotated ? previewWidth : previewHeight)),
                         sensorOrientation,
-                        true);
+                        false);
         if(trackedObjects.isEmpty()){
 
             logger.e("There are no tracked objects");
