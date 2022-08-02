@@ -41,7 +41,7 @@ import com.projectmonterey.R;
 import com.projectmonterey.capturedetect.CameraView;
 import com.projectmonterey.capturedetect.Utils.ImageUtils;
 import com.projectmonterey.livedetect.classifiers.Classifier;
-import com.projectmonterey.livedetect.classifiers.ObjectDetectionClassifier;
+import com.projectmonterey.livedetect.classifiers.ObjectDetectionClassifierSSD;
 import com.projectmonterey.livedetect.env.Logger;
 
 public class CameraActivityLive extends AppCompatActivity implements Camera.PreviewCallback {
@@ -79,7 +79,7 @@ public class CameraActivityLive extends AppCompatActivity implements Camera.Prev
     private Matrix cropToFrameTransform,frameToCropTransform;
     private HandlerThread handlerThread;
     private Handler handler;
-    public final float MINIMUM_CONFIDENCE = 0.49f;
+    public final float MINIMUM_CONFIDENCE = 0.3f;
     private TextView tv_debug;
 
     @Override
@@ -280,7 +280,7 @@ public class CameraActivityLive extends AppCompatActivity implements Camera.Prev
                         case MotionEvent.ACTION_UP:
                             ViewOverlay.TrackedRecognitions recognition = ViewOverlay.getRect(onTouchX,onTouchY);
                             if(recognition!=null){
-                                String definition = ObjectDetectionClassifier.labeldefitions.get(ObjectDetectionClassifier.labels.indexOf(recognition.title));
+                                String definition = ObjectDetectionClassifierSSD.labeldefitions.get(ObjectDetectionClassifierSSD.labels.indexOf(recognition.title));
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -484,7 +484,7 @@ public class CameraActivityLive extends AppCompatActivity implements Camera.Prev
     protected void onPreviewSizeChosen(final Size size, final int rotation){
         try {
             detector =
-                    ObjectDetectionClassifier.create(
+                    ObjectDetectionClassifierSSD.create(
                             getAssets(),
                             MODEL_FILE,
                             LABELS_FILE,

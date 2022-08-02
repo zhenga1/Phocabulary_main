@@ -29,9 +29,9 @@ import org.tensorflow.lite.Interpreter;
  * <p>
  * To use pretrained models in the API or convert to TF Lite models, please see docs for details:
  * - https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md
- * - https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md#running-our-model-on-android
+ * - https://githbub.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md#running-our-model-on-android
  */
-public class ObjectDetectionClassifier implements Classifier {
+public class ObjectDetectionClassifierSSD implements Classifier {
     public static Vector<String> labels = new Vector<>();
     public static Vector<String> labeldefitions = new Vector<>();
     private static final float IMG_STD=128.0f, IMG_MEAN=128.0f;
@@ -65,7 +65,7 @@ public class ObjectDetectionClassifier implements Classifier {
             , final int inputSize,
             final boolean isQuantised) throws IOException{
         //Creating new instance of classifier(an object of this class)
-        final ObjectDetectionClassifier model  = new ObjectDetectionClassifier();
+        final ObjectDetectionClassifierSSD model  = new ObjectDetectionClassifierSSD();
         InputStream labelsInput;
         String actualfile = labelname.split("file:///android_asset/")[1];
         labelsInput = assetManager.open(actualfile);

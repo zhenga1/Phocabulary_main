@@ -1,23 +1,17 @@
 package com.projectmonterey.ui_main.recyclerrevise;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.projectmonterey.R;
-import com.projectmonterey.livedetect.classifiers.ObjectDetectionClassifier;
-
-import java.util.Collections;
 
 public class ReviseAdapter extends RecyclerView.Adapter<ReviseAdapter.ReviseViewHolder> {
     public int indexOfWord = 0;

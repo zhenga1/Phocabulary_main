@@ -2,19 +2,13 @@ package com.projectmonterey.livedetect.object_detection;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.projectmonterey.R;
-import com.projectmonterey.livedetect.classifiers.ObjectDetectionClassifier;
-import com.projectmonterey.ui_main.recyclerrevise.WordsRevise;
 
 import java.io.BufferedReader;
 import java.io.IOException;
