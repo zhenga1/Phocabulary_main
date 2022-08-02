@@ -44,13 +44,14 @@ import com.projectmonterey.livedetect.classifiers.Classifier;
 import com.projectmonterey.livedetect.classifiers.ObjectDetectionClassifier;
 import com.projectmonterey.livedetect.env.Logger;
 
-public class CameraActivityYolo extends AppCompatActivity implements Camera.PreviewCallback {
+public class CameraActivityLive extends AppCompatActivity implements Camera.PreviewCallback {
     protected CameraView cameraView;
     public final int FRONT_FACING=0,BACK_FACING=1;
     private boolean switchtouchstatus = true;
     private TextView status;
-    private Logger logger = new Logger(CameraActivityYolo.class);
+    private Logger logger = new Logger(CameraActivityLive.class);
     public int CAMERA_ORIENTATION=BACK_FACING;
+    public final int SSD_TYPE_DETECTION =0, YOLO_TYPE_DETECTION=1;
     private static final String MODEL_FILE = "objectdetect.tflite";
     private static final String LABELS_FILE = "file:///android_asset/objectlabelmap.txt";
     private static final String DEFINITION_FILE = "file:///android_asset/objectdefinitions.txt";
@@ -111,7 +112,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                 requestPermissions(new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
             }
             else{
-                ActivityCompat.requestPermissions(CameraActivityYolo.this,new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
+                ActivityCompat.requestPermissions(CameraActivityLive.this,new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
             }
         }
         if(!checkWriteFilePermission())
@@ -120,7 +121,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
             }
             else{
-                ActivityCompat.requestPermissions(CameraActivityYolo.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
+                ActivityCompat.requestPermissions(CameraActivityLive.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
             }
         }
     }
@@ -283,7 +284,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            AlertDialog alertDialog = new AlertDialog.Builder(CameraActivityYolo.this).create();
+                                            AlertDialog alertDialog = new AlertDialog.Builder(CameraActivityLive.this).create();
                                             alertDialog.setTitle(recognition.title);
                                             alertDialog.setMessage(definition);
                                             alertDialog.setButton("Got it", new DialogInterface.OnClickListener() {
@@ -306,7 +307,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
                                                         @Override
                                                         public void onClick(DialogInterface dialogInterface, int i) {
                                                             dialogInterface.dismiss();
-                                                            Intent intent = new Intent(CameraActivityYolo.this, LearnMore.class);
+                                                            Intent intent = new Intent(CameraActivityLive.this, LearnMore.class);
                                                             String na=recognition.title;
                                                             intent.putExtra("Name", na);
                                                             intent.putExtra("DEF", definition);
@@ -377,7 +378,7 @@ public class CameraActivityYolo extends AppCompatActivity implements Camera.Prev
     public boolean checkCameraPermission()
     {
         String permission = Manifest.permission.CAMERA;
-        int res = CameraActivityYolo.this.getApplicationContext().checkCallingOrSelfPermission(permission);
+        int res = CameraActivityLive.this.getApplicationContext().checkCallingOrSelfPermission(permission);
         return (res == PackageManager.PERMISSION_GRANTED);
     }
     public boolean checkWriteFilePermission()

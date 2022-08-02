@@ -5,13 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.projectmonterey.MainActivity;
 import com.projectmonterey.R;
 import com.projectmonterey.capturedetect.CameraActivity;
-import com.projectmonterey.livedetect.object_detection.CameraActivityYolo;
+import com.projectmonterey.livedetect.object_detection.CameraActivityLive;
 import com.projectmonterey.settings.SettingsActivity;
 
 public class MenuPage extends AppCompatActivity {
@@ -26,7 +25,7 @@ public class MenuPage extends AppCompatActivity {
         startActivity(intent);
     }
     public void learn(View view) {
-        Intent intent = new Intent(this, CameraActivityYolo.class);
+        Intent intent = new Intent(this, CameraActivityLive.class);
         startActivity(intent);
     }
     public void setting(View view) {

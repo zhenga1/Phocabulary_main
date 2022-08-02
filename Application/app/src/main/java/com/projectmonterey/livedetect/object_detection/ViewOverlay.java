@@ -21,6 +21,7 @@ import com.projectmonterey.livedetect.env.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,10 +48,18 @@ public class ViewOverlay extends View {
             Color.parseColor("#FFFFAA"),
             Color.parseColor("#55AAAA"),
             Color.parseColor("#AA33AA"),
-            Color.parseColor("#0D0068")
+            Color.parseColor("#0D0068"),
+            Color.parseColor("#AF38DD"),
+            Color.parseColor("#BE93D5"),
+            Color.parseColor("#290916"),
+            Color.parseColor("#B65FDF"),
+            Color.parseColor("#00918F"),
+            Color.parseColor("#75E9E5"),
+            Color.parseColor("#AA02B3"),
+            Color.parseColor("#8E1794")
     };
     public final Logger logger = new Logger(ViewOverlay.class);
-    private int frameWidth,frameHeight;
+    private int previewWidth, previewHeight;
     private int sensorOrientation;
     private Matrix frameToCanvasMatrix;
     protected static List<TrackedRecognitions> trackedObjects = new ArrayList<>();
@@ -111,24 +120,24 @@ public class ViewOverlay extends View {
         public void drawCanvas(Canvas canvas);
     }
     public synchronized void setFrameConfiguration(final int width, final int height, final int sensorOrientation){
-        frameWidth = width;
-        frameHeight = height;
+        previewWidth = width;
+        previewHeight = height;
         this.sensorOrientation = sensorOrientation;
     }
     public synchronized void drawRects(Canvas canvas){
         final boolean rotated = sensorOrientation % 180 == 90;
-        final float multiplier =
-                Math.min(
-                        canvas.getHeight() / (float) (rotated ? frameWidth : frameHeight),
-                        canvas.getWidth() / (float) (rotated ? frameHeight : frameWidth));
+        float multiplierh=
+                        canvas.getHeight() / (float) (rotated ? previewWidth : previewHeight);
+        float multiplierw=
+                        canvas.getWidth() / (float) (rotated ? previewHeight : previewWidth);
         frameToCanvasMatrix =
                 ImageUtils.getTransformationMatrix(
-                        frameWidth,
-                        frameHeight,
-                        (int) (multiplier * (rotated ? frameHeight : frameWidth)),
-                        (int) (multiplier * (rotated ? frameWidth : frameHeight)),
+                        previewWidth,
+                        previewHeight,
+                        (int) (multiplierw * (rotated ? previewHeight : previewWidth)),
+                        (int) (multiplierh * (rotated ? previewWidth : previewHeight)),
                         sensorOrientation,
-                        false);
+                        true);
         if(trackedObjects.isEmpty()){
 
             logger.e("There are no tracked objects");
@@ -202,7 +211,19 @@ public class ViewOverlay extends View {
             //logger.v("Nothing to track, aborting.");
             return;
         }
-
+        Collections.sort(rectsToTrack, new Comparator<Pair<Float, Classifier.Recognitions>>() {
+            @Override
+            public int compare(Pair<Float, Classifier.Recognitions> p1, Pair<Float, Classifier.Recognitions> p2) {
+                if (p1.first > p2.first) {
+                    return -1;
+                } else if (p1.first==p2.first) {
+                    return 0; // You can change this to make it then look at the
+                    //words alphabetical order
+                } else {
+                    return 1;
+                }
+            }
+        });
         trackedObjects.clear();
         for (final Pair<Float, Classifier.Recognitions> potential : rectsToTrack) {
             final TrackedRecognitions trackedRecognition = new TrackedRecognitions();

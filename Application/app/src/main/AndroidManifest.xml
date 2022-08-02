@@ -35,7 +35,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".livedetect.object_detection.CameraActivityYolo"
+            android:name=".livedetect.object_detection.CameraActivityLive"
             android:exported="false"
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar" />

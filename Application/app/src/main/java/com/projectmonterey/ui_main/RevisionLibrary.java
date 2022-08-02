@@ -4,11 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.UserDictionary;
 import android.view.View;
 
 import com.projectmonterey.R;
-import com.projectmonterey.livedetect.object_detection.CameraActivityYolo;
 import com.projectmonterey.ui_main.recyclerrevise.WordsRevise;
 
 public class RevisionLibrary extends AppCompatActivity {

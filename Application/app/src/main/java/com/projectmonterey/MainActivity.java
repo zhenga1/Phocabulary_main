@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.projectmonterey.backend.LoginActivity;
 import com.projectmonterey.capturedetect.CameraActivity;
-import com.projectmonterey.livedetect.object_detection.CameraActivityYolo;
+import com.projectmonterey.livedetect.object_detection.CameraActivityLive;
 import com.projectmonterey.ui_main.MenuPage;
 import com.projectmonterey.settings.SettingsActivity;
 import com.projectmonterey.ui_main.ShopActivity;
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     public void gotocamera(View view){
         //Intent intent = new Intent(this, CameraActivity.class);
         //startActivity(intent);
-        Intent intent = new Intent(this, CameraActivityYolo.class);
+        Intent intent = new Intent(this, CameraActivityLive.class);
         startActivity(intent);
     }
     public void gotocamera2(View view){
