@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".livedetect.object_detection.CameraActivityLiveYOLO">
+    tools:context=".livedetect.object_detection.CameraActivityLiveSSD">
 
     <Button
         android:id="@+id/button12"
@@ -20,11 +20,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/camerayolo"
         android:onClick="switchCameraonTouch"/>
+
     <Button
         android:id="@+id/newbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Switch to SSD"
+        android:text="Switch to YOLO"
         android:textColor="@color/black"
         android:textSize="17dp"
         android:background="@color/white"
@@ -34,6 +35,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/statusCamera"
         app:layout_constraintVertical_bias="0.0" />
+
     <FrameLayout
         android:id="@+id/camerayolo"
         android:layout_width="match_parent"
@@ -41,7 +43,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
     <com.projectmonterey.livedetect.object_detection.CustomGif
         android:id="@+id/backgroundimageview"

@@ -44,20 +44,20 @@ public class ViewOverlay extends View {
             Color.parseColor("#55FF55"),
             Color.parseColor("#FFA500"),
             Color.parseColor("#FF8888"),
-            Color.parseColor("#AAAAFF"),
-            Color.parseColor("#FFFFAA"),
-            Color.parseColor("#55AAAA"),
-            Color.parseColor("#AA33AA"),
-            Color.parseColor("#0D0068"),
-            Color.parseColor("#AF38DD"),
-            Color.parseColor("#BE93D5"),
-            Color.parseColor("#290916"),
-            Color.parseColor("#B65FDF"),
-            Color.parseColor("#00918F"),
-            Color.parseColor("#75E9E5"),
-            Color.parseColor("#AA02B3"),
-            Color.parseColor("#8E1794")
+            Color.parseColor("#AAAAFF")
     };
+//    Color.parseColor("#FFFFAA"),
+//            Color.parseColor("#55AAAA"),
+//            Color.parseColor("#AA33AA"),
+//            Color.parseColor("#0D0068"),
+//            Color.parseColor("#AF38DD"),
+//            Color.parseColor("#BE93D5"),
+//            Color.parseColor("#290916"),
+//            Color.parseColor("#B65FDF"),
+//            Color.parseColor("#00918F"),
+//            Color.parseColor("#75E9E5"),
+//            Color.parseColor("#AA02B3"),
+//            Color.parseColor("#8E1794")
     public final Logger logger = new Logger(ViewOverlay.class);
     private int previewWidth, previewHeight;
     private int sensorOrientation;

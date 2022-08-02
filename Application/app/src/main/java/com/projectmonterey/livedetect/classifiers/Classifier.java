@@ -18,6 +18,7 @@ public interface Classifier {
 
         //confidence of detection result, relative to other detections of objects;
         private final Float confidence;
+        private int detectionClass;
 
         /*Optimal location within source image for the appearance of the object*/
 
@@ -29,6 +30,14 @@ public interface Classifier {
             this.confidence = confidence;
             this.location = location;
         }
+        public Recognitions(final String id , final String title, final Float confidence, final RectF location,
+                            final int detectionClass) {
+            this.title = title;
+            this.id = id;
+            this.confidence = confidence;
+            this.location = location;
+            this.detectionClass = detectionClass;
+        }
         public String getId(){ return id;}
         public String getTitle(){ return title;}
         public Float getConfidence(){return confidence;}
@@ -38,6 +47,7 @@ public interface Classifier {
             this.location = location;
         }
 
+        public int getDetectionClass(){return detectionClass;}
         @Override
         public String toString(){
             String string = "";

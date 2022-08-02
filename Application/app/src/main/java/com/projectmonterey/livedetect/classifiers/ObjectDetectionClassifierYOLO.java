@@ -22,14 +22,12 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.util.Log;
 
-import com.projectmonterey.livedetect.classifiers.Classifier;
-
 import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.Tensor;
-import com.projectmonterey.MainActivity;
+
 import com.projectmonterey.livedetect.env.Logger;
-import com.projectmonterey.livedetect.env.Utils;
-import com.projectmonterey.livedetect.object_detection.CameraActivityLive;
+import com.projectmonterey.livedetect.object_detection.CameraActivityLiveSSD;
+import com.projectmonterey.livedetect.object_detection.CameraActivityLiveYOLO;
 
 import org.tensorflow.lite.gpu.GpuDelegate;
 import org.tensorflow.lite.nnapi.NnApiDelegate;
@@ -101,7 +99,8 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
     // Config values.
 
     // Pre-allocated buffers.
-    private Vector<String> labels = new Vector<String>();
+    public static Vector<String> labels = new Vector<String>();
+    public static Vector<String> labeldefinitions = new Vector<String>();
     private int[] intValues;
 
     private ByteBuffer imgData;
@@ -113,6 +112,7 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
     private float oup_scale;
     private int oup_zero_point;
     private int numClass;
+    private float mNmsThresh = 0.5f;
 
     /**
      * Initializes a native TensorFlow session for classifying images.
@@ -126,6 +126,7 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
             final AssetManager assetManager,
             final String modelFilename,
             final String labelFilename,
+            final String definitionFilename,
             final boolean isQuantized,
             final int inputSize
             /*final int[] output_width,
@@ -143,7 +144,14 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
             d.labels.add(line);
         }
         br.close();
-
+        String deffile = definitionFilename.split("file:///android_asset/")[1];
+        labelsInput = assetManager.open(deffile);
+        //New reader of the file
+        br = new BufferedReader(new InputStreamReader(labelsInput));
+        while ((line = br.readLine())!=null){
+            d.labeldefinitions.add(line);
+        }
+        br.close();
         try {
             Interpreter.Options options = (new Interpreter.Options());
             options.setNumThreads(NUM_THREADS);
@@ -205,6 +213,49 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
         d.outData = ByteBuffer.allocateDirect(d.output_box * (numClass + 5) * numBytesPerChannel);
         d.outData.order(ByteOrder.nativeOrder());
         return d;
+    }
+    //non maximum suppression
+    protected ArrayList<Recognitions> nms(ArrayList<Recognitions> list) {
+        ArrayList<Recognitions> nmsList = new ArrayList<Recognitions>();
+
+        for (int k = 0; k < labels.size(); k++) {
+            //1.find max confidence per class
+            PriorityQueue<Recognitions> pq =
+                    new PriorityQueue<Recognitions>(
+                            50,
+                            new Comparator<Recognitions>() {
+                                @Override
+                                public int compare(final Recognitions lhs, final Recognitions rhs) {
+                                    // Intentionally reversed to put high confidence at the head of the queue.
+                                    return Float.compare(rhs.getConfidence(), lhs.getConfidence());
+                                }
+                            });
+
+            for (int i = 0; i < list.size(); ++i) {
+                if (list.get(i).getDetectionClass() == k) {
+                    pq.add(list.get(i));
+                }
+            }
+
+            //2.do non maximum suppression
+            while (pq.size() > 0) {
+                //insert detection with max confidence
+                Recognitions[] a = new Recognitions[pq.size()];
+                Recognitions[] detections = pq.toArray(a);
+                Recognitions max = detections[0];
+                nmsList.add(max);
+                pq.clear();
+
+                for (int j = 1; j < detections.length; j++) {
+                    Recognitions detection = detections[j];
+                    RectF b = detection.getLocation();
+                    if (box_iou(max.getLocation(), b) < mNmsThresh) {
+                        pq.add(detection);
+                    }
+                }
+            }
+        }
+        return nmsList;
     }
     private static MappedByteBuffer loadModelFile(AssetManager assetManager, String filename)
             throws IOException {
@@ -321,7 +372,7 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
 //        float[][][] outbuf = new float[1][output_box][labels.size() + 5];
         outData.rewind();
         outputMap.put(0, outData);
-        Log.d("YoloV5Classifier", "mObjThresh: " + CameraActivityLive.MINIMUM_CONFIDENCE);
+        Log.d("YoloV5Classifier", "mObjThresh: " + CameraActivityLiveSSD.MINIMUM_CONFIDENCE);
 
         Object[] inputArray = {imgData};
         tfLite.runForMultipleInputsOutputs(inputArray, outputMap);
@@ -365,29 +416,31 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
             }
 
             final float confidenceInClass = maxClass * confidence;
-            final float xPos = out[0][i][0];
-            final float yPos = out[0][i][1];
+            if(confidenceInClass > CameraActivityLiveYOLO.MINIMUM_CONFIDENCE){
+                final float xPos = out[0][i][0];
+                final float yPos = out[0][i][1];
 
-            final float w = out[0][i][2];
-            final float h = out[0][i][3];
-            Log.d("YoloV5Classifier",
-                    Float.toString(xPos) + ',' + yPos + ',' + w + ',' + h);
+                final float w = out[0][i][2];
+                final float h = out[0][i][3];
+                Log.d("YoloV5Classifier",
+                        Float.toString(xPos) + ',' + yPos + ',' + w + ',' + h);
 
-            final RectF rect =
-                    new RectF(
-                            Math.max(0, xPos - w / 2),
-                            Math.max(0, yPos - h / 2),
-                            Math.min(bitmap.getWidth() - 1, xPos + w / 2),
-                            Math.min(bitmap.getHeight() - 1, yPos + h / 2));
-            detections.add(new Recognitions("" +detectedClass, labels.get(detectedClass),
-                    confidenceInClass, rect));
+                final RectF rect =
+                        new RectF(
+                                Math.max(0, xPos - w / 2),
+                                Math.max(0, yPos - h / 2),
+                                Math.min(bitmap.getWidth() - 1, xPos + w / 2),
+                                Math.min(bitmap.getHeight() - 1, yPos + h / 2));
+                detections.add(new Recognitions("" +detectedClass, labels.get(detectedClass),
+                        confidenceInClass, rect));
+            }
 
         }
 
         Log.d("YoloV5Classifier", "detect end");
-        //final ArrayList<Recognitions> recognitions = nms(detections);
-//        final ArrayList<Recognition> recognitions = detections;
-        return detections;
+        final ArrayList<Recognitions> recognitions = nms(detections);
+        //final ArrayList<Recognitions> recognitions = detections;
+        return recognitions;
     }
 
     public boolean checkInvalidateBox(float x, float y, float width, float height, float oriW, float oriH, int intputSize) {

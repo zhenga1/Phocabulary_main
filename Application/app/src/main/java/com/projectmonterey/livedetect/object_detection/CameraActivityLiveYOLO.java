@@ -23,6 +23,7 @@ import android.util.Size;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,17 +47,17 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CameraActivityLivetwo extends AppCompatActivity implements Camera.PreviewCallback {
+public class CameraActivityLiveYOLO extends AppCompatActivity implements Camera.PreviewCallback {
     protected CameraView cameraView;
     public final int FRONT_FACING=0,BACK_FACING=1;
     private boolean switchtouchstatus = true;
     private TextView status;
-    private Logger logger = new Logger(CameraActivityLivetwo.class);
+    private Logger logger = new Logger(CameraActivityLiveYOLO.class);
     public int CAMERA_ORIENTATION=BACK_FACING;
     public final int SSD_TYPE_DETECTION =0, YOLO_TYPE_DETECTION=1;
     private static final String MODEL_FILE = "yolov5s-fp16.tflite";
     private static final String LABELS_FILE = "file:///android_asset/coco.txt";
-    private static final String DEFINITION_FILE = "file:///android_asset/objectdefinitions.txt";
+    private static final String DEFINITION_FILE = "file:///android_asset/cocodef.txt";
     private static final String PHOTO_LINK = "file:///android_asset/samplephotolink.txt";
     //300 by 300 image essentially
     private static final int MODEL_INPUT_SIZE = 320;
@@ -81,7 +82,8 @@ public class CameraActivityLivetwo extends AppCompatActivity implements Camera.P
     private Matrix cropToFrameTransform,frameToCropTransform;
     private HandlerThread handlerThread;
     private Handler handler;
-    public final static float MINIMUM_CONFIDENCE = 0.5f;
+    public final static float MINIMUM_CONFIDENCE = 0.3f;
+    private Button learning;
     private TextView tv_debug;
 
     @Override
@@ -91,6 +93,8 @@ public class CameraActivityLivetwo extends AppCompatActivity implements Camera.P
         trackingOverlay = findViewById(R.id.viewOverlay);
         tv_debug = findViewById(R.id.tv_debug);
         status = findViewById(R.id.statusCamera);
+        learning = findViewById(R.id.button12);
+        learning.setText(learning.getText()+ "  mode: YOLO");
         requestCameraPermissions();
         frameLayout = findViewById(R.id.camerayolo);
         customGif = findViewById(R.id.backgroundimageview);
@@ -108,13 +112,18 @@ public class CameraActivityLivetwo extends AppCompatActivity implements Camera.P
         }
 
     }
+    public void switchMode(View view){
+        Intent intent = new Intent(CameraActivityLiveYOLO.this,CameraActivityLiveSSD.class);
+        startActivity(intent);
+        CameraActivityLiveYOLO.this.finish();
+    }
     public void requestCameraPermissions(){
         if(checkCameraHardware(getApplicationContext()) && !checkCameraPermission()){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
             }
             else{
-                ActivityCompat.requestPermissions(CameraActivityLivetwo.this,new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
+                ActivityCompat.requestPermissions(CameraActivityLiveYOLO.this,new String[]{Manifest.permission.CAMERA},CAMERA_CODE);
             }
         }
         if(!checkWriteFilePermission())
@@ -123,14 +132,14 @@ public class CameraActivityLivetwo extends AppCompatActivity implements Camera.P
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
             }
             else{
-                ActivityCompat.requestPermissions(CameraActivityLivetwo.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
+                ActivityCompat.requestPermissions(CameraActivityLiveYOLO.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_CODE);
             }
         }
     }
     private void initCamera(int orientation){
         if(orientation==BACK_FACING){
             camera = Camera.open();
-            cameraView = new CameraView(this, camera,CameraActivityLivetwo.this);
+            cameraView = new CameraView(this, camera, CameraActivityLiveYOLO.this);
             cameraView.setOnTouchListener(onTouchListener);
             cameraView.setId(R.id.mycameraView);
             frameLayout.addView(cameraView);
@@ -139,7 +148,7 @@ public class CameraActivityLivetwo extends AppCompatActivity implements Camera.P
         }else if(orientation == FRONT_FACING){
             if(getFrontCameraId()!=-1) {
                 camera = Camera.open(getFrontCameraId());
-                cameraView = new CameraView(this, camera,CameraActivityLivetwo.this);
+                cameraView = new CameraView(this, camera, CameraActivityLiveYOLO.this);
                 cameraView.setOnTouchListener(onTouchListener);
                 cameraView.setId(R.id.mycameraView);
                 frameLayout.addView(cameraView);
@@ -168,6 +177,7 @@ public class CameraActivityLivetwo extends AppCompatActivity implements Camera.P
             checkPreviewMatrix();
             setupCamera=false;
         }
+        camera.release();
     }
 
     @Override
@@ -282,11 +292,11 @@ public class CameraActivityLivetwo extends AppCompatActivity implements Camera.P
                         case MotionEvent.ACTION_UP:
                             ViewOverlay.TrackedRecognitions recognition = ViewOverlay.getRect(onTouchX,onTouchY);
                             if(recognition!=null){
-                                String definition = ObjectDetectionClassifierSSD.labeldefitions.get(ObjectDetectionClassifierSSD.labels.indexOf(recognition.title));
+                                String definition = ObjectDetectionClassifierYOLO.labeldefinitions.get(ObjectDetectionClassifierYOLO.labels.indexOf(recognition.title));
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            AlertDialog alertDialog = new AlertDialog.Builder(CameraActivityLivetwo.this).create();
+                                            AlertDialog alertDialog = new AlertDialog.Builder(CameraActivityLiveYOLO.this).create();
                                             alertDialog.setTitle(recognition.title);
                                             alertDialog.setMessage(definition);
                                             alertDialog.setButton("Got it", new DialogInterface.OnClickListener() {
@@ -309,7 +319,7 @@ public class CameraActivityLivetwo extends AppCompatActivity implements Camera.P
                                                         @Override
                                                         public void onClick(DialogInterface dialogInterface, int i) {
                                                             dialogInterface.dismiss();
-                                                            Intent intent = new Intent(CameraActivityLivetwo.this, LearnMore.class);
+                                                            Intent intent = new Intent(CameraActivityLiveYOLO.this, LearnMore.class);
                                                             String na=recognition.title;
                                                             intent.putExtra("Name", na);
                                                             intent.putExtra("DEF", definition);
@@ -380,7 +390,7 @@ public class CameraActivityLivetwo extends AppCompatActivity implements Camera.P
     public boolean checkCameraPermission()
     {
         String permission = Manifest.permission.CAMERA;
-        int res = CameraActivityLivetwo.this.getApplicationContext().checkCallingOrSelfPermission(permission);
+        int res = CameraActivityLiveYOLO.this.getApplicationContext().checkCallingOrSelfPermission(permission);
         return (res == PackageManager.PERMISSION_GRANTED);
     }
     public boolean checkWriteFilePermission()
@@ -491,6 +501,7 @@ public class CameraActivityLivetwo extends AppCompatActivity implements Camera.P
                             getAssets(),
                             MODEL_FILE,
                             LABELS_FILE,
+                            DEFINITION_FILE,
                             false,
                             MODEL_INPUT_SIZE
                     );
