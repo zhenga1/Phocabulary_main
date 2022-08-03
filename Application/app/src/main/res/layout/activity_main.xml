@@ -82,10 +82,14 @@
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
         android:onClick="pass"
-        tools:layout_editor_absoluteX="17dp"
-        tools:layout_editor_absoluteY="359dp" />
+        android:text="Login as Guest"
+        android:textSize="20dp"
+        android:background="@color/paleyellow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
