@@ -112,7 +112,7 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
     private float oup_scale;
     private int oup_zero_point;
     private int numClass;
-    private float mNmsThresh = 0.5f;
+    private float mNmsThresh = 0.4f;
 
     /**
      * Initializes a native TensorFlow session for classifying images.
