@@ -404,11 +404,11 @@ public class ObjectDetectionClassifierYOLO implements Classifier {
             float maxClass = 0;
 
             final float[] classes = new float[labels.size()];
-            for (int c = 0; c < labels.size(); ++c) {
+            for (int c = 0; c < labels.size(); c++) {
                 classes[c] = out[0][i][5 + c];
             }
 
-            for (int c = 0; c < labels.size(); ++c) {
+            for (int c = 0; c < labels.size(); c++) {
                 if (classes[c] > maxClass) {
                     detectedClass = c;
                     maxClass = classes[c];
