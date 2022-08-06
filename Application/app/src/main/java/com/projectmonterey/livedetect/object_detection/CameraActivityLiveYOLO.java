@@ -323,6 +323,7 @@ public class CameraActivityLiveYOLO extends AppCompatActivity implements Camera.
                                                             dialogInterface.dismiss();
                                                             Intent intent = new Intent(CameraActivityLiveYOLO.this, LearnMore.class);
                                                             String na=recognition.title;
+                                                            na = na.substring(0, 1).toUpperCase() + na.substring(1);
                                                             intent.putExtra("Name", na);
                                                             intent.putExtra("DEF", definition);
                                                             //intent.putExtra("PHO", "string of the link");
