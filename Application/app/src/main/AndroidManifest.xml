@@ -20,15 +20,20 @@
         android:theme="@style/Theme.ProjectMonterey"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui_main.recyclerrevise.WordsRevise"
+            android:name=".livedetect.object_detection.NoOverlayDetectSSD"
             android:exported="false"
             android:screenOrientation="landscape"
             android:theme="@style/NoActionBar"/>
         <activity
+            android:name=".ui_main.recyclerrevise.WordsRevise"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:theme="@style/NoActionBar" />
+        <activity
             android:name=".ui_main.RevisionLibrary"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".livedetect.object_detection.LearnMore"
             android:exported="false"
@@ -46,10 +51,10 @@
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".backend.UiMainActivity"
-            android:theme="@style/NoActionBar"
             android:exported="false"
             android:screenOrientation="landscape"
-            />
+            android:theme="@style/NoActionBar" />
+
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="face" />
