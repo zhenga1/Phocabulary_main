@@ -114,5 +114,19 @@
             android:textSize="20dp"
             android:text="Revision Library" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/view_spacing"/>
+    <Button
+        android:id="@+id/specialmode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:fontFamily="cursive"
+        android:textAlignment="center"
+        android:text="Special Learning Mode"
+        android:backgroundTint="tra"/>
 
 </LinearLayout>
