@@ -5,3 +5,5 @@ We hope to make an app that can educate children and students using the latest A
 
 ## QR Code
 Please scan the QR Code below to download the app for android devices.
+
+<img src="https://raw.githubusercontent.com/zhenga1/Phocabulary_main/main/monterey_photos/Phocabulary_download.jpg"/>
